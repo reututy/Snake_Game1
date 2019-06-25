@@ -23,9 +23,9 @@ int main(int argc, char *argv[])
 	//scn->addShader("../res/shaders/pickingShader");
 	scn->addShader("../res/shaders/newPickingShader");
 	//scn->addShader("../res/shaders/pickingShaderOld");
-	//scn->addShader("../res/shaders/basicShader");
+	scn->addShader("../res/shaders/basicShader");
 	//scn->addShader("../res/shaders/basicShaderOld");
-	scn->addShader("../res/shaders/skinningShader");
+	//scn->addShader("../res/shaders/skinningShader");
 	//scn->addShader("../res/shaders/LBSShader");
 	//scn->addShader("../res/shaders/weightsShader");
 	scn->addShader("../res/shaders/basicShadertex");

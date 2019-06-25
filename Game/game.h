@@ -19,6 +19,11 @@ class Game : public Scene
 	int num_of_axis_body3;
 	int num_of_axis_tail;
 
+	int num_of_front_cube;
+	int num_of_back_cube;
+	int num_of_up_cube;
+	int num_of_down_cube;
+
 	int num_of_shapes;
 	int MIN_CTRL;
 	int MAX_CTRL;
@@ -58,5 +63,10 @@ public:
 	int GetNumOfAxisBody2();
 	int GetNumOfAxisBody3();
 	int GetNumOfAxisTail();
+
+	int GetNumOfFrontBox();
+	int GetNumOfBackBox();
+	int GetNumOfUpBox();
+	int GetNumOfDownBox();
 };
 

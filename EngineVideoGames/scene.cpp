@@ -275,7 +275,7 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 			MV1 = Normal1;
 			MV1 = MV1 * shapes[i]->makeTransScale(mat4(1));
 
-			
+			/*
 			if (i == 20)
 			{
 				DQ = getQuaternion(MV1);
@@ -317,8 +317,9 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 				SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, 0, 0);
 				shapes[i]->Draw(shaders, textures, true);
 			}
+			*/
 			
-			/*
+			
 			if(shaderIndx > 0)
 			{
 				Update(MV1, Projection, Normal1, shapes[i]->GetShader());
@@ -330,7 +331,7 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 				Update(MV1, Projection, Normal1, 0);
 				shapes[i]->Draw(shaders,textures,true);
 			}
-			*/
+			
 		}
 	}
 	pickedShape = p;

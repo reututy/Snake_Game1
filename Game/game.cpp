@@ -235,6 +235,43 @@ void Game::Init()
 	HideShape(num_of_axis_body3);
 	HideShape(num_of_axis_tail);
 
+	//Added boundry Boxes of the game: 
+	addShapeCopy(2, -1, TRIANGLES); //29 Add copy cube = front
+	SetNumOfShape();
+	pickedShape = 29;
+	shapeTransformation(xScale, 0.1);
+	shapeTransformation(yScale, 20);
+	shapeTransformation(zScale, 20);
+	shapeTransformation(xGlobalTranslate, -50 / 0.1);
+	num_of_front_cube = 29;
+
+	addShapeCopy(2, -1, TRIANGLES); //30 Add copy cube = back
+	SetNumOfShape();
+	pickedShape = 30;
+	shapeTransformation(xScale, 0.1);
+	shapeTransformation(yScale, 20);
+	shapeTransformation(zScale, 20);
+	shapeTransformation(xGlobalTranslate, 50 / 0.1);
+	num_of_back_cube = 30;
+
+	addShapeCopy(2, -1, TRIANGLES); //31 Add copy cube = up
+	SetNumOfShape();
+	pickedShape = 31;
+	shapeTransformation(xScale, 50);
+	shapeTransformation(yScale, 0.1);
+	shapeTransformation(zScale, 20);
+	shapeTransformation(yGlobalTranslate, 20 / 0.1);
+	num_of_up_cube = 31;
+
+	addShapeCopy(2, -1, TRIANGLES); //32 Add copy cube = up
+	SetNumOfShape();
+	pickedShape = 32;
+	shapeTransformation(xScale, 50);
+	shapeTransformation(yScale, 0.1);
+	shapeTransformation(zScale, 20);
+	shapeTransformation(yGlobalTranslate, -20 / 0.1);
+	num_of_down_cube = 32;
+
 	pickedShape = -1;
 
 	/* An example: */
@@ -488,3 +525,24 @@ int Game::GetNumOfAxisTail()
 {
 	return num_of_axis_tail;
 }
+
+int Game::GetNumOfFrontBox()
+{
+	return num_of_front_cube;
+}
+
+int Game::GetNumOfBackBox()
+{
+	return num_of_back_cube;
+}
+
+int Game::GetNumOfUpBox()
+{
+	return num_of_up_cube;
+}
+
+int Game::GetNumOfDownBox()
+{
+	return num_of_down_cube;
+}
+
