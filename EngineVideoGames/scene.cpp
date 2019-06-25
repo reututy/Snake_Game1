@@ -228,7 +228,7 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 
 	/* The original code: */
 	
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	//buffers.back()->SetDrawDistination(buffers.size()-1,buffer);
 		
 	glm::mat4 Normal = makeTrans();
@@ -275,7 +275,6 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 			MV1 = Normal1;
 			MV1 = MV1 * shapes[i]->makeTransScale(mat4(1));
 
-			/*
 			if (i == 20)
 			{
 				DQ = getQuaternion(MV1);
@@ -306,8 +305,15 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 				dqRot[4] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[4] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}
+			
+			
+			if (shaderIndx == 1)
+			{
+				Update(MV1, Projection, Normal1, shapes[i]->GetShader());
+				shapes[i]->Draw(shaders, textures, false);
 
-			if (shaderIndx > 0)
+			}
+			else if (shaderIndx == 2)
 			{
 				SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, shapes[i]->GetShader(), i);
 				shapes[i]->Draw(shaders, textures, false);
@@ -317,20 +323,14 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 				SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, 0, 0);
 				shapes[i]->Draw(shaders, textures, true);
 			}
-			*/
 			
-			
-			if(shaderIndx > 0)
-			{
-				Update(MV1, Projection, Normal1, shapes[i]->GetShader());
-				shapes[i]->Draw(shaders,textures,false);
-					
-			}
+			/*
 			else 
 			{ //picking
 				Update(MV1, Projection, Normal1, 0);
 				shapes[i]->Draw(shaders,textures,true);
 			}
+			*/
 			
 		}
 	}
@@ -445,7 +445,7 @@ void Scene::shapeRotation(vec3 v, float ang,int indx)
 
 void Scene::shapeTransformation(int type,float amt)
 {
-		vec3 newAxis;
+	vec3 newAxis;
 	if(glm::abs(amt)>1e-5)
 	{
 		switch (type)

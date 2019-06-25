@@ -5,12 +5,13 @@ int main(int argc, char *argv[])
 {
 	const int DISPLAY_WIDTH = 1200;
 	const int DISPLAY_HEIGHT = 800;
-	const float zFar = 100.0f;
+	const float zFar = 1000.0f;
 	const float zNear = 1.0f;
 	const float CAM_ANGLE = 60.0f;
 	const float relation = (float)DISPLAY_WIDTH / (float)DISPLAY_HEIGHT;
-	Viewport vp1(400, 0, DISPLAY_WIDTH - 400, DISPLAY_HEIGHT - 0);
+	//Viewport vp1(400, 0, DISPLAY_WIDTH - 400, DISPLAY_HEIGHT - 0);
 	Viewport vp2(0, 0, 400, 266);
+	Viewport vp1(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
 	Game *scn = new Game(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1);
 
@@ -20,24 +21,23 @@ int main(int argc, char *argv[])
 
 	scn->Init();
 
-	//scn->addShader("../res/shaders/pickingShader");
-	scn->addShader("../res/shaders/newPickingShader");
+	scn->addShader("../res/shaders/pickingShader");  //0
+	//scn->addShader("../res/shaders/newPickingShader");
 	//scn->addShader("../res/shaders/pickingShaderOld");
-	scn->addShader("../res/shaders/basicShader");
+	scn->addShader("../res/shaders/basicShader"); //1
 	//scn->addShader("../res/shaders/basicShaderOld");
-	//scn->addShader("../res/shaders/skinningShader");
+	scn->addShader("../res/shaders/skinningShader"); //2
 	//scn->addShader("../res/shaders/LBSShader");
-	//scn->addShader("../res/shaders/weightsShader");
-	scn->addShader("../res/shaders/basicShadertex");
-	scn->AddTexture("../res/textures/snake1.png", false);
+	//scn->addShader("../res/shaders/basicShadertex");
+	scn->AddTexture("../res/textures/snake1.png", false); //0
+	scn->AddTexture("../res/textures/water_up_1.png", false); //1
+	scn->AddTexture("../res/textures/water_front_1.png", false); //2
 
 	display.setScene(scn);
 
 	while (!display.closeWindow())
 	{
-		display.Clear(1.0f, 1.0f, 1.0f, 1.0f);
-		//scn->Draw(1, 0, BACK, true, false);
-		scn->Draw(1, 0, NONE, true, false);
+		scn->Draw(1, 0, BACK, true, false);
 		scn->Motion();
 		display.SwapBuffers();
 		display.PollEvents();

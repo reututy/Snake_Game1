@@ -217,6 +217,7 @@ void Game::Init()
 	//shapeTransformation(xGlobalTranslate, 8.8 / 4);
 	shapeTransformation(xGlobalTranslate, 1.8);
 	shapeTransformation(xLocalTranslate, 1.8);
+	
 
 	//Set the parents to connect the snake:
 	setParent(num_of_head, -1);
@@ -241,7 +242,7 @@ void Game::Init()
 	pickedShape = 29;
 	shapeTransformation(xScale, 0.1);
 	shapeTransformation(yScale, 20);
-	shapeTransformation(zScale, 20);
+	shapeTransformation(zScale, 50);
 	shapeTransformation(xGlobalTranslate, -50 / 0.1);
 	num_of_front_cube = 29;
 
@@ -250,8 +251,9 @@ void Game::Init()
 	pickedShape = 30;
 	shapeTransformation(xScale, 0.1);
 	shapeTransformation(yScale, 20);
-	shapeTransformation(zScale, 20);
+	shapeTransformation(zScale, 50);
 	shapeTransformation(xGlobalTranslate, 50 / 0.1);
+	shapeTransformation(xGlobalRotate, 180);
 	num_of_back_cube = 30;
 
 	addShapeCopy(2, -1, TRIANGLES); //31 Add copy cube = up
@@ -259,18 +261,44 @@ void Game::Init()
 	pickedShape = 31;
 	shapeTransformation(xScale, 50);
 	shapeTransformation(yScale, 0.1);
-	shapeTransformation(zScale, 20);
+	shapeTransformation(zScale, 50);
 	shapeTransformation(yGlobalTranslate, 20 / 0.1);
 	num_of_up_cube = 31;
 
-	addShapeCopy(2, -1, TRIANGLES); //32 Add copy cube = up
+	addShapeCopy(2, -1, TRIANGLES); //32 Add copy cube = down
 	SetNumOfShape();
 	pickedShape = 32;
 	shapeTransformation(xScale, 50);
 	shapeTransformation(yScale, 0.1);
-	shapeTransformation(zScale, 20);
+	shapeTransformation(zScale, 50);
 	shapeTransformation(yGlobalTranslate, -20 / 0.1);
 	num_of_down_cube = 32;
+
+	//Set snake shader:
+	SetShapeShader(num_of_head, 1);
+	SetShapeShader(num_of_body1, 1);
+	SetShapeShader(num_of_body2, 1);
+	SetShapeShader(num_of_body3, 1);
+	SetShapeShader(num_of_tail, 1);
+
+	//Set snake texture:
+	SetShapeTex(num_of_head, 0);
+	SetShapeTex(num_of_body1, 0);
+	SetShapeTex(num_of_body2, 0);
+	SetShapeTex(num_of_body3, 0);
+	SetShapeTex(num_of_tail, 0);
+
+	//Set Boxes shader:
+	SetShapeShader(num_of_front_cube, 1);
+	SetShapeShader(num_of_back_cube, 1);
+	SetShapeShader(num_of_up_cube, 1);
+	SetShapeShader(num_of_down_cube, 1);
+
+	//Set boxes textures:
+	SetShapeTex(num_of_front_cube, 2);
+	SetShapeTex(num_of_back_cube, 2);
+	SetShapeTex(num_of_up_cube, 1);
+	SetShapeTex(num_of_down_cube, 1);
 
 	pickedShape = -1;
 

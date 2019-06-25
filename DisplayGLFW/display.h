@@ -10,7 +10,6 @@ class Display
 public:
 	Display(int width, int height, const std::string& title);
 
-	void Clear(float r, float g, float b, float a); //Added - been before, maybe need to delete
 	void SwapBuffers();
 	void PollEvents();
 	
