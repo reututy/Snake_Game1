@@ -84,6 +84,7 @@ void Game::Init()
 {
 	addShape(Axis, -1, LINES, nullptr); //0 Add Axis
 	SetNumOfShape();
+	HideShape(0);
 	addShape(BezierLine, -1, LINE_STRIP, head); //1 Add curve
 	SetNumOfShape();
 	//Translate all scene away from camera
@@ -147,10 +148,12 @@ void Game::Init()
 	HideShape(19); //hides cylinder to copy
 
 
-				   /* Create the snake: */
+	/* Create the snake: */
 	addShapeCopy(7, -1, QUADS); //20 Add copy of head (7)
 	SetNumOfShape();
 	num_of_head = 20;
+	pickedShape = 20;
+	shapeTransformation(xGlobalRotate, 170.0f);	//in order to put the eyes in place
 
 	addShapeCopy(0, -1, LINES); //21 Add a copy of Axis for the end of the head = for body1
 	SetNumOfShape();
@@ -286,7 +289,7 @@ void Game::Init()
 	shapeTransformation(zGlobalRotate, 180);
 	num_of_right_cube = 33;
 
-	HideShape(num_of_right_cube);
+	//HideShape(num_of_right_cube);
 
 	addShapeCopy(2, -1, TRIANGLES); //34 Add copy cube = right
 	SetNumOfShape();
@@ -299,7 +302,32 @@ void Game::Init()
 	shapeTransformation(zGlobalRotate, 180);
 	num_of_left_cube = 34;
 
-	HideShape(num_of_left_cube);
+	//HideShape(num_of_left_cube);
+
+
+
+	//Obstacles:
+	addShapeCopy(2, -1, TRIANGLES); //35 Add copy cube = right
+	SetNumOfShape();
+	pickedShape = 35;
+	SetShapeTex(pickedShape, 4);
+	shapeTransformation(xScale, 50);
+	shapeTransformation(yScale, 50);
+	shapeTransformation(zScale, 50);
+	shapeTransformation(xGlobalTranslate, -10 / 2);
+	//shapeTransformation(yGlobalTranslate, -10 / 2);
+	shapeTransformation(zGlobalTranslate, 5);
+	SetShapeShader(pickedShape, 3);
+
+
+	//Rewards - 10:
+	addShape(Octahedron, -1, TRIANGLES, nullptr); //36
+	SetNumOfShape();
+	pickedShape = 36;
+	SetShapeTex(pickedShape, 5);
+	shapeTransformation(xGlobalTranslate, -5);
+	SetShapeShader(pickedShape, 3);
+
 
 	//Set snake shader - works with :
 	SetShapeShader(num_of_head, 1);
@@ -309,7 +337,7 @@ void Game::Init()
 	SetShapeShader(num_of_tail, 1);
 
 	//Set snake texture:
-	SetShapeTex(num_of_head, 0);
+	SetShapeTex(num_of_head, 6);
 	SetShapeTex(num_of_body1, 0);
 	SetShapeTex(num_of_body2, 0);
 	SetShapeTex(num_of_body3, 0);
@@ -375,11 +403,13 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 	s->SetUniformMat4f("Projection", Projection, shaderIndx);
 	s->SetUniformMat4f("Normal", Normal, shaderIndx);
 	s->SetUniform4f("lightDirection", 0.0f, 0.0f, 0.0f, 0.0f);
+
 	if (shaderIndx == 0)
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
-	else
+	else if (shaderIndx == 2)
 		s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f);
-		//s->SetUniform4f("lightColor", 0.1f, 0.8f, 0.7f, 1.0f);
+	else
+		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
 }
 
