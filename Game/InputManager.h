@@ -96,10 +96,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			case GLFW_KEY_H: //moves the shape left
 				scn->shapeTransformation(scn->xGlobalTranslate, -0.1f);
 				break;
-			case GLFW_KEY_Z: //Zoom in
+			case GLFW_KEY_S: //Zoom in
 				scn->shapeTransformation(scn->zCameraTranslate, 5.0f);
 				break;
-			case GLFW_KEY_A: //Zoom out
+			case GLFW_KEY_W: //Zoom out
 				scn->shapeTransformation(scn->zCameraTranslate, -5.0f);
 				break;
 		default:

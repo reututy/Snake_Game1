@@ -23,6 +23,8 @@ class Game : public Scene
 	int num_of_back_cube;
 	int num_of_up_cube;
 	int num_of_down_cube;
+	int num_of_right_cube;
+	int num_of_left_cube;
 
 	int num_of_shapes;
 	int MIN_CTRL;
@@ -68,5 +70,7 @@ public:
 	int GetNumOfBackBox();
 	int GetNumOfUpBox();
 	int GetNumOfDownBox();
+	int GetNumOfRightBox();
+	int GetNumOfLeftBox();
 };
 

@@ -2,6 +2,7 @@
 #include <iostream>
 
 #define CONTROL_POINT_SCALE 0.1
+#define WATER_PLANE_SCALE 800
 
 bool once = false;
 
@@ -241,40 +242,66 @@ void Game::Init()
 	SetNumOfShape();
 	pickedShape = 29;
 	shapeTransformation(xScale, 0.1);
-	shapeTransformation(yScale, 20);
-	shapeTransformation(zScale, 50);
-	shapeTransformation(xGlobalTranslate, -50 / 0.1);
+	shapeTransformation(yScale, WATER_PLANE_SCALE);
+	shapeTransformation(zScale, WATER_PLANE_SCALE);
+	shapeTransformation(xGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
 	num_of_front_cube = 29;
 
 	addShapeCopy(2, -1, TRIANGLES); //30 Add copy cube = back
 	SetNumOfShape();
 	pickedShape = 30;
 	shapeTransformation(xScale, 0.1);
-	shapeTransformation(yScale, 20);
-	shapeTransformation(zScale, 50);
-	shapeTransformation(xGlobalTranslate, 50 / 0.1);
+	shapeTransformation(yScale, WATER_PLANE_SCALE);
+	shapeTransformation(zScale, WATER_PLANE_SCALE);
+	shapeTransformation(xGlobalTranslate, WATER_PLANE_SCALE / 0.1);
 	shapeTransformation(xGlobalRotate, 180);
 	num_of_back_cube = 30;
 
 	addShapeCopy(2, -1, TRIANGLES); //31 Add copy cube = up
 	SetNumOfShape();
 	pickedShape = 31;
-	shapeTransformation(xScale, 50);
+	shapeTransformation(xScale, WATER_PLANE_SCALE);
 	shapeTransformation(yScale, 0.1);
-	shapeTransformation(zScale, 50);
-	shapeTransformation(yGlobalTranslate, 20 / 0.1);
+	shapeTransformation(zScale, WATER_PLANE_SCALE);
+	shapeTransformation(yGlobalTranslate, WATER_PLANE_SCALE / 0.1);
 	num_of_up_cube = 31;
 
 	addShapeCopy(2, -1, TRIANGLES); //32 Add copy cube = down
 	SetNumOfShape();
 	pickedShape = 32;
-	shapeTransformation(xScale, 50);
+	shapeTransformation(xScale, WATER_PLANE_SCALE);
 	shapeTransformation(yScale, 0.1);
-	shapeTransformation(zScale, 50);
-	shapeTransformation(yGlobalTranslate, -20 / 0.1);
+	shapeTransformation(zScale, WATER_PLANE_SCALE);
+	shapeTransformation(yGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
 	num_of_down_cube = 32;
 
-	//Set snake shader:
+	addShapeCopy(2, -1, TRIANGLES); //33 Add copy cube = right
+	SetNumOfShape();
+	pickedShape = 33;
+	shapeTransformation(xScale, WATER_PLANE_SCALE);
+	shapeTransformation(yScale, WATER_PLANE_SCALE);
+	shapeTransformation(zScale, 0.1);
+	shapeTransformation(zGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
+	shapeTransformation(xGlobalRotate, 180);
+	shapeTransformation(zGlobalRotate, 180);
+	num_of_right_cube = 33;
+
+	HideShape(num_of_right_cube);
+
+	addShapeCopy(2, -1, TRIANGLES); //34 Add copy cube = right
+	SetNumOfShape();
+	pickedShape = 34;
+	shapeTransformation(xScale, WATER_PLANE_SCALE);
+	shapeTransformation(yScale, WATER_PLANE_SCALE);
+	shapeTransformation(zScale, 0.1);
+	shapeTransformation(zGlobalTranslate, WATER_PLANE_SCALE / 0.1);
+	shapeTransformation(xGlobalRotate, 180);
+	shapeTransformation(zGlobalRotate, 180);
+	num_of_left_cube = 34;
+
+	HideShape(num_of_left_cube);
+
+	//Set snake shader - works with :
 	SetShapeShader(num_of_head, 1);
 	SetShapeShader(num_of_body1, 1);
 	SetShapeShader(num_of_body2, 1);
@@ -288,17 +315,21 @@ void Game::Init()
 	SetShapeTex(num_of_body3, 0);
 	SetShapeTex(num_of_tail, 0);
 
-	//Set Boxes shader:
+	//Set Boxes shader - works with basicShader:
 	SetShapeShader(num_of_front_cube, 1);
 	SetShapeShader(num_of_back_cube, 1);
 	SetShapeShader(num_of_up_cube, 1);
 	SetShapeShader(num_of_down_cube, 1);
+	SetShapeShader(num_of_right_cube, 1);
+	SetShapeShader(num_of_left_cube, 1);
 
 	//Set boxes textures:
 	SetShapeTex(num_of_front_cube, 2);
 	SetShapeTex(num_of_back_cube, 2);
 	SetShapeTex(num_of_up_cube, 1);
-	SetShapeTex(num_of_down_cube, 1);
+	SetShapeTex(num_of_down_cube, 3);
+	SetShapeTex(num_of_right_cube, 2);
+	SetShapeTex(num_of_left_cube, 2);
 
 	pickedShape = -1;
 
@@ -343,11 +374,12 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 	s->SetUniformMat4f("MV", MV, shaderIndx);
 	s->SetUniformMat4f("Projection", Projection, shaderIndx);
 	s->SetUniformMat4f("Normal", Normal, shaderIndx);
-	s->SetUniform4f("lightDirection", 0.0f, 0.0f, -1.0f, 0.0f);
+	s->SetUniform4f("lightDirection", 0.0f, 0.0f, 0.0f, 0.0f);
 	if (shaderIndx == 0)
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
 	else
-		s->SetUniform4f("lightColor", 0.1f, 0.8f, 0.7f, 1.0f);
+		s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f);
+		//s->SetUniform4f("lightColor", 0.1f, 0.8f, 0.7f, 1.0f);
 	s->Unbind();
 }
 
@@ -574,3 +606,12 @@ int Game::GetNumOfDownBox()
 	return num_of_down_cube;
 }
 
+int Game::GetNumOfRightBox()
+{
+	return num_of_right_cube;
+}
+
+int Game::GetNumOfLeftBox()
+{
+	return num_of_left_cube;
+}
