@@ -241,12 +241,14 @@ void Game::Init()
 	HideShape(num_of_axis_tail);
 
 	//Added boundry Boxes of the game: 
+
 	addShapeCopy(2, -1, TRIANGLES); //29 Add copy cube = front
 	SetNumOfShape();
 	pickedShape = 29;
 	shapeTransformation(xScale, 0.1);
 	shapeTransformation(yScale, WATER_PLANE_SCALE);
 	shapeTransformation(zScale, WATER_PLANE_SCALE);
+	shapeTransformation(yGlobalRotate, 180);
 	shapeTransformation(xGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
 	num_of_front_cube = 29;
 
@@ -289,8 +291,6 @@ void Game::Init()
 	shapeTransformation(zGlobalRotate, 180);
 	num_of_right_cube = 33;
 
-	//HideShape(num_of_right_cube);
-
 	addShapeCopy(2, -1, TRIANGLES); //34 Add copy cube = right
 	SetNumOfShape();
 	pickedShape = 34;
@@ -302,31 +302,28 @@ void Game::Init()
 	shapeTransformation(zGlobalRotate, 180);
 	num_of_left_cube = 34;
 
-	//HideShape(num_of_left_cube);
-
-
 
 	//Obstacles:
-	addShapeCopy(2, -1, TRIANGLES); //35 Add copy cube = right
+	addShapeCopy(2, -1, TRIANGLES); //35 Add copy cube = Obstacle 1
 	SetNumOfShape();
 	pickedShape = 35;
-	SetShapeTex(pickedShape, 4);
+	SetShapeTex(pickedShape, 6);
 	shapeTransformation(xScale, 50);
 	shapeTransformation(yScale, 50);
 	shapeTransformation(zScale, 50);
 	shapeTransformation(xGlobalTranslate, -10 / 2);
 	//shapeTransformation(yGlobalTranslate, -10 / 2);
 	shapeTransformation(zGlobalTranslate, 5);
-	SetShapeShader(pickedShape, 3);
+	SetShapeShader(pickedShape, 1);
 
 
 	//Rewards - 10:
-	addShape(Octahedron, -1, TRIANGLES, nullptr); //36
+	addShape(Octahedron, -1, TRIANGLES, nullptr); //3 Add an Octahedron = Reward 1
 	SetNumOfShape();
 	pickedShape = 36;
-	SetShapeTex(pickedShape, 5);
+	SetShapeTex(pickedShape, 7);
 	shapeTransformation(xGlobalTranslate, -5);
-	SetShapeShader(pickedShape, 3);
+	SetShapeShader(pickedShape, 1);
 
 
 	//Set snake shader - works with :
@@ -337,7 +334,7 @@ void Game::Init()
 	SetShapeShader(num_of_tail, 1);
 
 	//Set snake texture:
-	SetShapeTex(num_of_head, 6);
+	SetShapeTex(num_of_head, 1);
 	SetShapeTex(num_of_body1, 0);
 	SetShapeTex(num_of_body2, 0);
 	SetShapeTex(num_of_body3, 0);
@@ -353,11 +350,12 @@ void Game::Init()
 
 	//Set boxes textures:
 	SetShapeTex(num_of_front_cube, 2);
-	SetShapeTex(num_of_back_cube, 2);
-	SetShapeTex(num_of_up_cube, 1);
-	SetShapeTex(num_of_down_cube, 3);
-	SetShapeTex(num_of_right_cube, 2);
-	SetShapeTex(num_of_left_cube, 2);
+	SetShapeTex(num_of_back_cube, 3);
+	SetShapeTex(num_of_right_cube, 3);
+	SetShapeTex(num_of_left_cube, 3);
+	SetShapeTex(num_of_up_cube, 4);
+	SetShapeTex(num_of_down_cube, 5);
+	
 
 	pickedShape = -1;
 
@@ -404,11 +402,11 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 	s->SetUniformMat4f("Normal", Normal, shaderIndx);
 	s->SetUniform4f("lightDirection", 0.0f, 0.0f, 0.0f, 0.0f);
 
-	if (shaderIndx == 0)
+	if (shaderIndx == 0) //picking shader
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
-	else if (shaderIndx == 2)
+	else if (shaderIndx == 2) //skinning shader
 		s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f);
-	else
+	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
 }

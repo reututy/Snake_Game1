@@ -116,118 +116,6 @@ mat4 Scene::GetShapeTransformation() const
 
 void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debugMode)
 {
-	/*
-	glm::mat4 Normal = makeTrans();
-	glm::mat4 Projection = cameras[0]->GetViewProjection();
-	glm::mat4 MV = Normal;
-	mat4 MV1;
-	mat4 MV2; //Added
-	mat4 MV_keeper; //Added
-	glm::dualquat DQ;
-	glm::vec4 dqRot[5];
-	glm::vec4 dqTrans[5];
-
-	int p = pickedShape;
-	//		shaders[shaderIndx]->Bind();
-	for (unsigned int i = 0; i<shapes.size(); i++)
-	{
-		if (shapes[i]->Is2Render())
-		{
-			mat4 Normal1 = mat4(1);
-			pickedShape = i;
-			for (int j = i; chainParents[j] > -1; j = chainParents[j])
-			{
-				Normal1 = shapes[chainParents[j]]->makeTrans() * Normal1;
-			}
-			Normal1 = Normal * Normal1;
-			MV1 = Normal1;
-			MV_keeper = Normal1; //Added
-
-			MV1 = MV1 * shapes[i]->makeTransScale(mat4(1));
-
-			/*
-			if(shaderIndx > 0)
-			{
-			Update(MV1, Projection, Normal1, shapes[i]->GetShader());
-			shapes[i]->Draw(shaders,textures,false);
-			}
-			else
-			{
-			Update(MV1, Projection, Normal1, 0);
-			shapes[i]->Draw(shaders,textures,true);
-			}
-			*/
-
-			/* Reut's addings: */
-			//For LBSShader:
-			/*
-			if (shaderIndx > 0)
-			{
-			//LBSUpdate(MVP1, glm::mat4(0), Normal1, glm::mat4(0), shapes[i]->GetShader());
-			//LBSUpdate(MVP1, glm::mat4(0), shapes[20]->makeTrans(), shapes[22]->makeTrans(), shapes[i]->GetShader());
-			LBSUpdate(MVP1, shapes[20]->makeTrans(), shapes[22]->makeTrans(), shapes[24]->makeTrans(), shapes[i]->GetShader());
-			//LBSUpdate(MVP1, shapes[22]->makeTrans(), shapes[24]->makeTrans(), shapes[26]->makeTrans(), shapes[i]->GetShader());
-			//LBSUpdate(MVP1, shapes[24]->makeTrans(), shapes[26]->makeTrans(), shapes[28]->makeTrans(), shapes[i]->GetShader());
-			//LBSUpdate(MVP1, shapes[26]->makeTrans(), shapes[28]->makeTrans(), glm::mat4(0), shapes[i]->GetShader());
-			shapes[i]->Draw(shaders, textures, false);
-			}
-			else
-			{
-			LBSUpdate(MVP1, glm::mat4(0) ,Normal1, glm::mat4(0), 0);
-			shapes[i]->Draw(shaders, textures, true);
-			}
-			*/
-
-			//For SkinningShader:
-			/*
-			if (i == 20)
-			{
-				DQ = getQuaternion(MV1);
-				dqRot[0] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
-				dqTrans[0] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
-			}
-			else if (i == 22)
-			{
-				DQ = getQuaternion(MV1);
-				dqRot[1] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
-				dqTrans[1] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
-			}
-			else if (i == 24)
-			{
-				DQ = getQuaternion(MV1);
-				dqRot[2] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
-				dqTrans[2] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
-			}
-			else if (i == 26)
-			{
-				DQ = getQuaternion(MV1);
-				dqRot[3] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
-				dqTrans[3] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
-			}
-			else if (i == 28)
-			{
-				DQ = getQuaternion(MV1);
-				dqRot[4] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
-				dqTrans[4] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
-			}
-
-			if (shaderIndx > 0)
-			{
-				SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, shapes[i]->GetShader(), i);
-				shapes[i]->Draw(shaders, textures, false);
-			}
-			else
-			{
-				SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, 0, 0);
-				shapes[i]->Draw(shaders, textures, true);
-			}
-		}
-	}
-	pickedShape = p;
-	*/
-
-	/* The original code: */
-	
 	//glEnable(GL_CULL_FACE);
 	//buffers.back()->SetDrawDistination(buffers.size()-1,buffer);
 		
@@ -264,12 +152,6 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 			{
 				Normal1 =  shapes[chainParents[j]]->makeTrans() * Normal1;
 			}
-			
-			//mat4 MVP1 = MVP * Normal1; 
-			//Normal1 = Normal * Normal1;
-			//MVP1 = MVP1 * shapes[i]->makeTransScale(mat4(1));
-			//Normal1 = Normal1 * shapes[i]->makeTrans();
-
 
 			Normal1 = Normal * Normal1;
 			MV1 = Normal1;
@@ -318,78 +200,14 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 				SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, shapes[i]->GetShader(), i);
 				shapes[i]->Draw(shaders, textures, false);
 			}
-			else
+			else //picking
 			{
 				SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, 0, 0);
 				shapes[i]->Draw(shaders, textures, true);
 			}
-			
-			/*
-			else 
-			{ //picking
-				Update(MV1, Projection, Normal1, 0);
-				shapes[i]->Draw(shaders,textures,true);
-			}
-			*/
-			
 		}
 	}
 	pickedShape = p;
-	
-
-	/* The original code: */
-	/*
-	glEnable(GL_CULL_FACE);
-	buffers.back()->SetDrawDistination(buffers.size() - 1, buffer);
-
-	glm::mat4 Normal = makeTrans();
-	if (buffer == BACK)
-		glViewport(cameras[cameraIndx]->GetLeft(), cameras[cameraIndx]->GetBottom(), cameras[cameraIndx]->GetWidth(), cameras[cameraIndx]->GetHeight());
-	else
-		glViewport(0, 0, cameras[cameraIndx]->GetWidth(), cameras[cameraIndx]->GetHeight());
-
-	glm::mat4 MVP = cameras[cameraIndx]->GetViewProjection() * Normal;
-	int p = pickedShape;
-	if (toClear)
-	{
-		if (shaderIndx>0)
-			Clear(1, 1, 1, 1);
-		else
-			Clear(0, 0, 0, 0);
-	}
-
-	for (unsigned int i = 0; i<shapes.size(); i++)
-	{
-		if (shapes[i]->Is2Render())
-		{
-			mat4 Normal1 = mat4(1);
-			pickedShape = i;
-			for (int j = i; chainParents[j] > -1; j = chainParents[j])
-			{
-				Normal1 = shapes[chainParents[j]]->makeTrans() * Normal1;
-			}
-
-			mat4 MVP1 = MVP * Normal1;
-			Normal1 = Normal * Normal1;
-
-			MVP1 = MVP1 * shapes[i]->makeTransScale(mat4(1));
-			Normal1 = Normal1 * shapes[i]->makeTrans();
-
-			if (shaderIndx > 0)
-			{
-				Update(MVP1, Normal1, shapes[i]->GetShader());
-				shapes[i]->Draw(shaders, textures, false);
-
-			}
-			else
-			{ //picking
-				Update(MVP1, Normal1, 0);
-				shapes[i]->Draw(shaders, textures, true);
-			}
-		}
-	}
-	pickedShape = p;
-	*/
 }
 
 void Scene::Draw2D(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debugMode)

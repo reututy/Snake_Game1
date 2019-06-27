@@ -29,16 +29,19 @@ int main(int argc, char *argv[])
 	scn->addShader("../res/shaders/skinningShader"); //2
 	//scn->addShader("../res/shaders/LBSShader");
 	//scn->addShader("../res/shaders/basicShadertex");
-	scn->addShader("../res/shaders/basicShaderForOctahedron"); //3
 
-
+	//snake textures:
 	scn->AddTexture("../res/textures/snake1.png", false); //0
-	scn->AddTexture("../res/textures/water_up.png", false); //1
-	scn->AddTexture("../res/textures/water_front.png", false); //2
-	scn->AddTexture("../res/textures/water_ground.png", false); //3
-	scn->AddTexture("../res/textures/rock.png", false); //4
-	scn->AddTexture("../res/textures/gold_shine.png", false); //5
-	scn->AddTexture("../res/textures/snake_eyes.png", false); //6
+	scn->AddTexture("../res/textures/snake_eyes.png", false); //1
+	//water textures:
+	scn->AddTexture("../res/textures/cave.png", false); //2
+	scn->AddTexture("../res/textures/water_front.png", false); //3
+	scn->AddTexture("../res/textures/water_up.png", false); //4
+	scn->AddTexture("../res/textures/water_ground.png", false); //5
+	//Rewords and Obstacles textures:
+	scn->AddTexture("../res/textures/rock.png", false); //6
+	scn->AddTexture("../res/textures/gold_shine.png", false); //7
+	
 
 	display.setScene(scn);
 
