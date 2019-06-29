@@ -30,7 +30,7 @@ public:
 
 	inline glm::mat4 GetViewProjection() const
 	{
-		return projection ;
+		return projection;
 	}
 
 	int GetWidth()
@@ -80,6 +80,33 @@ public:
 		forward = glm::vec3(glm::normalize(rotation * glm::vec4(forward, 0.0)));
 		up = glm::vec3(glm::normalize(rotation * glm::vec4(up, 0.0)));
 	}
+
+	float calcHorizontalDist()
+	{
+		return distance_from_player * cos(pitch);
+	}
+
+	float calcVerticalDist()
+	{
+		return distance_from_player * sin(pitch);
+	}
+
+	void calcCameraPosition(float horizDist, float verticDist)
+	{
+		float theta = angle_around_player;
+		float offsetX = horizDist * sin(theta);
+		float offsetZ = horizDist * cos(theta);
+		pos.x = player->GetMesh()->GetModel()->positions[0].x - offsetX;
+		pos.z = player->GetMesh()->GetModel()->positions[0].z - offsetZ;
+		pos.y = player->GetMesh()->GetModel()->positions[0].y + verticDist;
+
+	}
+
+	void SetShape(Shape *num_of_shape)
+	{
+		player = num_of_shape;
+	}
+
 	inline float GetAngle()
 	{
 		return fov;
@@ -103,9 +130,16 @@ private:
 	glm::vec3 pos;
 	glm::vec3 forward;
 	glm::vec3 up;
-	float fov;
+	float fov; 
 	float far,near;
 	Viewport vp;
+
+	/* Reut's adding: */
+	Shape* player;
+	float pitch = 20; //angle from snake to camera
+	float distance_from_player = 50;
+	float angle_around_player = 0;
+
 };
 
 #endif

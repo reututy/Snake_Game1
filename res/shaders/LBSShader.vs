@@ -30,8 +30,8 @@ void main()
 	for (int i = 0; i < 3; i++) 
 	{
 		matrix = jointTransforms[int(jointIndices[i])];		
-		vec4 posePosition = matrix * vec4(position, 1.0);
-		totalLocalPos += posePosition * weights[i];
+		vec4 posePosition = normalize(matrix * normalize(vec4(position, 1.0)));
+		totalLocalPos += normalize(posePosition * normalize(weights[i]));
 	}
-	gl_Position = MV * Projection * totalLocalPos;
+	gl_Position = normalize(MV * Projection * totalLocalPos);
 }

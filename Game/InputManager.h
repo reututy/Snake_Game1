@@ -46,6 +46,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 					scn->shapeTransformation(scn->zGlobalRotate, 5.1f);
 				else
 					scn->globalSystemRot(-5, glm::vec3(0, 1, 0), -1);
+					//scn->cam
 				break;
 			case GLFW_KEY_LEFT:
 				if (!camera_mode)

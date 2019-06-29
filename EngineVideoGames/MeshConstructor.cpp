@@ -42,11 +42,13 @@ MeshConstructor::MeshConstructor(Bezier1D *curve,bool isSurface,unsigned int res
 	if (isSurface)
 	{
 		Bezier2D surface(*curve, curve->GetAxis(), 4);
-		InitMesh(surface.GetSurface(resT, resS));
+		model = surface.GetSurface(resT, resS);
+		InitMesh(model);
 	}
 	else
 	{
-		InitLine(curve->GetLine(resT));
+		model = curve->GetLine(resT);
+		InitLine(model);
 	}
 }
 
@@ -154,4 +156,9 @@ void MeshConstructor::CopyMesh(const MeshConstructor &mesh){
 
 	is2D = true;
 	
+}
+
+IndexedModel* MeshConstructor::GetModel()
+{
+	return &model;
 }

@@ -13,7 +13,9 @@ int main(int argc, char *argv[])
 	Viewport vp2(0, 0, 400, 266);
 	Viewport vp1(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
+	//Game *scn = new Game(glm::vec3(1.0f, 0.0f, 0.0f), CAM_ANGLE, zNear, zFar, vp1);
 	Game *scn = new Game(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1);
+	//scn->AddCamera(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1);
 
 	Display display(DISPLAY_WIDTH, DISPLAY_HEIGHT, "OpenGL");
 
@@ -26,8 +28,8 @@ int main(int argc, char *argv[])
 	//scn->addShader("../res/shaders/pickingShaderOld");
 	scn->addShader("../res/shaders/basicShader"); //1
 	//scn->addShader("../res/shaders/basicShaderOld");
-	scn->addShader("../res/shaders/skinningShader"); //2
-	//scn->addShader("../res/shaders/LBSShader"); //2
+	//scn->addShader("../res/shaders/skinningShader"); //2
+	scn->addShader("../res/shaders/LBSShader"); //2
 	//scn->addShader("../res/shaders/basicShadertex");
 
 	//snake textures:

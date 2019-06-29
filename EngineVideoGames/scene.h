@@ -109,7 +109,7 @@ public:
 	void ChangeShapeMode(int index, unsigned int new_mode);
 
 private:	
-	std::vector<Camera*> cameras; //light will have the properties of camera
+	
 	std::vector<DrawBuffer*> buffers;
 	std::vector<int> texIndices;
 	int verticesSize;
@@ -121,6 +121,7 @@ private:
 	void Clear(float r, float g, float b, float a);
 
 protected:
+	std::vector<Camera*> cameras; //light will have the properties of camera
 	Shape *plane2D;
 	std::vector<Shape*> shapes;
 	std::vector<Shader*> shaders;

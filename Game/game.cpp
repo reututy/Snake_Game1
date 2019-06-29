@@ -86,7 +86,7 @@ void Game::Init()
 {
 	addShape(Axis, -1, LINES, nullptr); //0 Add Axis
 	SetNumOfShape();
-	HideShape(0);
+	//HideShape(0);
 	addShape(BezierLine, -1, LINE_STRIP, head); //1 Add curve
 	SetNumOfShape();
 	//Translate all scene away from camera
@@ -236,6 +236,8 @@ void Game::Init()
 	setParent(num_of_axis_tail, num_of_body3);
 	setParent(num_of_tail, num_of_body3);
 
+	//cameras[0]->SetShape(shapes[num_of_head]);
+
 	//To hide the connected axis:
 	HideShape(num_of_axis_body1);
 	HideShape(num_of_axis_body2);
@@ -243,7 +245,6 @@ void Game::Init()
 	HideShape(num_of_axis_tail);
 
 	//Added boundry Boxes of the game: 
-
 	addShapeCopy(2, -1, TRIANGLES); //29 Add copy cube = front
 	SetNumOfShape();
 	pickedShape = 29;
@@ -303,6 +304,14 @@ void Game::Init()
 	shapeTransformation(xGlobalRotate, 180);
 	shapeTransformation(zGlobalRotate, 180);
 	num_of_left_cube = 34;
+
+	//Set the parents to connect the Boxes:
+	//setParent(num_of_front_cube, -1);
+	//setParent(num_of_back_cube, num_of_front_cube);
+	//setParent(num_of_up_cube, num_of_front_cube);
+	//setParent(num_of_down_cube, num_of_front_cube);
+	//setParent(num_of_right_cube, num_of_front_cube);
+	//setParent(num_of_left_cube, num_of_front_cube);
 
 
 	//Obstacles:

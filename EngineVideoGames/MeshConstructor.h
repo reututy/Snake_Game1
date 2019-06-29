@@ -14,6 +14,7 @@ class MeshConstructor
 	std::vector<VertexBuffer*> vbs;
 	bool is2D;
 	int unsigned indicesNum;
+	IndexedModel model;
 	
 	void InitMesh(IndexedModel &model);
 	void CopyMesh(const MeshConstructor &mesh);
@@ -43,5 +44,7 @@ public:
 	inline bool Is2D() {return is2D;}
 	void InitLine(IndexedModel &model);
 	~MeshConstructor(void);
+
+	IndexedModel* GetModel();
 };
 
