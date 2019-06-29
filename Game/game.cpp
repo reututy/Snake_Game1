@@ -3,6 +3,8 @@
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 800
+#define BASIC_SHADER 1
+#define LBS_SHADER 2
 
 bool once = false;
 
@@ -169,7 +171,7 @@ void Game::Init()
 	num_of_body1 = 22;
 	pickedShape = 22;
 	shapeTransformation(xGlobalTranslate, 1.8);
-	shapeTransformation(xLocalTranslate, 1.8);
+	//shapeTransformation(xLocalTranslate, 1.8);
 
 	addShapeCopy(0, -1, LINES); //23 Add a copy of Axis for the end of the body1 = for body2
 	SetNumOfShape();
@@ -186,7 +188,7 @@ void Game::Init()
 	pickedShape = 24;
 	//shapeTransformation(xGlobalTranslate, 4.4 / 2);
 	shapeTransformation(xGlobalTranslate, 1.8);
-	shapeTransformation(xLocalTranslate, 1.8);
+	//shapeTransformation(xLocalTranslate, 1.8);
 
 	addShapeCopy(0, -1, LINES); //25 Add a copy of Axis for the end of the body2 = for body3
 	SetNumOfShape();
@@ -203,7 +205,7 @@ void Game::Init()
 	pickedShape = 26;
 	//shapeTransformation(xGlobalTranslate, 6.6 / 3);
 	shapeTransformation(xGlobalTranslate, 1.8);
-	shapeTransformation(xLocalTranslate, 1.8);
+	//shapeTransformation(xLocalTranslate, 1.8);
 
 	addShapeCopy(0, -1, LINES); //27 Add a copy of Axis for the end of the body3 = for tail
 	SetNumOfShape();
@@ -220,7 +222,7 @@ void Game::Init()
 	pickedShape = 28;
 	//shapeTransformation(xGlobalTranslate, 8.8 / 4);
 	shapeTransformation(xGlobalTranslate, 1.8);
-	shapeTransformation(xLocalTranslate, 1.8);
+	//shapeTransformation(xLocalTranslate, 1.8);
 	
 
 	//Set the parents to connect the snake:
@@ -314,7 +316,7 @@ void Game::Init()
 	shapeTransformation(xGlobalTranslate, -10 / 2);
 	//shapeTransformation(yGlobalTranslate, -10 / 2);
 	shapeTransformation(zGlobalTranslate, 5);
-	SetShapeShader(pickedShape, 1);
+	SetShapeShader(pickedShape, BASIC_SHADER);
 
 
 	//Rewards - 10:
@@ -323,15 +325,15 @@ void Game::Init()
 	pickedShape = 36;
 	SetShapeTex(pickedShape, 7);
 	shapeTransformation(xGlobalTranslate, -5);
-	SetShapeShader(pickedShape, 1);
+	SetShapeShader(pickedShape, BASIC_SHADER);
 
 
-	//Set snake shader - works with :
-	SetShapeShader(num_of_head, 1);
-	SetShapeShader(num_of_body1, 1);
-	SetShapeShader(num_of_body2, 1);
-	SetShapeShader(num_of_body3, 1);
-	SetShapeShader(num_of_tail, 1);
+	//Set snake shader - works with LBSUpdate:
+	SetShapeShader(num_of_head, BASIC_SHADER);
+	SetShapeShader(num_of_body1, BASIC_SHADER);
+	SetShapeShader(num_of_body2, BASIC_SHADER);
+	SetShapeShader(num_of_body3, BASIC_SHADER);
+	SetShapeShader(num_of_tail, BASIC_SHADER);
 
 	//Set snake texture:
 	SetShapeTex(num_of_head, 1);
@@ -341,12 +343,12 @@ void Game::Init()
 	SetShapeTex(num_of_tail, 0);
 
 	//Set Boxes shader - works with basicShader:
-	SetShapeShader(num_of_front_cube, 1);
-	SetShapeShader(num_of_back_cube, 1);
-	SetShapeShader(num_of_up_cube, 1);
-	SetShapeShader(num_of_down_cube, 1);
-	SetShapeShader(num_of_right_cube, 1);
-	SetShapeShader(num_of_left_cube, 1);
+	SetShapeShader(num_of_front_cube, BASIC_SHADER);
+	SetShapeShader(num_of_back_cube, BASIC_SHADER);
+	SetShapeShader(num_of_up_cube, BASIC_SHADER);
+	SetShapeShader(num_of_down_cube, BASIC_SHADER);
+	SetShapeShader(num_of_right_cube, BASIC_SHADER);
+	SetShapeShader(num_of_left_cube, BASIC_SHADER);
 
 	//Set boxes textures:
 	SetShapeTex(num_of_front_cube, 2);
@@ -516,10 +518,18 @@ void Game::SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, cons
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
 	else
 		s->SetUniform4f("lightColor", 0.1f, 0.8f, 0.7f, 1.0f);
+	/*
+	if (shaderIndx == 0) //picking shader
+		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
+	else if (shaderIndx == 2) //skinning shader
+		s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f);
+	else //other shader
+		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
+		*/
 	s->Unbind();
 }
 
-void Game::LBSUpdate(const glm::mat4 &Projection, const glm::mat4& pre_mat, const glm::mat4 &curr_mat, const glm::mat4& post_mat, const int shaderIndx)
+void Game::LBSUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], glm::ivec3 jointIndices, const int shaderIndx, int index)
 {
 	int prev_shape = pickedShape;
 	if (!once) {
@@ -530,10 +540,12 @@ void Game::LBSUpdate(const glm::mat4 &Projection, const glm::mat4& pre_mat, cons
 	int g = ((pickedShape + 1) & 0x0000FF00) >> 8;
 	int b = ((pickedShape + 1) & 0x00FF0000) >> 16;
 	s->Bind();
+	s->SetUniformMat4f("MV", MV, shaderIndx);
 	s->SetUniformMat4f("Projection", Projection, shaderIndx);
-	s->SetUniformMat4f("pre_mat", pre_mat, shaderIndx);
-	s->SetUniformMat4f("curr_mat", curr_mat, shaderIndx);
-	s->SetUniformMat4f("post_mat", post_mat, shaderIndx);
+	s->SetUniformMat4f("Normal", Normal, shaderIndx);
+	s->SetUniformMat4fv("jointTransforms", jointTransforms, 5);
+	s->SetUniform3i("jointIndices", jointIndices.x, jointIndices.y, jointIndices.z);
+	s->SetUniform1i("index", index);
 	s->SetUniform4f("lightDirection", 0.0f, 0.0f, -1.0f, 0.0f);
 	if (shaderIndx == 0)
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);

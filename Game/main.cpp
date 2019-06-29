@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 	scn->addShader("../res/shaders/basicShader"); //1
 	//scn->addShader("../res/shaders/basicShaderOld");
 	scn->addShader("../res/shaders/skinningShader"); //2
-	//scn->addShader("../res/shaders/LBSShader");
+	//scn->addShader("../res/shaders/LBSShader"); //2
 	//scn->addShader("../res/shaders/basicShadertex");
 
 	//snake textures:

@@ -122,10 +122,14 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 	glm::mat4 Normal = makeTrans();
 	glm::mat4 Projection = cameras[cameraIndx]->GetViewProjection(); //Added
 	glm::mat4 MV = Normal; //Added
-	mat4 MV1; //Added
+	glm::mat4 MV1; //Added
+
 	glm::dualquat DQ; //Added
 	glm::vec4 dqRot[5]; //Added
 	glm::vec4 dqTrans[5]; //Added
+
+	glm::mat4 jointTransforms[5]; //Added
+	glm::ivec3 jointIndices; //Added
 
 	if(buffer == BACK)
 		glViewport(cameras[cameraIndx]->GetLeft(),cameras[cameraIndx]->GetBottom(),cameras[cameraIndx]->GetWidth(),cameras[cameraIndx]->GetHeight());
@@ -159,30 +163,40 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 
 			if (i == 20)
 			{
+				jointTransforms[0] = MV1;
+				jointIndices = glm::vec3(0,0,1);
 				DQ = getQuaternion(MV1);
 				dqRot[0] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[0] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}
 			else if (i == 22)
 			{
+				jointTransforms[1] = MV1;
+				jointIndices = glm::vec3(0, 1, 2);
 				DQ = getQuaternion(MV1);
 				dqRot[1] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[1] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}
 			else if (i == 24)
 			{
+				jointTransforms[2] = MV1;
+				jointIndices = glm::vec3(1, 2, 3);
 				DQ = getQuaternion(MV1);
 				dqRot[2] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[2] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}
 			else if (i == 26)
 			{
+				jointTransforms[3] = MV1;
+				jointIndices = glm::vec3(2, 3, 4);
 				DQ = getQuaternion(MV1);
 				dqRot[3] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[3] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}
 			else if (i == 28)
 			{
+				jointTransforms[4] = MV1;
+				jointIndices = glm::vec3(3, 4, 4);
 				DQ = getQuaternion(MV1);
 				dqRot[4] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[4] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
@@ -198,11 +212,13 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 			else if (shaderIndx == 2)
 			{
 				SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, shapes[i]->GetShader(), i);
+				//LBSUpdate(MV1, Projection, Normal1, jointTransforms, jointIndices, shapes[i]->GetShader(), i);
 				shapes[i]->Draw(shaders, textures, false);
 			}
 			else //picking
 			{
 				SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, 0, 0);
+				//LBSUpdate(MV1, Projection, Normal1, jointTransforms, jointIndices, 0, 0);
 				shapes[i]->Draw(shaders, textures, true);
 			}
 		}

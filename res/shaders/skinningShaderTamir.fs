@@ -19,7 +19,7 @@ void main()
 	vec3 tnorm =  - normal0;
 	
 	vec3 lightVec = normalize(vec3(lightDirection));
-	vec3 reflectVec = reflect(lightVec, tnorm);
+	vec3 reflectVec = reflect(-lightVec, tnorm);
 	vec3 viewVec = normalize(eyePosition - position0);
 	float diffuse = max(dot(lightVec, tnorm), 0.0);
 	float spec = 0;

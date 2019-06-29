@@ -60,7 +60,7 @@ public:
 	virtual void Update2D(glm::mat4& mat, int time, const int shaderIndx);
 	/* Reut's addings:*/
 	virtual void SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::vec4 dqRot[5], glm::vec4 dqTrans[5], const int shaderIndx, int index) = 0;
-	virtual void LBSUpdate(const glm::mat4 &Projection, const glm::mat4& pre_mat, const glm::mat4 &curr_mat, const glm::mat4& post_mat, const int shaderIndx) = 0;
+	virtual void LBSUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], glm::ivec3 jointIndices, const int shaderIndx, int index) = 0;
 	
 	virtual void WhenTranslate(){};
 	virtual void WhenRotate(){};

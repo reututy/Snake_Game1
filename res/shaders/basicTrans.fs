@@ -1,4 +1,4 @@
-#version 130
+#version 330
 
 varying vec2 pass_texCoords;
 varying vec3 pass_normal;
