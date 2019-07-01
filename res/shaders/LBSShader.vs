@@ -20,7 +20,7 @@ uniform ivec3 jointIndices;
 
 //uniform vec4 dqRot[5];
 //uniform vec4 dqTrans[5];
-//uniform int index;
+uniform int index;
 
 void main()
 {
@@ -30,8 +30,23 @@ void main()
 	for (int i = 0; i < 3; i++) 
 	{
 		matrix = jointTransforms[int(jointIndices[i])];		
-		vec4 posePosition = normalize(matrix * normalize(vec4(position, 1.0)));
-		totalLocalPos += normalize(posePosition * normalize(weights[i]));
+		vec4 posePosition = matrix * vec4(position, 1.0);
+		totalLocalPos += posePosition * weights[i];
 	}
-	gl_Position = normalize(MV * Projection * totalLocalPos);
+	//gl_Position = MV * Projection * totalLocalPos;
+	texCoord0 = texCoords;
+	color0 = color;
+	
+	if(index >= 20 && index <= 28)
+	{	
+		normal0 = (Normal * vec4(normal, 0.0)).xyz;	
+		//gl_Position = Projection * M * vec4(position, 1.0); //you must have gl_Position
+		gl_Position = MV * Projection * totalLocalPos;
+	}
+	else
+	{
+		normal0 = (Normal * vec4(normal, 0.0)).xyz;
+		gl_Position = Projection * MV * vec4(position, 1.0); //you must have gl_Position
+
+	}
 }

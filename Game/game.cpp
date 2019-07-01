@@ -338,8 +338,8 @@ void Game::Init()
 
 
 	//Set snake shader - works with LBSUpdate:
-	SetShapeShader(num_of_head, BASIC_SHADER);
-	SetShapeShader(num_of_body1, BASIC_SHADER);
+	SetShapeShader(num_of_head, LBS_SHADER);
+	SetShapeShader(num_of_body1, LBS_SHADER);
 	SetShapeShader(num_of_body2, BASIC_SHADER);
 	SetShapeShader(num_of_body3, BASIC_SHADER);
 	SetShapeShader(num_of_tail, BASIC_SHADER);
@@ -400,9 +400,8 @@ void Game::Init()
 void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, const int shaderIndx)
 {
 	int prev_shape = pickedShape;
-	if (!once) {
+	if (!once)
 		MoveControlCubes();
-	}
 	Shader *s = shaders[shaderIndx];
 	int r = ((pickedShape + 1) & 0x000000FF) >> 0;
 	int g = ((pickedShape + 1) & 0x0000FF00) >> 8;
@@ -508,9 +507,8 @@ void Game::MoveControlCubes()
 void Game::SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::vec4 dqRot[5], glm::vec4 dqTrans[5], const int shaderIndx, int index)
 {
 	int prev_shape = pickedShape;
-	if (!once) {
+	if (!once)
 		MoveControlCubes();
-	}
 	Shader *s = shaders[shaderIndx];
 	int r = ((pickedShape + 1) & 0x000000FF) >> 0;
 	int g = ((pickedShape + 1) & 0x0000FF00) >> 8;
@@ -519,22 +517,23 @@ void Game::SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, cons
 	s->SetUniformMat4f("MV", MV, shaderIndx);
 	s->SetUniformMat4f("Projection", Projection, shaderIndx);
 	s->SetUniformMat4f("Normal", Normal, shaderIndx);
-	s->SetUniform4vArr5("dqRot", dqRot);
-	s->SetUniform4vArr5("dqTrans", dqTrans);
+	s->SetUniform4vArr5("dqRot", dqRot, shaderIndx);
+	s->SetUniform4vArr5("dqTrans", dqTrans, shaderIndx);
 	s->SetUniform1i("index", index);
 	s->SetUniform4f("lightDirection", 0.0f, 0.0f, -1.0f, 0.0f);
+	/*
 	if (shaderIndx == 0)
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
 	else
 		s->SetUniform4f("lightColor", 0.1f, 0.8f, 0.7f, 1.0f);
-	/*
+	*/
 	if (shaderIndx == 0) //picking shader
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
-	else if (shaderIndx == 2) //skinning shader
-		s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f);
+	//else if (shaderIndx == 2) //skinning shader
+		//s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f);
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
-		*/
+		
 	s->Unbind();
 }
 

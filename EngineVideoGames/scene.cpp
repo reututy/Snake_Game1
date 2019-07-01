@@ -211,14 +211,14 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 			}
 			else if (shaderIndx == 2)
 			{
-				//SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, shapes[i]->GetShader(), i);
-				LBSUpdate(MV1, Projection, Normal1, jointTransforms, jointIndices, shapes[i]->GetShader(), i);
+				SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, shapes[i]->GetShader(), i);
+				//LBSUpdate(MV1, Projection, Normal1, jointTransforms, jointIndices, shapes[i]->GetShader(), i);
 				shapes[i]->Draw(shaders, textures, false);
 			}
 			else //picking
 			{
-				//SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, 0, 0);
-				LBSUpdate(MV1, Projection, Normal1, jointTransforms, jointIndices, 0, 0);
+				SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, 0, 0);
+				//LBSUpdate(MV1, Projection, Normal1, jointTransforms, jointIndices, 0, 0);
 				shapes[i]->Draw(shaders, textures, true);
 			}
 		}

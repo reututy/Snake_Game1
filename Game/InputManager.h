@@ -6,7 +6,8 @@
 #define NO_OF_MODES 8
 int curr_mode = Scene::modes::QUADS;
 char modes_names[8][20] = { "POINTS", "LINES", "LINE_LOOP", "LINE_STRIP", "TRIANGLES", "TRIANGLE_STRIP", "TRIANGLE_FAN", "QUADS" };
-bool camera_mode = false;
+int camera_mode = 0;
+enum camera_mode {free_view, up_view, player_view};
 
 void mouse_callback(GLFWwindow* window,int button, int action, int mods)
 {	
@@ -41,31 +42,66 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				
 			break;
 			case GLFW_KEY_RIGHT:
+				if (camera_mode == camera_mode::free_view)
+					scn->globalSystemRot(-5, glm::vec3(0, 1, 0), -1);
+				else if (camera_mode == camera_mode::up_view)
+				{ }
+				else if (camera_mode == camera_mode::player_view)
+				{ }
+
+				/*
 				if (!camera_mode)
 					//scn->shapeTransformation(scn->zGlobalRotate,-20.1f);
 					scn->shapeTransformation(scn->zGlobalRotate, 5.1f);
-				else
+				else 
 					scn->globalSystemRot(-5, glm::vec3(0, 1, 0), -1);
 					//scn->cam
+					*/
 				break;
 			case GLFW_KEY_LEFT:
+				if (camera_mode == camera_mode::free_view)
+					scn->globalSystemRot(5, glm::vec3(0, 1, 0), -1);
+				else if (camera_mode == camera_mode::up_view)
+				{}
+				else if (camera_mode == camera_mode::player_view)
+				{}
+				/*
 				if (!camera_mode)
 					//scn->shapeTransformation(scn->zGlobalRotate,20.1f);
 					scn->shapeTransformation(scn->zGlobalRotate, -5.0f);
 				else
 					scn->globalSystemRot(5, glm::vec3(0, 1, 0), -1);
+					*/
 				break;
 			case GLFW_KEY_UP:
+				if (camera_mode == camera_mode::free_view)
+					scn->globalSystemRot(-5, glm::vec3(0, 0, 1), 1);
+				else if (camera_mode == camera_mode::up_view)
+				{}
+				else if (camera_mode == camera_mode::player_view)
+				{}
+				/*
 				if (!camera_mode)
 					scn->shapeTransformation(scn->xGlobalRotate, 5.f);
 				else
 					scn->globalSystemRot(-5, glm::vec3(0, 0, 1), 1);
+					*/
 				break;
 			case GLFW_KEY_DOWN:
+				if (camera_mode == camera_mode::free_view)
+					scn->globalSystemRot(5, glm::vec3(0, 0, 1), 1);
+				else if (camera_mode == camera_mode::up_view)
+				{
+				}
+				else if (camera_mode == camera_mode::player_view)
+				{
+				}
+				/*
 				if (!camera_mode)
 					scn->shapeTransformation(scn->xGlobalRotate, -5.f);
 				else
 					scn->globalSystemRot(5, glm::vec3(0, 0, 1), 1);
+					*/
 				break;
 			case GLFW_KEY_M:
 				curr_mode = (curr_mode + 1) % NO_OF_MODES;
@@ -77,10 +113,18 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				scn->ChangeShapeMode(scn->GetNumOfTail(), curr_mode);
 				break;
 			case GLFW_KEY_C:
+				if (camera_mode == camera_mode::free_view)
+					camera_mode = camera_mode::up_view;
+				else if (camera_mode == camera_mode::up_view)
+					camera_mode = camera_mode::player_view;
+				else if (camera_mode == camera_mode::player_view)
+					camera_mode = camera_mode::free_view;
+				/*
 				if (!camera_mode)
 					camera_mode = true;
 				else
 					camera_mode = false;
+					*/
 				break;
 			case GLFW_KEY_D:
 				scn->SetDirection();

@@ -22,7 +22,7 @@ public:
 	void SetUniformMat4f(const std::string& name, const glm::mat4& matrix, int shaderIndx);
 	void SetUniformMat4fv(const std::string& name,const glm::mat4 *matrix,const int length);
 	void SetUniform4fv(const std::string& name, float value[20]);
-	void SetUniform4vArr5(const std::string& name, glm::vec4 value[5]);
+	void SetUniform4vArr5(const std::string& name, glm::vec4 value[5], int shaderIndx);
 
 	 ~Shader();
 protected:

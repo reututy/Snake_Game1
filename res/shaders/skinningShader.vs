@@ -92,20 +92,21 @@ void main()
 					
 					t0, t1, t2, 1.0);
 
-	
 	texCoord0 = texCoords;
+	//color0 = vec3(0.0, 0.0, 0.0);
 	color0 = color;
-	position0 = vec3(M * vec4(position, 1.0));
-	normal0 = (M * vec4(normal, 0.0)).xyz;
-	gl_Position = Projection * M * vec4(position, 1.0); //you must have gl_Position
+	//color0 = weights;
+	//position0 = vec3(M * vec4(position, 1.0));
 	
+	if(index >= 20 && index <= 28)
+	{	
+		normal0 = (M * vec4(normal, 0.0)).xyz;	
+		gl_Position = Projection * M * vec4(position, 1.0); //you must have gl_Position
+	}
+	else
+	{
+		normal0 = (Normal * vec4(normal, 0.0)).xyz;
+		gl_Position = Projection * MV * vec4(position, 1.0); //you must have gl_Position
 
-	//else
-	/*
-		{
-			position0 = vec3(Normal * vec4(position, 1.0));
-			normal0 = (Normal * vec4(normal, 0.0)).xyz;
-			gl_Position = Projection * MV * vec4(position, 1.0); //you must have gl_Position
-		}
-		*/
+	}
 }
