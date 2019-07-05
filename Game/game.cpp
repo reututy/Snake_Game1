@@ -338,8 +338,8 @@ void Game::Init()
 
 
 	//Set snake shader - works with LBSUpdate:
-	SetShapeShader(num_of_head, LBS_SHADER);
-	SetShapeShader(num_of_body1, LBS_SHADER);
+	SetShapeShader(num_of_head, BASIC_SHADER);
+	SetShapeShader(num_of_body1, BASIC_SHADER);
 	SetShapeShader(num_of_body2, BASIC_SHADER);
 	SetShapeShader(num_of_body3, BASIC_SHADER);
 	SetShapeShader(num_of_tail, BASIC_SHADER);
@@ -366,7 +366,8 @@ void Game::Init()
 	SetShapeTex(num_of_left_cube, 3);
 	SetShapeTex(num_of_up_cube, 4);
 	SetShapeTex(num_of_down_cube, 5);
-	
+
+	Activate();
 
 	pickedShape = -1;
 
@@ -444,10 +445,15 @@ void Game::Motion()
 {
 	if (isActive)
 	{
+		//player moves update:
 		int p = pickedShape;
-		pickedShape = 2;
-		shapeTransformation(zLocalRotate, 0.75);
+		pickedShape = 20;
+		shapeTransformation(xLocalTranslate, -0.005);
 		pickedShape = p;
+
+		//cameras moves update:
+		for (int i = 0; i < cameras.size(); i++)
+			cameras[i]->Move();
 	}
 }
 

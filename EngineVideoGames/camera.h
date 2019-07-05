@@ -20,37 +20,17 @@ public:
 		this->vp = view;
 	}
 
+	void Move()
+	{
+
+	}
+
 	void setProjection(float zNear, float zFar, Viewport &view)
 	{
 		this->vp = view;
 		this->projection = glm::perspective(fov,view.GetWHRelation(), zNear, zFar)* glm::lookAt(pos, pos + forward, up);
 		this->near = zNear;
 		this->far = zFar;		
-	}
-
-	inline glm::mat4 GetViewProjection() const
-	{
-		return projection;
-	}
-
-	int GetWidth()
-	{
-		return vp.GetWidth();
-	}
-
-	int GetHeight()
-	{
-		return vp.GetHeight();
-	}
-
-	int GetLeft()
-	{
-		return vp.GetLeft();
-	}
-
-	int GetBottom()
-	{
-		return vp.GetBottom();
 	}
 
 	void MoveForward(float amt)
@@ -105,6 +85,31 @@ public:
 	void SetShape(Shape *num_of_shape)
 	{
 		player = num_of_shape;
+	}
+
+	inline glm::mat4 GetViewProjection() const
+	{
+		return projection;
+	}
+
+	int GetWidth()
+	{
+		return vp.GetWidth();
+	}
+
+	int GetHeight()
+	{
+		return vp.GetHeight();
+	}
+
+	int GetLeft()
+	{
+		return vp.GetLeft();
+	}
+
+	int GetBottom()
+	{
+		return vp.GetBottom();
 	}
 
 	inline float GetAngle()
