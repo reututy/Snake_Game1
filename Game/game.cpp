@@ -273,7 +273,7 @@ void Game::Init()
 	addRewards();
 
 	//Create the snake:
-	snake = new Player((Scene*) this, GetSizeOfShapes(), 3);
+	snake = new Player((Scene*) this, GetSizeOfShapes() + 1, 3);
 
 	Activate();
 
@@ -356,6 +356,8 @@ void Game::Motion()
 		//player's moves update:
 		if (snake)
 		{
+			//snake->Move(snake->right);
+			
 			int i = 0;
 			for (i = snake->GetHeadIndex(); i < snake->GetNumOfLinks() + snake->GetHeadIndex() + 2; i++)
 			{
@@ -363,6 +365,7 @@ void Game::Motion()
 				shapeTransformation(xLocalTranslate, SPEED);
 			}
 			pickedShape = -1;
+			
 		}
 
 		//camera's moves update:
@@ -521,4 +524,9 @@ int Game::GetNumOfRightBox()
 int Game::GetNumOfLeftBox()
 {
 	return num_of_left_cube;
+}
+
+Player* Game::GetPlayer()
+{
+	return snake;
 }

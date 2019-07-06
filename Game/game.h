@@ -56,5 +56,7 @@ public:
 	int GetNumOfDownBox();
 	int GetNumOfRightBox();
 	int GetNumOfLeftBox();
+
+	Player* GetPlayer();
 };
 

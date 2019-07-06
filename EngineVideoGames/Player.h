@@ -9,12 +9,15 @@ class Player
 		int head_index;
 		int num_of_links;
 		bool is_alive;
-		//velocity?
+		glm::vec3 velocity;
 
 	public:
+		enum Direction { forwords, backwords, up, down, right, left };
 		Player(Scene* Scn, int Head_index, int Num_of_links);
 		~Player();
 		void CreatePlayer();
+
+		void Move(int direction);
 
 		void MoveRight();
 		void MoveLeft();

@@ -460,6 +460,17 @@ void Scene::shapeTransformation(int type,float amt)
 					shapes[i]->translateInSystem(*this,vec3(0,0,amt),0,false);
 				}
 		break;
+		//?
+		case vectorLocalTranslate:
+			if (pickedShape == -1)
+				myTranslate(vec3(amt, 0, 0), 1);
+			else
+			{
+				int i = pickedShape;
+				for (; chainParents[i] > -1; i = chainParents[i]);
+				shapes[i]->myTranslate(vec3(amt, 0, 0), 1);
+			}
+			break;
 		default:
 			break;
 		}
