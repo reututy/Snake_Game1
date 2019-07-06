@@ -85,6 +85,7 @@
     <ClCompile Include="MeshConstructor.cpp" />
     <ClCompile Include="MovableGLM.cpp" />
     <ClCompile Include="obj_loader.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shape.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="MeshConstructor.h" />
     <ClInclude Include="MovableGLM.h" />
     <ClInclude Include="obj_loader.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="shader.h" />

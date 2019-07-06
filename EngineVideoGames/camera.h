@@ -20,12 +20,19 @@ public:
 		this->vp = view;
 	}
 
-	void Move()
+	void SetPlayer(Shape* player)
 	{
-
+		this->player = player;
 	}
 
-	void setProjection(float zNear, float zFar, Viewport &view)
+	void Move()
+	{
+		float horizontalDist = CalcHorizontalDist();
+		float verticlDist = CalcVerticalDist();
+		CalcCameraPosition(horizontalDist, verticlDist);
+	}
+
+	void SetProjection(float zNear, float zFar, Viewport &view)
 	{
 		this->vp = view;
 		this->projection = glm::perspective(fov,view.GetWHRelation(), zNear, zFar)* glm::lookAt(pos, pos + forward, up);
@@ -61,21 +68,21 @@ public:
 		up = glm::vec3(glm::normalize(rotation * glm::vec4(up, 0.0)));
 	}
 
-	float calcHorizontalDist()
+	float CalcHorizontalDist()
 	{
 		return distance_from_player * cos(pitch);
 	}
 
-	float calcVerticalDist()
+	float CalcVerticalDist()
 	{
 		return distance_from_player * sin(pitch);
 	}
 
-	void calcCameraPosition(float horizDist, float verticDist)
+	void CalcCameraPosition(float horizDist, float verticDist)
 	{
 		float theta = angle_around_player;
-		float offsetX = horizDist * sin(theta);
-		float offsetZ = horizDist * cos(theta);
+		float offsetX = (float) horizDist * sin(theta);
+		float offsetZ = (float) horizDist * cos(theta);
 		pos.x = player->GetMesh()->GetModel()->positions[0].x - offsetX;
 		pos.z = player->GetMesh()->GetModel()->positions[0].z - offsetZ;
 		pos.y = player->GetMesh()->GetModel()->positions[0].y + verticDist;
@@ -121,14 +128,17 @@ public:
 	{
 		return near;
 	}
+
 	inline float GetFar()
 	{
 		return far;
 	}
+
 	inline float GetWHRelation()
 	{
 		return vp.GetWHRelation();
 	}
+
 protected:
 private:
 	glm::mat4 projection;
@@ -142,6 +152,7 @@ private:
 	/* Reut's adding: */
 	Shape* player;
 	float pitch = 20; //angle from snake to camera
+	float yaw = 0;
 	float distance_from_player = 50;
 	float angle_around_player = 0;
 

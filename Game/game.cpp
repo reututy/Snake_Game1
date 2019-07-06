@@ -3,6 +3,7 @@
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 800
+#define SPEED -0.001
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 
@@ -82,7 +83,7 @@ void Game::addShape(int type, int parent, unsigned int mode, Bezier1D* curve)
 	}
 }
 
-void Game::Init()
+void Game::addBasicShapes()
 {
 	addShape(Axis, -1, LINES, nullptr); //0 Add Axis
 	SetNumOfShape();
@@ -110,7 +111,6 @@ void Game::Init()
 	//create 3d of head to copy:
 	addShape(Scene::shapes::BezierSurface, -1, QUADS, head); //7 Add head to copy
 	SetNumOfShape();
-	num_of_head = 7;
 	for (int i = MIN_CTRL - 2; i < MAX_CTRL; i++)
 	{
 		if (i != 2 && i != 10)
@@ -124,7 +124,6 @@ void Game::Init()
 
 	addShape(Scene::shapes::BezierSurface, -1, QUADS, tail); // 13 Add tail to copy
 	SetNumOfShape();
-	num_of_tail = 13;
 	for (int i = 8; i < num_of_shapes + 1; i++)
 	{
 		if (i != 13)
@@ -138,7 +137,6 @@ void Game::Init()
 
 	addShape(Scene::shapes::BezierSurface, -1, QUADS, body1); // 19 Add cylinder to copy 
 	SetNumOfShape();
-	num_of_body1 = 19;
 	for (int i = 14; i < num_of_shapes + 1; i++)
 	{
 		if (i != 19)
@@ -148,216 +146,80 @@ void Game::Init()
 	HideShape(7); //hides head to copy
 	HideShape(13); //hides tail to copy
 	HideShape(19); //hides cylinder to copy
+}
 
-
-	/* Create the snake: */
-	addShapeCopy(7, -1, QUADS); //20 Add copy of head (7)
-	SetNumOfShape();
-	num_of_head = 20;
-	pickedShape = 20;
-	shapeTransformation(xGlobalRotate, 170.0f);	//in order to put the eyes in place
-
-	addShapeCopy(0, -1, LINES); //21 Add a copy of Axis for the end of the head = for body1
-	SetNumOfShape();
-	num_of_axis_body1 = 21;
-	pickedShape = 21;
-	shapeTransformation(yScale, 2);
-	shapeTransformation(xScale, 2);
-	shapeTransformation(zScale, 2);
-	shapeTransformation(xGlobalTranslate, 2.1 / 2);
-
-	addShapeCopy(19, -1, QUADS); //22 Add copy of cylinder (19) for body1
-	SetNumOfShape();
-	num_of_body1 = 22;
-	pickedShape = 22;
-	shapeTransformation(xGlobalTranslate, 1.8);
-	//shapeTransformation(xLocalTranslate, 1.8);
-
-	addShapeCopy(0, -1, LINES); //23 Add a copy of Axis for the end of the body1 = for body2
-	SetNumOfShape();
-	num_of_axis_body2 = 23;
-	pickedShape = 23;
-	shapeTransformation(yScale, 2);
-	shapeTransformation(xScale, 2);
-	shapeTransformation(zScale, 2);
-	shapeTransformation(xGlobalTranslate, 4.3 / 4);
-
-	addShapeCopy(19, -1, QUADS); //24 Add copy of cylinder (19) for body2
-	SetNumOfShape();
-	num_of_body2 = 24;
-	pickedShape = 24;
-	//shapeTransformation(xGlobalTranslate, 4.4 / 2);
-	shapeTransformation(xGlobalTranslate, 1.8);
-	//shapeTransformation(xLocalTranslate, 1.8);
-
-	addShapeCopy(0, -1, LINES); //25 Add a copy of Axis for the end of the body2 = for body3
-	SetNumOfShape();
-	num_of_axis_body3 = 25;
-	pickedShape = 25;
-	shapeTransformation(yScale, 2);
-	shapeTransformation(xScale, 2);
-	shapeTransformation(zScale, 2);
-	shapeTransformation(xGlobalTranslate, 6.5 / 6);
-
-	addShapeCopy(19, -1, QUADS); //26 Add copy of cylinder (19) for body3
-	SetNumOfShape();
-	num_of_body3 = 26;
-	pickedShape = 26;
-	//shapeTransformation(xGlobalTranslate, 6.6 / 3);
-	shapeTransformation(xGlobalTranslate, 1.8);
-	//shapeTransformation(xLocalTranslate, 1.8);
-
-	addShapeCopy(0, -1, LINES); //27 Add a copy of Axis for the end of the body3 = for tail
-	SetNumOfShape();
-	num_of_axis_tail = 27;
-	pickedShape = 27;
-	shapeTransformation(yScale, 2);
-	shapeTransformation(xScale, 2);
-	shapeTransformation(zScale, 2);
-	shapeTransformation(xGlobalTranslate, 8.7 / 8);
-
-	addShapeCopy(13, -1, QUADS); //28 Add copy of tail (13)
-	SetNumOfShape();
-	num_of_tail = 28;
-	pickedShape = 28;
-	//shapeTransformation(xGlobalTranslate, 8.8 / 4);
-	shapeTransformation(xGlobalTranslate, 1.8);
-	//shapeTransformation(xLocalTranslate, 1.8);
-	
-
-	//Set the parents to connect the snake:
-	setParent(num_of_head, -1);
-	setParent(num_of_axis_body1, num_of_head);
-	setParent(num_of_body1, num_of_head);
-	setParent(num_of_axis_body2, num_of_body1);
-	setParent(num_of_body2, num_of_body1);
-	setParent(num_of_axis_body3, num_of_body2);
-	setParent(num_of_body3, num_of_body2);
-	setParent(num_of_axis_tail, num_of_body3);
-	setParent(num_of_tail, num_of_body3);
-
-	//cameras[0]->SetShape(shapes[num_of_head]);
-
-	//To hide the connected axis:
-	HideShape(num_of_axis_body1);
-	HideShape(num_of_axis_body2);
-	HideShape(num_of_axis_body3);
-	HideShape(num_of_axis_tail);
-
+void Game::addBoundryBoxes()
+{
 	//Added boundry Boxes of the game: 
-	addShapeCopy(2, -1, TRIANGLES); //29 Add copy cube = front
+	addShapeCopy(2, -1, TRIANGLES); //20 Add copy cube = front
 	SetNumOfShape();
-	pickedShape = 29;
+	pickedShape = 20;
 	shapeTransformation(xScale, 0.1);
 	shapeTransformation(yScale, WATER_PLANE_SCALE);
 	shapeTransformation(zScale, WATER_PLANE_SCALE);
 	shapeTransformation(yGlobalRotate, 180);
 	shapeTransformation(xGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
-	num_of_front_cube = 29;
+	num_of_front_cube = 20;
 
-	addShapeCopy(2, -1, TRIANGLES); //30 Add copy cube = back
+	addShapeCopy(2, -1, TRIANGLES); //21 Add copy cube = back
 	SetNumOfShape();
-	pickedShape = 30;
+	pickedShape = 21;
 	shapeTransformation(xScale, 0.1);
 	shapeTransformation(yScale, WATER_PLANE_SCALE);
 	shapeTransformation(zScale, WATER_PLANE_SCALE);
 	shapeTransformation(xGlobalTranslate, WATER_PLANE_SCALE / 0.1);
 	shapeTransformation(xGlobalRotate, 180);
-	num_of_back_cube = 30;
+	num_of_back_cube = 21;
 
-	addShapeCopy(2, -1, TRIANGLES); //31 Add copy cube = up
+	addShapeCopy(2, -1, TRIANGLES); //22 Add copy cube = up
 	SetNumOfShape();
-	pickedShape = 31;
+	pickedShape = 22;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
 	shapeTransformation(yScale, 0.1);
 	shapeTransformation(zScale, WATER_PLANE_SCALE);
 	shapeTransformation(yGlobalTranslate, WATER_PLANE_SCALE / 0.1);
-	num_of_up_cube = 31;
+	num_of_up_cube = 22;
 
-	addShapeCopy(2, -1, TRIANGLES); //32 Add copy cube = down
+	addShapeCopy(2, -1, TRIANGLES); //23 Add copy cube = down
 	SetNumOfShape();
-	pickedShape = 32;
+	pickedShape = 23;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
 	shapeTransformation(yScale, 0.1);
 	shapeTransformation(zScale, WATER_PLANE_SCALE);
 	shapeTransformation(yGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
-	num_of_down_cube = 32;
+	num_of_down_cube = 23;
 
-	addShapeCopy(2, -1, TRIANGLES); //33 Add copy cube = right
+	addShapeCopy(2, -1, TRIANGLES); //24 Add copy cube = right
 	SetNumOfShape();
-	pickedShape = 33;
+	pickedShape = 24;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
 	shapeTransformation(yScale, WATER_PLANE_SCALE);
 	shapeTransformation(zScale, 0.1);
 	shapeTransformation(zGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
 	shapeTransformation(xGlobalRotate, 180);
 	shapeTransformation(zGlobalRotate, 180);
-	num_of_right_cube = 33;
+	num_of_right_cube = 24;
 
-	addShapeCopy(2, -1, TRIANGLES); //34 Add copy cube = right
+	addShapeCopy(2, -1, TRIANGLES); //25 Add copy cube = right
 	SetNumOfShape();
-	pickedShape = 34;
+	pickedShape = 25;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
 	shapeTransformation(yScale, WATER_PLANE_SCALE);
 	shapeTransformation(zScale, 0.1);
 	shapeTransformation(zGlobalTranslate, WATER_PLANE_SCALE / 0.1);
 	shapeTransformation(xGlobalRotate, 180);
 	shapeTransformation(zGlobalRotate, 180);
-	num_of_left_cube = 34;
+	num_of_left_cube = 25;
 
 	//Set the parents to connect the Boxes:
-	//setParent(num_of_front_cube, -1);
-	//setParent(num_of_back_cube, num_of_front_cube);
-	//setParent(num_of_up_cube, num_of_front_cube);
-	//setParent(num_of_down_cube, num_of_front_cube);
-	//setParent(num_of_right_cube, num_of_front_cube);
-	//setParent(num_of_left_cube, num_of_front_cube);
-
-
-	//Obstacles:
-	addShapeCopy(2, -1, TRIANGLES); //35 Add copy cube = Obstacle 1
-	SetNumOfShape();
-	pickedShape = 35;
-	SetShapeTex(pickedShape, 6);
-	shapeTransformation(xScale, 50);
-	shapeTransformation(yScale, 50);
-	shapeTransformation(zScale, 50);
-	shapeTransformation(xGlobalTranslate, -10 / 2);
-	//shapeTransformation(yGlobalTranslate, -10 / 2);
-	shapeTransformation(zGlobalTranslate, 5);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-
-
-	//Rewards - 10:
-	addShape(Octahedron, -1, TRIANGLES, nullptr); //3 Add an Octahedron = Reward 1
-	SetNumOfShape();
-	pickedShape = 36;
-	SetShapeTex(pickedShape, 7);
-	shapeTransformation(xGlobalTranslate, -5);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-
-
-	//Set snake shader - works with LBSUpdate:
-	SetShapeShader(num_of_head, BASIC_SHADER);
-	SetShapeShader(num_of_body1, BASIC_SHADER);
-	SetShapeShader(num_of_body2, BASIC_SHADER);
-	SetShapeShader(num_of_body3, BASIC_SHADER);
-	SetShapeShader(num_of_tail, BASIC_SHADER);
-
-	//Set snake texture:
-	SetShapeTex(num_of_head, 1);
-	SetShapeTex(num_of_body1, 0);
-	SetShapeTex(num_of_body2, 0);
-	SetShapeTex(num_of_body3, 0);
-	SetShapeTex(num_of_tail, 0);
-
-	//Set Boxes shader - works with basicShader:
-	SetShapeShader(num_of_front_cube, BASIC_SHADER);
-	SetShapeShader(num_of_back_cube, BASIC_SHADER);
-	SetShapeShader(num_of_up_cube, BASIC_SHADER);
-	SetShapeShader(num_of_down_cube, BASIC_SHADER);
-	SetShapeShader(num_of_right_cube, BASIC_SHADER);
-	SetShapeShader(num_of_left_cube, BASIC_SHADER);
+	/*
+	setParent(num_of_front_cube, -1);
+	setParent(num_of_back_cube, num_of_front_cube);
+	setParent(num_of_up_cube, num_of_front_cube);
+	setParent(num_of_down_cube, num_of_front_cube);
+	setParent(num_of_right_cube, num_of_front_cube);
+	setParent(num_of_left_cube, num_of_front_cube);
+	*/
 
 	//Set boxes textures:
 	SetShapeTex(num_of_front_cube, 2);
@@ -366,6 +228,52 @@ void Game::Init()
 	SetShapeTex(num_of_left_cube, 3);
 	SetShapeTex(num_of_up_cube, 4);
 	SetShapeTex(num_of_down_cube, 5);
+
+	//Set Boxes shader - works with basicShader:
+	SetShapeShader(num_of_front_cube, BASIC_SHADER);
+	SetShapeShader(num_of_back_cube, BASIC_SHADER);
+	SetShapeShader(num_of_up_cube, BASIC_SHADER);
+	SetShapeShader(num_of_down_cube, BASIC_SHADER);
+	SetShapeShader(num_of_right_cube, BASIC_SHADER);
+	SetShapeShader(num_of_left_cube, BASIC_SHADER);
+}
+
+void Game::addObstacles()
+{
+	//Obstacles:
+	addShapeCopy(2, -1, TRIANGLES); //26 Add copy cube = Obstacle 1
+	SetNumOfShape();
+	pickedShape = 26;
+	SetShapeTex(pickedShape, 6);
+	shapeTransformation(xScale, 50);
+	shapeTransformation(yScale, 50);
+	shapeTransformation(zScale, 50);
+	shapeTransformation(xGlobalTranslate, -10 / 2);
+	//shapeTransformation(yGlobalTranslate, -10 / 2);
+	shapeTransformation(zGlobalTranslate, 5);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+}
+
+void Game::addRewards()
+{
+	//Rewards - 10:
+	addShape(Octahedron, -1, TRIANGLES, nullptr); //27 Add an Octahedron = Reward 1
+	SetNumOfShape();
+	pickedShape = 27;
+	SetShapeTex(pickedShape, 7);
+	shapeTransformation(xGlobalTranslate, -5);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+}
+
+void Game::Init()
+{
+	addBasicShapes();
+	addBoundryBoxes();
+	addObstacles();
+	addRewards();
+
+	//Create the snake:
+	snake = new Player((Scene*) this, GetSizeOfShapes(), 3);
 
 	Activate();
 
@@ -445,15 +353,22 @@ void Game::Motion()
 {
 	if (isActive)
 	{
-		//player moves update:
-		int p = pickedShape;
-		pickedShape = 20;
-		shapeTransformation(xLocalTranslate, -0.005);
-		pickedShape = p;
+		//player's moves update:
+		if (snake)
+		{
+			int i = 0;
+			for (i = snake->GetHeadIndex(); i < snake->GetNumOfLinks() + snake->GetHeadIndex() + 2; i++)
+			{
+				pickedShape = i;
+				shapeTransformation(xLocalTranslate, SPEED);
+			}
+			pickedShape = -1;
+		}
 
-		//cameras moves update:
-		for (int i = 0; i < cameras.size(); i++)
-			cameras[i]->Move();
+		//camera's moves update:
+		//cameras[1]->Move();
+		//for (int i = 0; i < cameras.size(); i++)
+			//cameras[i]->Move();
 	}
 }
 
@@ -568,23 +483,6 @@ void Game::LBSUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm
 	s->Unbind();
 }
 
-int Game::GetNumOfShapes()
-{
-	return num_of_shapes;
-}
-
-void Game::SetNumOfShapes(int value)
-{
-	num_of_shapes = value;
-}
-
-void Game::SetNumOfShape()
-{
-	pickedShape = shapes.size() - 1;
-	shapes[pickedShape]->SetNumOfShape(pickedShape);
-	pickedShape = -1;
-}
-
 int Game::GetMINCTRL()
 {
 	return MIN_CTRL;
@@ -593,51 +491,6 @@ int Game::GetMINCTRL()
 int Game::GetMAXCTRL()
 {
 	return MAX_CTRL;
-}
-
-int Game::GetNumOfHead()
-{
-	return num_of_head;
-}
-
-int Game::GetNumOfBody1()
-{
-	return num_of_body1;
-}
-
-int Game::GetNumOfBody2()
-{
-	return num_of_body2;
-}
-
-int Game::GetNumOfBody3()
-{
-	return num_of_body3;
-}
-
-int Game::GetNumOfTail()
-{
-	return num_of_tail;
-}
-
-int Game::GetNumOfAxisBody1()
-{
-	return num_of_axis_body1;
-}
-
-int Game::GetNumOfAxisBody2()
-{
-	return num_of_axis_body2;
-}
-
-int Game::GetNumOfAxisBody3()
-{
-	return num_of_axis_body3;
-}
-
-int Game::GetNumOfAxisTail()
-{
-	return num_of_axis_tail;
 }
 
 int Game::GetNumOfFrontBox()

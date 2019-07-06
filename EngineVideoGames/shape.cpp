@@ -6,7 +6,6 @@
 
 Shape::Shape(const Shape& shape,unsigned int mode)
 {
-	
 	mesh = new MeshConstructor(*shape.mesh);
 	//tex = shape.tex;
 	isCopy = true;
@@ -14,17 +13,16 @@ Shape::Shape(const Shape& shape,unsigned int mode)
 	toRender = true;
 	texID = -1;
 	shaderID = 1;
-
 }
 
-Shape::Shape(const std::string& fileName, unsigned int mode){
+Shape::Shape(const std::string& fileName, unsigned int mode)
+{
 	mesh = new MeshConstructor(fileName);
 	isCopy = false;
 	this->mode = mode;
 	toRender = true;
 	texID = -1;
 	shaderID = 1;
-
 }
 
 Shape::Shape(const int SimpleShapeType,unsigned int mode)
@@ -36,7 +34,6 @@ Shape::Shape(const int SimpleShapeType,unsigned int mode)
 	toRender = true;
 	texID = -1;
 	shaderID = 1;
-
 }
 
 Shape::Shape(Bezier1D *curve, unsigned int xResolution,unsigned int yResolution,bool is2D,unsigned int mode)
@@ -47,7 +44,6 @@ Shape::Shape(Bezier1D *curve, unsigned int xResolution,unsigned int yResolution,
 	toRender = true;
 	texID = -1;
 	shaderID = 1;
-
 }
 
 Shape::~Shape(void)

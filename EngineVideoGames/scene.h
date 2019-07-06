@@ -105,11 +105,15 @@ public:
 	/* Reut's addings:*/
 	glm::dualquat getQuaternion(glm::mat4 mat);
 	int GetPickedShape();
+	Shape* GetShape(int index);
+	int GetSizeOfShapes();
 	void SetPickedShape(int value);
 	void ChangeShapeMode(int index, unsigned int new_mode);
+	int GetNumOfShapes();
+	void SetNumOfShape();
+	void SetNumOfShapes(int value);
 
 private:	
-	
 	std::vector<DrawBuffer*> buffers;
 	std::vector<int> texIndices;
 	int verticesSize;
@@ -133,5 +137,6 @@ protected:
 	static const int scaleFactor = 2;
 	bool isActive;
 	void ScaleAllDirections(int factor);
+	int num_of_shapes; //Reut's addings
 };
 

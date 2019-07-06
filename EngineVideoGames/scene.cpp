@@ -503,7 +503,7 @@ void Scene::resize(int width,int height)
 {
 	//glViewport(cameras[0]->GetLeft(),cameras[0]->GetBottom(),width,height);
 		
-	cameras[0]->setProjection(cameras[cameraIndx]->GetNear(),cameras[cameraIndx]->GetFar(),Viewport(cameras[0]->GetLeft(),cameras[0]->GetBottom(),width,height));
+	cameras[0]->SetProjection(cameras[cameraIndx]->GetNear(),cameras[cameraIndx]->GetFar(),Viewport(cameras[0]->GetLeft(),cameras[0]->GetBottom(),width,height));
 	if(buffers.size()>0)
 	{
 		buffers[0]->resize(width,height);
@@ -677,16 +677,22 @@ void Scene::ScaleAllDirections(int factor)
 glm::dualquat Scene::getQuaternion(glm::mat4 mat)
 {
 	glm::mat3x4 mat_3x4 = glm::mat3x4(glm::transpose(mat));
-	//TODO: If there's a problem, leave the order as usual:
-	//mat_3x4[0][3] = mat[3][0];
-	//mat_3x4[1][3] = mat[3][1];
-	//mat_3x4[2][3] = mat[3][2];
 	return glm::dualquat_cast(mat_3x4);
 }
 
 int Scene::GetPickedShape()
 {
 	return pickedShape;
+}
+
+Shape* Scene::GetShape(int index)
+{
+	return shapes[index];
+}
+
+int Scene::GetSizeOfShapes()
+{
+	return shapes.size() - 1;
 }
 
 void Scene::ChangeShapeMode(int index, unsigned int new_mode)
@@ -697,4 +703,21 @@ void Scene::ChangeShapeMode(int index, unsigned int new_mode)
 void Scene::SetPickedShape(int value)
 {
 	pickedShape = value;
+}
+
+int Scene::GetNumOfShapes()
+{
+	return num_of_shapes;
+}
+
+void Scene::SetNumOfShapes(int value)
+{
+	num_of_shapes = value;
+}
+
+void Scene::SetNumOfShape()
+{
+	pickedShape = shapes.size() - 1;
+	shapes[pickedShape]->SetNumOfShape(pickedShape);
+	pickedShape = -1;
 }

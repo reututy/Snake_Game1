@@ -1,23 +1,15 @@
 #pragma once
 #include "scene.h"
 #include "bezier1D.h"
+#include "Player.h"
 
 class Game : public Scene
 {
+	Player* snake;
+
 	Bezier1D *head;
 	Bezier1D *body1;
 	Bezier1D *tail;
-
-	int num_of_head;
-	int num_of_body1;
-	int num_of_body2;
-	int num_of_body3;
-	int num_of_tail;
-
-	int num_of_axis_body1;
-	int num_of_axis_body2;
-	int num_of_axis_body3;
-	int num_of_axis_tail;
 
 	int num_of_front_cube;
 	int num_of_back_cube;
@@ -25,8 +17,7 @@ class Game : public Scene
 	int num_of_down_cube;
 	int num_of_right_cube;
 	int num_of_left_cube;
-
-	int num_of_shapes;
+	
 	int MIN_CTRL;
 	int MAX_CTRL;
 
@@ -37,6 +28,12 @@ public:
 	~Game(void);
 	void Init();
 	void addShape(int type, int parent, unsigned int mode, Bezier1D* curve);
+	/* Reut's addings:*/
+	void addBasicShapes(); 
+	void addBoundryBoxes(); 
+	void addObstacles(); 
+	void addRewards();
+
 	//	void Update( glm::mat4 MVP ,glm::mat4 *jointTransforms,const int length,const int  shaderIndx);
 	void Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, const int shaderIndx);
 	void WhenRotate();
@@ -49,22 +46,9 @@ public:
 	
 	int CreateCurveControlPoints(int counter, Bezier1D *curve);
 	void MoveControlCubes();
-	int GetNumOfShapes();
-	void SetNumOfShape();
-	void SetNumOfShapes(int value);
+	
 	int GetMINCTRL();
 	int GetMAXCTRL();
-
-	int GetNumOfHead();
-	int GetNumOfBody1();
-	int GetNumOfBody2();
-	int GetNumOfBody3();
-	int GetNumOfTail();
-
-	int GetNumOfAxisBody1();
-	int GetNumOfAxisBody2();
-	int GetNumOfAxisBody3();
-	int GetNumOfAxisTail();
 
 	int GetNumOfFrontBox();
 	int GetNumOfBackBox();

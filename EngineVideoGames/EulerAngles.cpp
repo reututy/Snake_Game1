@@ -156,7 +156,7 @@ void EulerAngles::buildAngMatrix(int XorZ, float c, float s)
 	}
 }
 
-void EulerAngles::alignedRot(int XorZ,float angle,int mode )
+void EulerAngles::alignedRot(int XorZ,float angle,int mode)
 {
 	float ang = angle;
 	switch (XorZ)
@@ -182,9 +182,8 @@ void EulerAngles::alignedRot(int XorZ,float angle,int mode )
 	case zAxis12:
 		if(mode == 0)
 		{
-			
-				phi =  glm::rotate(phi,ang,glm::vec3(0,0,1));
-				psi =  glm::rotate(psi,-ang,glm::vec3(0,0,1));
+			phi =  glm::rotate(phi,ang,glm::vec3(0,0,1));
+			psi =  glm::rotate(psi,-ang,glm::vec3(0,0,1));
 		}
 		else
 		{

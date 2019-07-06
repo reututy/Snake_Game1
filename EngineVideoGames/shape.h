@@ -10,7 +10,7 @@ class Shape : public MovableGLM
 {
 private:
 
-	MeshConstructor *mesh;
+	MeshConstructor *mesh = nullptr;
 	int texID;
 	int shaderID;
 	bool isCopy;
@@ -25,7 +25,7 @@ public:
 	Shape(Bezier1D *curve, unsigned int xResolution,unsigned int yResolution,bool is2D,unsigned int mode);
 	virtual ~Shape(void);
 	
-	void Draw( const std::vector<Shader*> shaders, const std::vector<Texture*> textures,bool isPicking);
+	void Draw(const std::vector<Shader*> shaders, const std::vector<Texture*> textures,bool isPicking);
 	inline void Hide() {toRender = false;}
 	inline void Unhide() {toRender = true;}
 	inline bool Is2Render() {return toRender;}
