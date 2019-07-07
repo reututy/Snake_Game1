@@ -301,7 +301,7 @@ void Scene::shapeTransformation(int type,float amt)
 				{
 					int i = pickedShape;
 					for (; chainParents[i] > -1; i = chainParents[i]);
-					shapes[i]->myTranslate(vec3(0,amt,0),1);
+						shapes[i]->myTranslate(vec3(0, amt, 0), 1);
 				}
 			break;
 		case zLocalTranslate:
@@ -354,7 +354,19 @@ void Scene::shapeTransformation(int type,float amt)
 			if(pickedShape ==-1)
 				myRotate(amt,vec3(0,1,0),-1);
 			else
-				shapes[pickedShape]->myRotate(amt,vec3(0,1,0),-1);
+			{
+				/*
+				float t = 1.0;	//Added
+				float slow = 0.8; //Added
+				shapes[29]->myRotate(0.01*-amt, vec3(0, -1, 0), -1);
+				shapes[28]->myRotate(0.05*amt, vec3(0, 1, 0), -1);
+				shapes[29]->myRotate(0.01*amt, vec3(0, -1, 0), -1);
+				*/
+				shapes[pickedShape]->myRotate(amt, vec3(0, 1, 0), -1);
+				
+				//t = abs(t - slow);
+				//slow = slow / 10.0;
+			}
 			break;
 		case zLocalRotate:
 			if(pickedShape ==-1)
@@ -424,53 +436,6 @@ void Scene::shapeTransformation(int type,float amt)
 			else
 				shapes[pickedShape]->myScale(vec3(1,1,amt));
 		break;
-		case xCameraTranslate: //camera plane translate
-			if(pickedShape == -1)
-				myTranslate(vec3(amt/5.0,0,0),0);
-			else
-			{
-				//newAxis = findAxis(vec3(1,0,0));					
-					int i = pickedShape;
-				for (; chainParents[i] > 0; i = chainParents[i]);
-				
-				shapes[i]->translateInSystem(*this,vec3(amt,0,0),0,false);
-			}
-			break;
-		case yCameraTranslate:
-			if(pickedShape ==-1)
-				myTranslate(vec3(0,amt/5.0,0),0);
-			else
-				{
-					//newAxis = findAxis(vec3(0,1,0));
-						int i = pickedShape;
-					for (; chainParents[i] > 0; i = chainParents[i]);
-						
-					shapes[i]->translateInSystem(*this,vec3(0,amt,0),0,false);
-				}
-		break;
-		case zCameraTranslate:
-			if(pickedShape ==-1)
-				myTranslate(vec3(0,0,amt/5.0),0);
-			else
-				{
-				//	newAxis = findAxis(vec3(0,0,1));
-						int i = pickedShape;
-					for (; chainParents[i] > 0; i = chainParents[i]);
-			
-					shapes[i]->translateInSystem(*this,vec3(0,0,amt),0,false);
-				}
-		break;
-		//?
-		case vectorLocalTranslate:
-			if (pickedShape == -1)
-				myTranslate(vec3(amt, 0, 0), 1);
-			else
-			{
-				int i = pickedShape;
-				for (; chainParents[i] > -1; i = chainParents[i]);
-				shapes[i]->myTranslate(vec3(amt, 0, 0), 1);
-			}
-			break;
 		default:
 			break;
 		}

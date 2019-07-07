@@ -4,6 +4,9 @@
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 
+int R_cycle = 1;
+int L_cycle = 1;
+
 Player::Player(Scene* Scn, int Head_index, int Num_of_links)
 {
 	scn = Scn;
@@ -12,6 +15,8 @@ Player::Player(Scene* Scn, int Head_index, int Num_of_links)
 	is_alive = true;
 	velocity = glm::vec3(-1, 0, 0);
 	CreatePlayer();
+
+	curr_num_of_shape = head_index;
 }
 
 Player::~Player() {}
@@ -31,7 +36,7 @@ void Player::CreatePlayer()
 			scn->SetNumOfShape();
 			scn->SetPickedShape(head_index);
 			scn->shapeTransformation(Scene::xGlobalRotate, 170.0f);	//in order to put the eyes in place
-			//scn->setParent(i, -1);
+			scn->setParent(i, -1);
 			scn->SetShapeTex(head_index, 1);
 		}
 		else if (i == head_index + num_of_links + 1)
@@ -61,68 +66,97 @@ void Player::CreatePlayer()
 	}
 }
 
-void Player::Move(int direction)
-{
-	switch (direction)
-	{
-		case forwords:
-			break;
-		case right:
-			velocity = glm::vec3(glm::rotate(5.0f, glm::vec3(0, -1, 0))*glm::vec4(velocity, 0));
-			//std::cout << velocity.x << " " << velocity.y << " " << velocity.z << " " << std::endl;
-			break;
-		case left:
-			velocity = glm::vec3(glm::rotate(5.0f, glm::vec3(0, 1, 0))*glm::vec4(velocity, 0));
-			scn->SetPickedShape(head_index);
-			break;
-	}
-	scn->SetPickedShape(head_index);
-	scn->shapeTransformation(scn->xGlobalTranslate, 0.01*velocity.x);
-	//scn->shapeTransformation(scn->yGlobalTranslate, 0.01*velocity.y);
-	//scn->shapeTransformation(scn->zGlobalTranslate, 0.01*velocity.z);
-	//scn->SetPickedShape(-1);
-}
-
 void Player::MoveRight()
 {
-	float t = 1.0;
-	for (int i = head_index; i < head_index + num_of_links + 2; i++)
+	/*
+	if (curr_num_of_shape < head_index + num_of_links + 2)
 	{
-		scn->shapeRotation(glm::vec3(0, -1, 0), t*5.0f, i);
-		t -= 0.1;
+		scn->shapeRotation(glm::vec3(0, -1, 0), 5.0f, curr_num_of_shape);
+		curr_num_of_shape++;
 	}
+	else if (curr_num_of_shape == head_index + num_of_links + 1)
+		curr_num_of_shape = head_index;
+		*/
+
+	
+	float t = 1.0;
+	float slow = 0.2;
+	int i = 0;
+	for (i = head_index; i < head_index + num_of_links + 2; i++)
+	{
+		//if (R_cycle <= 10)
+		//{
+			scn->shapeRotation(glm::vec3(0, -1, 0), t*5.0f, i);
+			t = abs(t - slow);
+			slow = slow / 10.0;
+			//if (i < head_index + num_of_links + 1)
+			//{
+				//scn->SetPickedShape(i + 1);
+				//scn->shapeTransformation(Scene::xLocalTranslate, -0.0001);
+			//}
+		//}
+		//if (i == head_index + 1 && R_cycle == 10)
+			//R_cycle = 1;
+	}
+	//R_cycle++;
+	//if (L_cycle > 0 && L_cycle <= 10)
+		//L_cycle--;
+		
 }
 
 void Player::MoveLeft()
 {
-	float t = 1.0;
-	
-	for (int i = head_index; i < head_index + num_of_links + 2; i++)
+	/*
+	if (curr_num_of_shape < head_index + num_of_links + 2)
 	{
-		scn->shapeRotation(glm::vec3(0, 1, 0), t*5.0f, i);
-		t -= 0.1;
+		scn->shapeRotation(glm::vec3(0, -1, 0), -5.0f, curr_num_of_shape);
+		curr_num_of_shape++;
 	}
+	else if (curr_num_of_shape == head_index + num_of_links + 1)
+		curr_num_of_shape = head_index;
+		*/
+	/*
+	float t = 1.0;
+	float slow = 0.2;
+	int i = 0;
+	for (i = head_index; i < head_index + num_of_links + 2; i++)
+	{
+		if (L_cycle <= 10)
+		{
+			scn->shapeRotation(glm::vec3(0, -1, 0), t*(-5.0f), i);
+			t = abs(t - slow);
+			slow = slow / 10.0;
+		}
+		//if (i == head_index + 1 && R_cycle == 10)
+			//L_cycle = 1;
+	}
+	L_cycle++;
+	if (R_cycle > 0 && R_cycle <= 10)
+		R_cycle--;
+		*/
 }
 
 void Player::MoveUp()
 {
 	float t = 1.0;
-	
+	float slow = 0.8;
 	for (int i = head_index; i < head_index + num_of_links + 2; i++)
 	{
 		scn->shapeRotation(glm::vec3(0, 0, -1), t*5.0f, i);
-		t -= 0.1;
+		t = abs(t - slow);
+		slow = slow / 10.0;
 	}
 }
 
 void Player::MoveDown()
 {
 	float t = 1.0;
-	
+	float slow = 0.8;
 	for (int i = head_index; i < head_index + num_of_links + 2; i++)
 	{
 		scn->shapeRotation(glm::vec3(0, 0, -1), t*(-5.0f), i);
-		t -= 0.1;
+		t = abs(t - slow);
+		slow = slow / 10.0;
 	}
 }
 

@@ -1,5 +1,7 @@
 #include "game.h"
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 800
@@ -354,25 +356,22 @@ void Game::Motion()
 	if (isActive)
 	{
 		//player's moves update:
-		if (snake)
+		int i = 0;
+		for (i = snake->GetHeadIndex(); i < snake->GetNumOfLinks() + snake->GetHeadIndex() + 2; i++)
 		{
-			//snake->Move(snake->right);
-			
-			int i = 0;
-			for (i = snake->GetHeadIndex(); i < snake->GetNumOfLinks() + snake->GetHeadIndex() + 2; i++)
-			{
-				pickedShape = i;
-				shapeTransformation(xLocalTranslate, SPEED);
-			}
-			pickedShape = -1;
-			
+			pickedShape = i;
+			//shapeTransformation(xGlobalTranslate, -2.0f);
+			shapeTransformation(xLocalTranslate, SPEED);
 		}
+		pickedShape = -1;
+			
 
 		//camera's moves update:
 		//cameras[1]->Move();
 		//for (int i = 0; i < cameras.size(); i++)
 			//cameras[i]->Move();
 	}
+	//std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 int Game::CreateCurveControlPoints(int counter, Bezier1D *curve)
