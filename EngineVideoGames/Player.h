@@ -10,7 +10,9 @@ class Player
 		int num_of_links;
 		bool is_alive;
 		glm::vec3 velocity;
+		glm::vec3 direction;
 
+		bool move_right;
 		int curr_num_of_shape;
 
 	public:
@@ -29,5 +31,10 @@ class Player
 		int GetNumOfLinks();
 		glm::vec3 GetHeadPos();
 
+		bool GetMoveRight();
+		void SetMoveRight(bool value);
+
+		glm::vec3 GetDirection();
+		void SetDirection(glm::vec3 dir);
 
 };

@@ -5,11 +5,12 @@
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 800
-#define SPEED -0.001
+#define SPEED -0.003
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 
 bool once = false;
+int cycle = 0;
 
 static void printMat(const glm::mat4 mat)
 {
@@ -277,9 +278,9 @@ void Game::Init()
 	//Create the snake:
 	snake = new Player((Scene*) this, GetSizeOfShapes() + 1, 3);
 
-	Activate();
+	//Activate();
 
-	pickedShape = -1;
+	pickedShape = 28;
 
 	/* An example: */
 	/*
@@ -332,6 +333,33 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 	s->Unbind();
 }
 
+void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], int linksNum, const int shaderIndx)
+{
+	int prev_shape = pickedShape;
+	if (!once)
+		MoveControlCubes();
+	Shader *s = shaders[shaderIndx];
+	int r = ((pickedShape + 1) & 0x000000FF) >> 0;
+	int g = ((pickedShape + 1) & 0x0000FF00) >> 8;
+	int b = ((pickedShape + 1) & 0x00FF0000) >> 16;
+	s->Bind();
+	s->SetUniformMat4f("MV", MV, shaderIndx);
+	s->SetUniformMat4f("Projection", Projection, shaderIndx);
+	s->SetUniformMat4f("Normal", Normal, shaderIndx);
+	s->SetUniformMat4fv("jointTransforms", jointTransforms, 5);
+	s->SetUniform1i("linksNum", linksNum);
+	s->SetUniform4f("lightDirection", 0.0f, 0.0f, 0.0f, 0.0f);
+
+	if (shaderIndx == 0) //picking shader
+		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
+	else if (shaderIndx == 2) //skinning shader
+		s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f);
+	else //other shader
+		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
+	s->Unbind();
+}
+
+
 void Game::WhenRotate()
 {
 	if (pickedShape >= 0)
@@ -355,6 +383,59 @@ void Game::Motion()
 {
 	if (isActive)
 	{
+		float ang = 20.0;
+
+		if (snake->GetMoveRight())
+		{
+			if (pickedShape != snake->GetTailIndex())
+			{
+				if (pickedShape == snake->GetHeadIndex())
+				{
+					glm::vec3 v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
+					shapeTransformation(xLocalTranslate, v.x);
+					shapeTransformation(yLocalTranslate, v.y);
+					shapeTransformation(zLocalTranslate, v.z);
+
+					shapeTransformation(zLocalRotate, -ang);
+					pickedShape++;
+					shapeTransformation(zLocalRotate, ang);
+					v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
+					snake->SetDirection(v);
+				}
+				else if (cycle == 20)//not tail and not head
+				{
+					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+
+					shapeTransformation(zLocalRotate, -ang);
+					pickedShape++;
+					shapeTransformation(zLocalRotate, ang);
+					cycle = 0;
+				}
+				//cycle++;
+			}
+			/*else //if tail
+			{
+				glm::vec3 v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
+
+				shapeTransformation(xLocalTranslate, v.x);
+				shapeTransformation(yLocalTranslate, v.y);
+				shapeTransformation(zLocalTranslate, v.z);
+
+				shapeTransformation(yLocalRotate, ang);
+			}*/
+		}
+		glm::vec3 v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
+
+		shapeTransformation(xLocalTranslate, snake->GetDirection().x);
+		shapeTransformation(yLocalTranslate, snake->GetDirection().y);
+		shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+		cycle++;
+
+
+
+		/*
 		//player's moves update:
 		int i = 0;
 		for (i = snake->GetHeadIndex(); i < snake->GetNumOfLinks() + snake->GetHeadIndex() + 2; i++)
@@ -364,6 +445,16 @@ void Game::Motion()
 			shapeTransformation(xLocalTranslate, SPEED);
 		}
 		pickedShape = -1;
+
+		for (int i = head_index; i < head_index + num_of_links + 2; i++)
+		{
+			if (scn->GetTipPositionInSystem(i) == tip_head_pos)
+			{
+				scn->shapeRotation(glm::vec3(0, -1, 0), -3.0f, i);
+				scn->shapeRotation(glm::vec3(0, -1, 0), 6.0f, i + 1);
+			}
+		}
+		*/
 			
 
 		//camera's moves update:

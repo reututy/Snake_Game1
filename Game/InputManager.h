@@ -39,14 +39,19 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				glfwSetWindowShouldClose(window,GLFW_TRUE);
 			break;
 			case GLFW_KEY_SPACE:
-				
+				scn->Activate();
+				scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
+				scn->GetPlayer()->SetMoveRight(true);
 			break;
 			case GLFW_KEY_RIGHT:
 				if (camera_mode == camera_mode::free_view)
 					scn->globalSystemRot(-5, glm::vec3(0, 1, 0), -1);
 				else if (camera_mode == camera_mode::up_view)
 				{
-					scn->GetPlayer()->MoveRight();
+					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
+					scn->GetPlayer()->SetMoveRight(true);
+					
+					//scn->GetPlayer()->MoveRight();
 					//scn->SetPickedShape(28);
 					//scn->shapeRotation(glm::vec3(0, -1, 0), 5.0f, 28);
 					//scn->GetPlayer()->Move(scn->GetPlayer()->right);

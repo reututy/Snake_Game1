@@ -25,7 +25,7 @@ void main()
 	vec4 b_rot = vec4(0);
 	vec4 b_trans = vec4(0);
 	
-	if(index == 20)
+	if(index == 28)
 	{
 		b_rot += dqRot[0] * weights[0]; 
 		b_trans += dqTrans[0] * weights[0]; 
@@ -34,13 +34,13 @@ void main()
 		b_rot += dqRot[1] * weights[2]; 
 		b_trans += dqTrans[1] * weights[2]; 
 	}
-	else if(index == 22)
+	else if(index == 29)
 		x=0;
-	else if(index == 24)
+	else if(index == 30)
 		x=1;
-	else if(index == 26)
+	else if(index == 31)
 		x=2;
-	else if(index == 28)
+	else if(index == 32)
 	{
 		b_rot += dqRot[3] * weights[0]; 
 		b_trans += dqTrans[3] * weights[0]; 
@@ -98,7 +98,7 @@ void main()
 	//color0 = weights;
 	//position0 = vec3(M * vec4(position, 1.0));
 	
-	if(index >= 20 && index <= 28)
+	if(index >= 28 && index <= 32)
 	{	
 		normal0 = (M * vec4(normal, 0.0)).xyz;	
 		gl_Position = Projection * M * vec4(position, 1.0); //you must have gl_Position

@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
 	//scn->addShader("../res/shaders/basicShaderOld");
 	scn->addShader("../res/shaders/skinningShader"); //2
 	//scn->addShader("../res/shaders/LBSShader"); //2
+	scn->addShader("../res/shaders/basicTrans1"); //3 - LBS
 	//scn->addShader("../res/shaders/basicShadertex");
 
 	//snake textures:

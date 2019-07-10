@@ -36,6 +36,7 @@ public:
 
 	//	void Update( glm::mat4 MVP ,glm::mat4 *jointTransforms,const int length,const int  shaderIndx);
 	void Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, const int shaderIndx);
+	void UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], int linksNum, const int shaderIndx);
 	void WhenRotate();
 	void WhenTranslate();
 	void Motion();
