@@ -39,9 +39,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				glfwSetWindowShouldClose(window,GLFW_TRUE);
 			break;
 			case GLFW_KEY_SPACE:
-				scn->Activate();
 				scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
-				scn->GetPlayer()->SetMoveRight(true);
+				scn->Activate();
+				//scn->GetPlayer()->SetMoveRight(true);
 			break;
 			case GLFW_KEY_RIGHT:
 				if (camera_mode == camera_mode::free_view)
@@ -50,14 +50,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				{
 					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
 					scn->GetPlayer()->SetMoveRight(true);
-					
-					//scn->GetPlayer()->MoveRight();
-					//scn->SetPickedShape(28);
-					//scn->shapeRotation(glm::vec3(0, -1, 0), 5.0f, 28);
-					//scn->GetPlayer()->Move(scn->GetPlayer()->right);
-					//scn->GetPlayer()->MoveRight();
-					//scn->shapeTransformation(Scene::yLocalRotate, -90);
-					//scn->SetPickedShape(-1);
 				}
 				else if (camera_mode == camera_mode::player_view)
 				{ }
@@ -67,13 +59,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 					scn->globalSystemRot(5, glm::vec3(0, 1, 0), -1);
 				else if (camera_mode == camera_mode::up_view)
 				{
-					scn->GetPlayer()->MoveLeft();
-					//scn->SetPickedShape(28);
-					//scn->shapeRotation(glm::vec3(0, 1, 0), 5.0f, 28);
-					//scn->GetPlayer()->Move(scn->GetPlayer()->left);
-					//scn->GetPlayer()->MoveLeft();
-					//scn->shapeTransformation(Scene::yLocalRotate, 90);
-					//scn->SetPickedShape(-1);
+					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
+					scn->GetPlayer()->SetMoveLeft(true);
 				}
 				else if (camera_mode == camera_mode::player_view)
 				{}
@@ -84,11 +71,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 					//scn->translateInSystem(*scn->GetShape(20), glm::vec3(0,0,1), 20, 0);
 				else if (camera_mode == camera_mode::up_view)
 				{
-					scn->GetPlayer()->MoveUp();
-					//scn->SetPickedShape(28);
-					//scn->shapeRotation(glm::vec3(0, 0, -1), 5.0f, 28);
-					//scn->shapeTransformation(Scene::zLocalRotate, -90);
-					//scn->SetPickedShape(-1);
+					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
+					scn->GetPlayer()->SetMoveUp(true);
 				}
 				else if (camera_mode == camera_mode::player_view)
 				{}
@@ -98,11 +82,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 					scn->globalSystemRot(5, glm::vec3(0, 0, 1), 1);
 				else if (camera_mode == camera_mode::up_view)
 				{
-					scn->GetPlayer()->MoveDown();
-					//scn->SetPickedShape(28);
-					//scn->shapeRotation(glm::vec3(0, 0, 1), 5.0f, 28);
-					//scn->shapeTransformation(Scene::zLocalRotate, 90);
-					//scn->SetPickedShape(-1);
+					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
+					scn->GetPlayer()->SetMoveDown(true);
 				}
 				else if (camera_mode == camera_mode::player_view)
 				{

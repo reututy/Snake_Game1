@@ -1,7 +1,5 @@
 #include "game.h"
 #include <iostream>
-#include <chrono>
-#include <thread>
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 800
@@ -36,8 +34,6 @@ Game::Game(glm::vec3 position,float angle,float near, float far,Viewport &vp) : 
 
 	glm::mat4 mat = glm::mat4(glm::vec4(0.0 - x, 0.0, 0.0, 1.0), glm::vec4(0.2 - x, 0.7, 0.0, 1.0),
 		glm::vec4(1.5 - x, 1.0, 0.0, 1.0), glm::vec4(2.0 - x, 1.0, 0.0, 1.0));
-	//glm::mat4 mat = glm::mat4(glm::vec4(0.0, 0.0, 0.0 - x, 1.0), glm::vec4(0.0, 0.7, 0.2 - x, 1.0),
-	//glm::vec4(0.0, 1.0, 1.5 - x, 1.0), glm::vec4(0.0, 1.0, 2.0 - x, 1.0));
 
 	ctrlPointsVec.push_back(mat);
 	head = new Bezier1D(ctrlPointsVec);
@@ -47,8 +43,6 @@ Game::Game(glm::vec3 position,float angle,float near, float far,Viewport &vp) : 
 
 	mat = glm::mat4(glm::vec4(0.0 - x, 1.0, 0.0, 1.0), glm::vec4(0.5 - x, 1.0, 0.0, 1.0),
 		glm::vec4(1.0 - x, 1.0, 0.0, 1.0), glm::vec4(2.0 - x, 1.0, 0.0, 1.0));
-	//mat = glm::mat4(glm::vec4(0.0, 1.0, 0.0 - x, 1.0), glm::vec4(0.0, 1.0, 0.5 - x, 1.0),
-	//glm::vec4(0.0, 1.0, 1.0 - x, 1.0), glm::vec4(0.0, 1.0, 2.0 - x, 1.0));
 	ctrlPointsVec.push_back(mat);
 	body1 = new Bezier1D(ctrlPointsVec);
 	MIN_CTRL = 3;
@@ -57,8 +51,6 @@ Game::Game(glm::vec3 position,float angle,float near, float far,Viewport &vp) : 
 
 	mat = glm::mat4(glm::vec4(0.0 - x, 1.0, 0.0, 1.0), glm::vec4(0.5 - x, 1.0, 0.0, 1.0),
 		glm::vec4(1.7 - x, 0.7, 0.0, 1.0), glm::vec4(2.0 - x, 0.0, 0.0, 1.0));
-	//mat = glm::mat4(glm::vec4(0.0, 1.0, 0.0 - x, 1.0), glm::vec4(0.0, 1.0, 0.5 - x, 1.0),
-	//glm::vec4(0.0, 0.7, 1.7 - x, 1.0), glm::vec4(0.0, 0.0, 2.0 - x, 1.0));
 	ctrlPointsVec.push_back(mat);
 	tail = new Bezier1D(ctrlPointsVec);
 	MIN_CTRL = 3;
@@ -280,7 +272,7 @@ void Game::Init()
 
 	//Activate();
 
-	pickedShape = 28;
+	pickedShape = -1;
 
 	/* An example: */
 	/*
@@ -359,7 +351,6 @@ void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm
 	s->Unbind();
 }
 
-
 void Game::WhenRotate()
 {
 	if (pickedShape >= 0)
@@ -383,9 +374,9 @@ void Game::Motion()
 {
 	if (isActive)
 	{
-		float ang = 20.0;
+		float ang = 10.0;
 
-		if (snake->GetMoveRight())
+		if (snake->GetMoveUp())
 		{
 			if (pickedShape != snake->GetTailIndex())
 			{
@@ -401,8 +392,9 @@ void Game::Motion()
 					shapeTransformation(zLocalRotate, ang);
 					v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
 					snake->SetDirection(v);
+					cycle = 0;
 				}
-				else if (cycle == 20)//not tail and not head
+				else if (cycle == 25) //not tail and not head
 				{
 					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
 					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
@@ -413,56 +405,142 @@ void Game::Motion()
 					shapeTransformation(zLocalRotate, ang);
 					cycle = 0;
 				}
-				//cycle++;
 			}
-			/*else //if tail
+			else if (cycle == 20) //if tail
 			{
-				glm::vec3 v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
+				shapeTransformation(xLocalTranslate, snake->GetDirection().x);
+				shapeTransformation(yLocalTranslate, snake->GetDirection().y);
+				shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 
-				shapeTransformation(xLocalTranslate, v.x);
-				shapeTransformation(yLocalTranslate, v.y);
-				shapeTransformation(zLocalTranslate, v.z);
+				shapeTransformation(zLocalRotate, -ang);
+				snake->SetMoveUp(false);
+			}
+		}
+		else if (snake->GetMoveDown())
+		{
+			if (pickedShape != snake->GetTailIndex())
+			{
+				if (pickedShape == snake->GetHeadIndex())
+				{
+					glm::vec3 v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
+					shapeTransformation(xLocalTranslate, v.x);
+					shapeTransformation(yLocalTranslate, v.y);
+					shapeTransformation(zLocalTranslate, v.z);
+
+					shapeTransformation(zLocalRotate, ang);
+					pickedShape++;
+					shapeTransformation(zLocalRotate, -ang);
+					v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
+					snake->SetDirection(v);
+					cycle = 0;
+				}
+				else if (cycle == 25) //not tail and not head
+				{
+					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+
+					shapeTransformation(zLocalRotate, ang);
+					pickedShape++;
+					shapeTransformation(zLocalRotate, -ang);
+					cycle = 0;
+				}
+			}
+			else if (cycle == 20) //if tail
+			{
+				shapeTransformation(xLocalTranslate, snake->GetDirection().x);
+				shapeTransformation(yLocalTranslate, snake->GetDirection().y);
+				shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+
+				shapeTransformation(zLocalRotate, ang);
+				snake->SetMoveDown(false);
+			}
+		}
+		else if (snake->GetMoveRight())
+		{
+			if (pickedShape != snake->GetTailIndex())
+			{
+				if (pickedShape == snake->GetHeadIndex())
+				{
+					glm::vec3 v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
+					shapeTransformation(xLocalTranslate, v.x);
+					shapeTransformation(yLocalTranslate, v.y);
+					shapeTransformation(zLocalTranslate, v.z);
+
+					shapeTransformation(yLocalRotate, -ang);
+					pickedShape++;
+					shapeTransformation(yLocalRotate, ang);
+					v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
+					snake->SetDirection(v);
+					cycle = 0;
+				}
+				else if (cycle == 25) //not tail and not head
+				{
+					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+
+					shapeTransformation(yLocalRotate, -ang);
+					pickedShape++;
+					shapeTransformation(yLocalRotate, ang);
+					cycle = 0;
+				}
+			}
+			else if (cycle == 20) //if tail
+			{
+				shapeTransformation(xLocalTranslate, snake->GetDirection().x);
+				shapeTransformation(yLocalTranslate, snake->GetDirection().y);
+				shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+
+				shapeTransformation(yLocalRotate, -ang);
+				snake->SetMoveRight(false);
+			}
+		}
+		else if (snake->GetMoveLeft())
+		{
+			if (pickedShape != snake->GetTailIndex())
+			{
+				if (pickedShape == snake->GetHeadIndex())
+				{
+					glm::vec3 v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
+					shapeTransformation(xLocalTranslate, v.x);
+					shapeTransformation(yLocalTranslate, v.y);
+					shapeTransformation(zLocalTranslate, v.z);
+
+					shapeTransformation(yLocalRotate, ang);
+					pickedShape++;
+					shapeTransformation(yLocalRotate, -ang);
+					v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
+					snake->SetDirection(v);
+					cycle = 0;
+				}
+				else if (cycle == 25) //not tail and not head
+				{
+					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+
+					shapeTransformation(yLocalRotate, ang);
+					pickedShape++;
+					shapeTransformation(yLocalRotate, -ang);
+					cycle = 0;
+				}
+			}
+			else if (cycle == 20) //if tail
+			{
+				shapeTransformation(xLocalTranslate, snake->GetDirection().x);
+				shapeTransformation(yLocalTranslate, snake->GetDirection().y);
+				shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 
 				shapeTransformation(yLocalRotate, ang);
-			}*/
+				snake->SetMoveLeft(false);
+			}
 		}
-		glm::vec3 v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
-
 		shapeTransformation(xLocalTranslate, snake->GetDirection().x);
 		shapeTransformation(yLocalTranslate, snake->GetDirection().y);
 		shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 		cycle++;
-
-
-
-		/*
-		//player's moves update:
-		int i = 0;
-		for (i = snake->GetHeadIndex(); i < snake->GetNumOfLinks() + snake->GetHeadIndex() + 2; i++)
-		{
-			pickedShape = i;
-			//shapeTransformation(xGlobalTranslate, -2.0f);
-			shapeTransformation(xLocalTranslate, SPEED);
-		}
-		pickedShape = -1;
-
-		for (int i = head_index; i < head_index + num_of_links + 2; i++)
-		{
-			if (scn->GetTipPositionInSystem(i) == tip_head_pos)
-			{
-				scn->shapeRotation(glm::vec3(0, -1, 0), -3.0f, i);
-				scn->shapeRotation(glm::vec3(0, -1, 0), 6.0f, i + 1);
-			}
-		}
-		*/
-			
-
-		//camera's moves update:
-		//cameras[1]->Move();
-		//for (int i = 0; i < cameras.size(); i++)
-			//cameras[i]->Move();
 	}
-	//std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 int Game::CreateCurveControlPoints(int counter, Bezier1D *curve)

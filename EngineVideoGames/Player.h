@@ -9,11 +9,14 @@ class Player
 		int head_index;
 		int num_of_links;
 		bool is_alive;
-		glm::vec3 velocity;
+		glm::vec3 velocity; //TODO: delete?
 		glm::vec3 direction;
 
 		bool move_right;
-		int curr_num_of_shape;
+		bool move_left;
+		bool move_up;
+		bool move_down;
+		int curr_num_of_shape; //TODO: delete?
 
 	public:
 		enum Direction { forwords, backwords, up, down, right, left };
@@ -32,7 +35,14 @@ class Player
 		glm::vec3 GetHeadPos();
 
 		bool GetMoveRight();
+		bool GetMoveLeft();
+		bool GetMoveUp();
+		bool GetMoveDown();
+
 		void SetMoveRight(bool value);
+		void SetMoveLeft(bool value);
+		void SetMoveUp(bool value);
+		void SetMoveDown(bool value);
 
 		glm::vec3 GetDirection();
 		void SetDirection(glm::vec3 dir);
