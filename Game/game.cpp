@@ -6,6 +6,8 @@
 #define SPEED -0.003
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
+#define CYCLE 20
+#define ANGLE 10.0f
 
 bool once = false;
 int cycle = 0;
@@ -374,45 +376,41 @@ void Game::Motion()
 {
 	if (isActive)
 	{
-		float ang = 10.0;
-
 		if (snake->GetMoveUp())
 		{
 			if (pickedShape != snake->GetTailIndex())
 			{
 				if (pickedShape == snake->GetHeadIndex())
 				{
-					glm::vec3 v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
-					shapeTransformation(xLocalTranslate, v.x);
-					shapeTransformation(yLocalTranslate, v.y);
-					shapeTransformation(zLocalTranslate, v.z);
+					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 
-					shapeTransformation(zLocalRotate, -ang);
+					shapeTransformation(zLocalRotate, -ANGLE);
+					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0)));
 					pickedShape++;
-					shapeTransformation(zLocalRotate, ang);
-					v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
-					snake->SetDirection(v);
+					shapeTransformation(zLocalRotate, ANGLE);
 					cycle = 0;
 				}
-				else if (cycle == 25) //not tail and not head
+				else if (cycle == CYCLE) //not tail and not head
 				{
 					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
 					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
 					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 
-					shapeTransformation(zLocalRotate, -ang);
+					shapeTransformation(zLocalRotate, -ANGLE);
 					pickedShape++;
-					shapeTransformation(zLocalRotate, ang);
+					shapeTransformation(zLocalRotate, ANGLE);
 					cycle = 0;
 				}
 			}
-			else if (cycle == 20) //if tail
+			else if (cycle == CYCLE) //if tail
 			{
 				shapeTransformation(xLocalTranslate, snake->GetDirection().x);
 				shapeTransformation(yLocalTranslate, snake->GetDirection().y);
 				shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 
-				shapeTransformation(zLocalRotate, -ang);
+				shapeTransformation(zLocalRotate, -ANGLE);
 				snake->SetMoveUp(false);
 			}
 		}
@@ -422,37 +420,35 @@ void Game::Motion()
 			{
 				if (pickedShape == snake->GetHeadIndex())
 				{
-					glm::vec3 v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
-					shapeTransformation(xLocalTranslate, v.x);
-					shapeTransformation(yLocalTranslate, v.y);
-					shapeTransformation(zLocalTranslate, v.z);
+					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 
-					shapeTransformation(zLocalRotate, ang);
+					shapeTransformation(zLocalRotate, ANGLE);
+					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0)));
 					pickedShape++;
-					shapeTransformation(zLocalRotate, -ang);
-					v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
-					snake->SetDirection(v);
+					shapeTransformation(zLocalRotate, -ANGLE);
 					cycle = 0;
 				}
-				else if (cycle == 25) //not tail and not head
+				else if (cycle == CYCLE) //not tail and not head
 				{
 					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
 					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
 					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 
-					shapeTransformation(zLocalRotate, ang);
+					shapeTransformation(zLocalRotate, ANGLE);
 					pickedShape++;
-					shapeTransformation(zLocalRotate, -ang);
+					shapeTransformation(zLocalRotate, -ANGLE);
 					cycle = 0;
 				}
 			}
-			else if (cycle == 20) //if tail
+			else if (cycle == CYCLE) //if tail
 			{
 				shapeTransformation(xLocalTranslate, snake->GetDirection().x);
 				shapeTransformation(yLocalTranslate, snake->GetDirection().y);
 				shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 
-				shapeTransformation(zLocalRotate, ang);
+				shapeTransformation(zLocalRotate, ANGLE);
 				snake->SetMoveDown(false);
 			}
 		}
@@ -462,37 +458,35 @@ void Game::Motion()
 			{
 				if (pickedShape == snake->GetHeadIndex())
 				{
-					glm::vec3 v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
-					shapeTransformation(xLocalTranslate, v.x);
-					shapeTransformation(yLocalTranslate, v.y);
-					shapeTransformation(zLocalTranslate, v.z);
+					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 
-					shapeTransformation(yLocalRotate, -ang);
+					shapeTransformation(yLocalRotate, -ANGLE);
+					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0)));
 					pickedShape++;
-					shapeTransformation(yLocalRotate, ang);
-					v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
-					snake->SetDirection(v);
+					shapeTransformation(yLocalRotate, ANGLE);
 					cycle = 0;
 				}
-				else if (cycle == 25) //not tail and not head
+				else if (cycle == CYCLE) //not tail and not head
 				{
 					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
 					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
 					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 
-					shapeTransformation(yLocalRotate, -ang);
+					shapeTransformation(yLocalRotate, -ANGLE);
 					pickedShape++;
-					shapeTransformation(yLocalRotate, ang);
+					shapeTransformation(yLocalRotate, ANGLE);
 					cycle = 0;
 				}
 			}
-			else if (cycle == 20) //if tail
+			else if (cycle == CYCLE) //if tail
 			{
 				shapeTransformation(xLocalTranslate, snake->GetDirection().x);
 				shapeTransformation(yLocalTranslate, snake->GetDirection().y);
 				shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 
-				shapeTransformation(yLocalRotate, -ang);
+				shapeTransformation(yLocalRotate, -ANGLE);
 				snake->SetMoveRight(false);
 			}
 		}
@@ -502,37 +496,35 @@ void Game::Motion()
 			{
 				if (pickedShape == snake->GetHeadIndex())
 				{
-					glm::vec3 v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
-					shapeTransformation(xLocalTranslate, v.x);
-					shapeTransformation(yLocalTranslate, v.y);
-					shapeTransformation(zLocalTranslate, v.z);
+					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 
-					shapeTransformation(yLocalRotate, ang);
+					shapeTransformation(yLocalRotate, ANGLE);
+					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0)));
 					pickedShape++;
-					shapeTransformation(yLocalRotate, -ang);
-					v = GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0));
-					snake->SetDirection(v);
+					shapeTransformation(yLocalRotate, -ANGLE);
 					cycle = 0;
 				}
-				else if (cycle == 25) //not tail and not head
+				else if (cycle == CYCLE) //not tail and not head
 				{
 					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
 					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
 					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 
-					shapeTransformation(yLocalRotate, ang);
+					shapeTransformation(yLocalRotate, ANGLE);
 					pickedShape++;
-					shapeTransformation(yLocalRotate, -ang);
+					shapeTransformation(yLocalRotate, -ANGLE);
 					cycle = 0;
 				}
 			}
-			else if (cycle == 20) //if tail
+			else if (cycle == CYCLE) //if tail
 			{
 				shapeTransformation(xLocalTranslate, snake->GetDirection().x);
 				shapeTransformation(yLocalTranslate, snake->GetDirection().y);
 				shapeTransformation(zLocalTranslate, snake->GetDirection().z);
 
-				shapeTransformation(yLocalRotate, ang);
+				shapeTransformation(yLocalRotate, ANGLE);
 				snake->SetMoveLeft(false);
 			}
 		}
