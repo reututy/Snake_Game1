@@ -40,6 +40,7 @@ public:
 		LineCopy,
 		MeshCopy,
 	};
+	enum camera_mode { free_view, up_view, player_view };
 	
 	Scene();
 	Scene(glm::vec3 position,float angle,float near, float far,Viewport &vp);
@@ -106,14 +107,19 @@ public:
 	
 	/* Reut's addings:*/
 	glm::dualquat getQuaternion(glm::mat4 mat);
+	void ChangeShapeMode(int index, unsigned int new_mode);
+
 	int GetPickedShape();
 	Shape* GetShape(int index);
 	int GetSizeOfShapes();
 	void SetPickedShape(int value);
-	void ChangeShapeMode(int index, unsigned int new_mode);
 	int GetNumOfShapes();
+	int GetCameraMode();
+
+	void SetCameraMode(int mode);
 	void SetNumOfShape();
 	void SetNumOfShapes(int value);
+
 
 private:	
 	std::vector<DrawBuffer*> buffers;
@@ -140,5 +146,6 @@ protected:
 	bool isActive;
 	void ScaleAllDirections(int factor);
 	int num_of_shapes; //Reut's addings
+	int camera_mode; //Reut's addings
 };
 

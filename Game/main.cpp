@@ -14,8 +14,9 @@ int main(int argc, char *argv[])
 	Viewport vp1(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
 	//Game *scn = new Game(glm::vec3(1.0f, 0.0f, 0.0f), CAM_ANGLE, zNear, zFar, vp1);
-	Game *scn = new Game(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1);
-	//scn->AddCamera(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1);
+	Game *scn = new Game(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1); //free view camera
+	scn->AddCamera(glm::vec3(4.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1);	//snake view camera
+	scn->AddCamera(glm::vec3(0.0f, 4.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1);	//up view camera
 
 	Display display(DISPLAY_WIDTH, DISPLAY_HEIGHT, "OpenGL");
 
@@ -50,7 +51,7 @@ int main(int argc, char *argv[])
 
 	while (!display.closeWindow())
 	{
-		scn->Draw(1, 0, BACK, true, false);
+		scn->Draw(1, scn->GetCameraMode(), BACK, true, false);
 		scn->Motion();
 		display.SwapBuffers();
 		display.PollEvents();

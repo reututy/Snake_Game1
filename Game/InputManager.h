@@ -6,8 +6,7 @@
 #define NO_OF_MODES 8
 int curr_mode = Scene::modes::QUADS;
 char modes_names[8][20] = { "POINTS", "LINES", "LINE_LOOP", "LINE_STRIP", "TRIANGLES", "TRIANGLE_STRIP", "TRIANGLE_FAN", "QUADS" };
-int camera_mode = 0;
-enum camera_mode {free_view, up_view, player_view};
+bool play = false;
 
 void mouse_callback(GLFWwindow* window,int button, int action, int mods)
 {	
@@ -44,48 +43,68 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				//scn->GetPlayer()->SetMoveRight(true);
 			break;
 			case GLFW_KEY_RIGHT:
-				if (camera_mode == camera_mode::free_view)
+				if (scn->GetCameraMode() == scn->camera_mode::free_view && play == false)
 					scn->globalSystemRot(-5, glm::vec3(0, 1, 0), -1);
-				else if (camera_mode == camera_mode::up_view)
+				else if (scn->GetCameraMode() == scn->camera_mode::free_view && play == true)
 				{
 					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
 					scn->GetPlayer()->SetMoveRight(true);
 				}
-				else if (camera_mode == camera_mode::player_view)
+				else if (scn->GetCameraMode() == scn->camera_mode::up_view)
+				{
+					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
+					scn->GetPlayer()->SetMoveRight(true);
+				}
+				else if (scn->GetCameraMode() == scn->camera_mode::player_view)
 				{ }
 				break;
 			case GLFW_KEY_LEFT:
-				if (camera_mode == camera_mode::free_view)
+				if (scn->GetCameraMode() == scn->camera_mode::free_view && play == false)
 					scn->globalSystemRot(5, glm::vec3(0, 1, 0), -1);
-				else if (camera_mode == camera_mode::up_view)
+				else if (scn->GetCameraMode() == scn->camera_mode::free_view && play == true)
 				{
 					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
 					scn->GetPlayer()->SetMoveLeft(true);
 				}
-				else if (camera_mode == camera_mode::player_view)
+				else if (scn->GetCameraMode() == scn->camera_mode::up_view)
+				{
+					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
+					scn->GetPlayer()->SetMoveLeft(true);
+				}
+				else if (scn->GetCameraMode() == scn->camera_mode::player_view)
 				{}
 				break;
 			case GLFW_KEY_UP:
-				if (camera_mode == camera_mode::free_view)
+				if (scn->GetCameraMode() == scn->camera_mode::free_view && play == false)
 					scn->globalSystemRot(-5, glm::vec3(0, 0, 1), 1);
 					//scn->translateInSystem(*scn->GetShape(20), glm::vec3(0,0,1), 20, 0);
-				else if (camera_mode == camera_mode::up_view)
+				else if (scn->GetCameraMode() == scn->camera_mode::free_view && play == true)
 				{
 					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
 					scn->GetPlayer()->SetMoveUp(true);
 				}
-				else if (camera_mode == camera_mode::player_view)
+				else if (scn->GetCameraMode() == scn->camera_mode::up_view)
+				{
+					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
+					scn->GetPlayer()->SetMoveUp(true);
+				}
+				else if (scn->GetCameraMode() == scn->camera_mode::player_view)
 				{}
 				break;
 			case GLFW_KEY_DOWN:
-				if (camera_mode == camera_mode::free_view)
+				if (scn->GetCameraMode() == scn->camera_mode::free_view && play == false)
 					scn->globalSystemRot(5, glm::vec3(0, 0, 1), 1);
-				else if (camera_mode == camera_mode::up_view)
+				else if (scn->GetCameraMode() == scn->camera_mode::free_view && play == true)
 				{
 					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
 					scn->GetPlayer()->SetMoveDown(true);
 				}
-				else if (camera_mode == camera_mode::player_view)
+				else if (scn->GetCameraMode() == scn->camera_mode::up_view)
+				{
+					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
+					scn->GetPlayer()->SetMoveDown(true);
+				}
+				else if (scn->GetCameraMode() == scn->camera_mode::player_view)
 				{
 				}
 				break;
@@ -96,18 +115,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				//scn->ChangeShapeMode(scn->GetNumOfHead(), curr_mode);
 				break;
 			case GLFW_KEY_C:
-				if (camera_mode == camera_mode::free_view)
-					camera_mode = camera_mode::up_view;
-				else if (camera_mode == camera_mode::up_view)
-					camera_mode = camera_mode::player_view;
-				else if (camera_mode == camera_mode::player_view)
-					camera_mode = camera_mode::free_view;
-				/*
-				if (!camera_mode)
-					camera_mode = true;
-				else
-					camera_mode = false;
-					*/
+				if (scn->GetCameraMode() == scn->camera_mode::free_view)
+					scn->SetCameraMode(scn->camera_mode::up_view);
+				else if (scn->GetCameraMode() == scn->camera_mode::up_view)
+					scn->SetCameraMode(scn->camera_mode::player_view);
+				else if (scn->GetCameraMode() == scn->camera_mode::player_view)
+					scn->SetCameraMode(scn->camera_mode::free_view);
 				break;
 			case GLFW_KEY_D:
 				scn->SetDirection();
@@ -129,6 +142,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				break;
 			case GLFW_KEY_W: //Zoom out
 				scn->shapeTransformation(scn->zCameraTranslate, -5.0f);
+				break;
+			case GLFW_KEY_P: //Play
+				if (play == false)
+					play = true;
+				else if(play == true)
+					play = false;
 				break;
 		default:
 			break;

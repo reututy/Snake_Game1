@@ -31,6 +31,7 @@ Scene::Scene()
 	xold = 0;
 	yold = 0;
 	isActive = false;
+	camera_mode = free_view;
 }
 
 Scene::Scene(vec3 position,float angle,float near, float far,Viewport &vp)
@@ -46,7 +47,7 @@ Scene::Scene(vec3 position,float angle,float near, float far,Viewport &vp)
 	xold = 0;
 	yold = 0;
 	isActive = false;
-		
+	camera_mode = free_view;
 }
 
 void Scene::addShapeFromFile(const std::string& fileName,int parent,unsigned int mode)
@@ -432,6 +433,42 @@ void Scene::shapeTransformation(int type,float amt)
 			else
 				shapes[pickedShape]->myScale(vec3(1,1,amt));
 		break;
+		case xCameraTranslate: //camera plane translate
+			if (pickedShape == -1)
+				myTranslate(vec3(amt / 5.0, 0, 0), 0);
+			else
+			{
+				//newAxis = findAxis(vec3(1,0,0));					
+				int i = pickedShape;
+				for (; chainParents[i] > 0; i = chainParents[i]);
+
+				shapes[i]->translateInSystem(*this, vec3(amt, 0, 0), 0, false);
+			}
+			break;
+		case yCameraTranslate:
+			if (pickedShape == -1)
+				myTranslate(vec3(0, amt / 5.0, 0), 0);
+			else
+			{
+				//newAxis = findAxis(vec3(0,1,0));
+				int i = pickedShape;
+				for (; chainParents[i] > 0; i = chainParents[i]);
+
+				shapes[i]->translateInSystem(*this, vec3(0, amt, 0), 0, false);
+			}
+			break;
+		case zCameraTranslate:
+			if (pickedShape == -1)
+				myTranslate(vec3(0, 0, amt / 5.0), 0);
+			else
+			{
+				//	newAxis = findAxis(vec3(0,0,1));
+				int i = pickedShape;
+				for (; chainParents[i] > 0; i = chainParents[i]);
+
+				shapes[i]->translateInSystem(*this, vec3(0, 0, amt), 0, false);
+			}
+			break;
 		default:
 			break;
 		}
@@ -652,6 +689,11 @@ glm::dualquat Scene::getQuaternion(glm::mat4 mat)
 	return glm::dualquat_cast(mat_3x4);
 }
 
+void Scene::ChangeShapeMode(int index, unsigned int new_mode)
+{
+	shapes[index]->ChangeMode(new_mode);
+}
+
 int Scene::GetPickedShape()
 {
 	return pickedShape;
@@ -667,11 +709,6 @@ int Scene::GetSizeOfShapes()
 	return shapes.size() - 1;
 }
 
-void Scene::ChangeShapeMode(int index, unsigned int new_mode)
-{
-	shapes[index]->ChangeMode(new_mode);
-}
-
 void Scene::SetPickedShape(int value)
 {
 	pickedShape = value;
@@ -680,6 +717,16 @@ void Scene::SetPickedShape(int value)
 int Scene::GetNumOfShapes()
 {
 	return num_of_shapes;
+}
+
+int Scene::GetCameraMode()
+{
+	return camera_mode;
+}
+
+void Scene::SetCameraMode(int mode)
+{
+	camera_mode = mode;
 }
 
 void Scene::SetNumOfShapes(int value)

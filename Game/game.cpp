@@ -272,6 +272,8 @@ void Game::Init()
 	//Create the snake:
 	snake = new Player((Scene*) this, GetSizeOfShapes() + 1, 3);
 
+	//cameras[1]->myRotate()
+
 	//Activate();
 
 	pickedShape = -1;
