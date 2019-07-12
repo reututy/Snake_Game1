@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 	const int DISPLAY_HEIGHT = 800;
 	const float zFar = 10000.0f;
 	const float zNear = 1.0f;
-	const float CAM_ANGLE = 100.0f;
+	const float CAM_ANGLE = 60.0f;
 	const float relation = (float)DISPLAY_WIDTH / (float)DISPLAY_HEIGHT;
 	//Viewport vp1(400, 0, DISPLAY_WIDTH - 400, DISPLAY_HEIGHT - 0);
 	Viewport vp2(0, 0, 400, 266);
@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
 	scn->addShader("../res/shaders/basicTrans1"); //3 - LBS
 	//scn->addShader("../res/shaders/basicShadertex");
 	scn->addShader("../res/shaders/basicShader2D"); //4
+	scn->addShader("../res/shaders/blueShader"); //5
 
 	//snake textures:
 	scn->AddTexture("../res/textures/snake1.png", false); //0

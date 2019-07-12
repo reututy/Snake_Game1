@@ -139,11 +139,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				break;
 			case GLFW_KEY_S: //Zoom in
 				scn->SetPickedShape(-1);
-				scn->shapeTransformation(scn->xCameraTranslate, 5.0f);
+				scn->shapeTransformation(scn->zCameraTranslate, 5.0f);
 				break;
 			case GLFW_KEY_W: //Zoom out
 				scn->SetPickedShape(-1);
-				scn->shapeTransformation(scn->xCameraTranslate, -5.0f);
+				scn->shapeTransformation(scn->zCameraTranslate, -5.0f);
 				break;
 			case GLFW_KEY_P: //Play
 				if (play == false)

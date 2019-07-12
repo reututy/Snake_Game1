@@ -4,7 +4,7 @@
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 800
-#define SPEED -0.03
+#define SPEED -0.003
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 #define CYCLE 20
@@ -87,7 +87,6 @@ void Game::addShape(int type, int parent, unsigned int mode, Bezier1D* curve)
 
 void my_audio_callback(void *userdata, Uint8 *stream, int len)
 {
-
 	if (audio_len == 0)
 		return;
 
@@ -349,12 +348,60 @@ void Game::addRewards()
 	SetShapeShader(pickedShape, BASIC_SHADER);
 }
 
+void Game::AddBubbles()
+{
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 34;
+	shapeTransformation(xScale, 0.02);
+	shapeTransformation(yScale, 0.02);
+	shapeTransformation(zScale, 0.02);
+	shapeTransformation(zGlobalTranslate, 100);
+	shapeTransformation(yGlobalTranslate, 5);
+	SetShapeShader(pickedShape, LBS_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 35;
+	shapeTransformation(xScale, 0.02);
+	shapeTransformation(yScale, 0.02);
+	shapeTransformation(zScale, 0.02);
+	shapeTransformation(zGlobalTranslate, 120);
+	shapeTransformation(yGlobalTranslate, -50);
+	shapeTransformation(xGlobalTranslate, -50);
+	SetShapeShader(pickedShape, LBS_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 36;
+	shapeTransformation(xScale, 0.02);
+	shapeTransformation(yScale, 0.02);
+	shapeTransformation(zScale, 0.02);
+	shapeTransformation(zGlobalTranslate, 120);
+	shapeTransformation(yGlobalTranslate, 8);
+	shapeTransformation(xGlobalTranslate, -100);
+	SetShapeShader(pickedShape, LBS_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 37;
+	shapeTransformation(xScale, 0.02);
+	shapeTransformation(yScale, 0.02);
+	shapeTransformation(zScale, 0.02);
+	shapeTransformation(zGlobalTranslate, 120);
+	shapeTransformation(yGlobalTranslate, -150);
+	shapeTransformation(xGlobalTranslate, -60);
+	SetShapeShader(pickedShape, LBS_SHADER);
+}
+
 void Game::Init()
 {
 	addBasicShapes();
 	addBoundryBoxes();
 	addObstacles();
 	addRewards();
+	AddBubbles();
+	
 
 	//Create the snake:
 	snake = new Player((Scene*) this, GetSizeOfShapes() + 1, 3);
@@ -439,6 +486,9 @@ void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm
 	if (shaderIndx == 0) //picking shader
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
 	else if (shaderIndx == 2) //skinning shader
+		s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f); //original
+		//s->SetUniform4f("lightColor", 0.48f, 0.4f, 0.93f, 1.0f);
+	else if (shaderIndx == 5) //blue shader
 		s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f);
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
@@ -780,8 +830,6 @@ void Game::playTune(char* str)
 	SDL_FreeWAV(wav_buffer);
 
 }
-
-
 
 int Game::GetMINCTRL()
 {

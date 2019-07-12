@@ -34,6 +34,7 @@ public:
 	void addBoundryBoxes(); 
 	void addObstacles(); 
 	void addRewards();
+	void AddBubbles();
 
 	//	void Update( glm::mat4 MVP ,glm::mat4 *jointTransforms,const int length,const int  shaderIndx);
 	void Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, const int shaderIndx);
