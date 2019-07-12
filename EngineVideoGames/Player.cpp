@@ -68,8 +68,8 @@ void Player::CreatePlayer()
 		//Set snake shader - works with LBSUpdate:
 		scn->SetShapeShader(i, BASIC_SHADER);
 	}
-	scn->SetPickedShape(head_index);
-	scn->shapeTransformation(Scene::xGlobalTranslate, 750);
+	//scn->SetPickedShape(head_index);
+	//scn->shapeTransformation(Scene::xGlobalTranslate, 750);
 }
 
 void Player::MoveRight()

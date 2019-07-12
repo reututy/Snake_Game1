@@ -14,7 +14,8 @@ int main(int argc, char *argv[])
 	Viewport vp1(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
 	//Game *scn = new Game(glm::vec3(1.0f, 0.0f, 0.0f), CAM_ANGLE, zNear, zFar, vp1);
-	Game *scn = new Game(glm::vec3(800.0f, 0.0f, 0.0f), CAM_ANGLE, zNear, zFar, vp1); //free view camera
+	Game *scn = new Game(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1); //free view camera
+	//Game *scn = new Game(glm::vec3(800.0f, 0.0f, 0.0f), CAM_ANGLE, zNear, zFar, vp1); //free view camera
 	scn->AddCamera(glm::vec3(4.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1);	//snake view camera
 	scn->AddCamera(glm::vec3(0.0f, 4.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1);	//up view camera
 
@@ -50,7 +51,7 @@ int main(int argc, char *argv[])
 	scn->AddTexture("../res/textures/gold_shine.png", false); //7
 	
 	/*
-	scn->AddTexture("../res/textures/plane.png", true);
+	scn->AddTexture("../res/textures/plane.png", true); //8
 	scn->AddTexture(vp1.GetWidth(), vp1.GetHeight(), COLOR);
 	scn->AddTexture(vp1.GetWidth(), vp1.GetHeight(), DEPTH);
 	scn->AddBuffer(2, 0, COLOR);

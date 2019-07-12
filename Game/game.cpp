@@ -359,7 +359,10 @@ void Game::Init()
 	//Create the snake:
 	snake = new Player((Scene*) this, GetSizeOfShapes() + 1, 3);
 
-	playTune("Sounds/Jump.wav");
+	plane2D = new Shape(Plane, TRIANGLES);
+	plane2D->SetShader(4);
+
+	//playTune("Sounds/Jump.wav");
 
 	//Activate();
 
