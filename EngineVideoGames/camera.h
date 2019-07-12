@@ -3,120 +3,28 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include "Viewport.h"
+#include "MovableGLM.h"
 
-struct Camera : public MovableGLM
+class Camera : public MovableGLM
 {
 public:
-	Camera(const glm::vec3& pos,const glm::vec3& forward, float fov, float zNear, float zFar, const Viewport &view)
-	{
-		this->pos = pos;
-		this->forward = forward; 
-		this->up = glm::vec3(0.0f, 1.0f, 0.0f);
-		this->projection = glm::perspective(fov,GetWHRelation() , zNear, zFar);
-		this->projection = this->projection * glm::lookAt(pos, pos + forward, up);
-		this->fov = fov;
-		this->near = zNear;
-		this->far = zFar;
-		this->vp = view;
-	}
+	Camera(const glm::vec3& pos, const glm::vec3& forward, float fov, float zNear, float zFar, const Viewport &view);
 
-	void SetPlayer(Shape* player)
-	{
-		this->player = player;
-	}
+	void SetProjection(float zNear, float zFar, Viewport &view);
+	void Pitch(float angle);
+	void RotateY(float angle);
 
-	void Move()
-	{
-		float horizontalDist = CalcHorizontalDist();
-		float verticlDist = CalcVerticalDist();
-		CalcCameraPosition(horizontalDist, verticlDist);
-	}
+	int GetWidth();
+	int GetHeight();
+	int GetLeft();
+	int GetBottom();
+	glm::vec3 GetPos(); //Added
 
-	void SetProjection(float zNear, float zFar, Viewport &view)
-	{
-		this->vp = view;
-		this->projection = glm::perspective(fov,view.GetWHRelation(), zNear, zFar)* glm::lookAt(pos, pos + forward, up);
-		this->near = zNear;
-		this->far = zFar;		
-	}
-
-	void MoveForward(float amt)
-	{
-		pos += forward * amt;
-	}
-
-	void MoveRight(float amt)
-	{
-		pos += glm::cross(up, forward) * amt;
-	}
-
-	void Pitch(float angle)
-	{
-		glm::vec3 right = glm::normalize(glm::cross(up, forward));
-
-		forward = glm::vec3(glm::normalize(glm::rotate(angle, right) * glm::vec4(forward, 0.0)));
-		up = glm::normalize(glm::cross(forward, right));
-	}
-
-	void RotateY(float angle)
-	{
-		static const glm::vec3 UP(0.0f, 1.0f, 0.0f);
-
-		glm::mat4 rotation = glm::rotate(angle, UP);
-
-		forward = glm::vec3(glm::normalize(rotation * glm::vec4(forward, 0.0)));
-		up = glm::vec3(glm::normalize(rotation * glm::vec4(up, 0.0)));
-	}
-
-	float CalcHorizontalDist()
-	{
-		return distance_from_player * cos(pitch);
-	}
-
-	float CalcVerticalDist()
-	{
-		return distance_from_player * sin(pitch);
-	}
-
-	void CalcCameraPosition(float horizDist, float verticDist)
-	{
-		float theta = angle_around_player;
-		float offsetX = (float) horizDist * sin(theta);
-		float offsetZ = (float) horizDist * cos(theta);
-		pos.x = player->GetMesh()->GetModel()->positions[0].x - offsetX;
-		pos.z = player->GetMesh()->GetModel()->positions[0].z - offsetZ;
-		pos.y = player->GetMesh()->GetModel()->positions[0].y + verticDist;
-
-	}
-
-	void SetShape(Shape *num_of_shape)
-	{
-		player = num_of_shape;
-	}
+	void SetPos(glm::vec3 position); //Added
 
 	inline glm::mat4 GetViewProjection() const
 	{
 		return projection;
-	}
-
-	int GetWidth()
-	{
-		return vp.GetWidth();
-	}
-
-	int GetHeight()
-	{
-		return vp.GetHeight();
-	}
-
-	int GetLeft()
-	{
-		return vp.GetLeft();
-	}
-
-	int GetBottom()
-	{
-		return vp.GetBottom();
 	}
 
 	inline float GetAngle()
@@ -139,6 +47,16 @@ public:
 		return vp.GetWHRelation();
 	}
 
+	/* Reut's adding: */
+	//void SetPlayer(Shape* player);
+	void Move();
+	void MoveForward(float amt);
+	void MoveRight(float amt);
+	float CalcHorizontalDist();
+	float CalcVerticalDist();
+	void CalcCameraPosition(float horizDist, float verticDist);
+	//void SetShape(Shape *num_of_shape);
+
 protected:
 private:
 	glm::mat4 projection;
@@ -150,7 +68,7 @@ private:
 	Viewport vp;
 
 	/* Reut's adding: */
-	Shape* player;
+	//Shape* player;
 	float pitch = 20; //angle from snake to camera
 	float yaw = 0;
 	float distance_from_player = 50;

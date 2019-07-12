@@ -3,7 +3,7 @@
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 800
-#define SPEED -0.003
+#define SPEED -0.03
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 #define CYCLE 20
@@ -245,20 +245,88 @@ void Game::addObstacles()
 	shapeTransformation(xScale, 50);
 	shapeTransformation(yScale, 50);
 	shapeTransformation(zScale, 50);
-	shapeTransformation(xGlobalTranslate, -10 / 2);
+	shapeTransformation(xGlobalTranslate, 13);
 	//shapeTransformation(yGlobalTranslate, -10 / 2);
 	shapeTransformation(zGlobalTranslate, 5);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeCopy(2, -1, TRIANGLES); //27 Add copy cube = Obstacle 1
+	SetNumOfShape();
+	pickedShape = 27;
+	SetShapeTex(pickedShape, 6);
+	shapeTransformation(xScale, 50);
+	shapeTransformation(yScale, 50);
+	shapeTransformation(zScale, 100);
+	shapeTransformation(xGlobalTranslate, 5);
+	shapeTransformation(yGlobalTranslate, -2);
+	//shapeTransformation(zGlobalTranslate, 5);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeCopy(2, -1, TRIANGLES); //28 Add copy cube = Obstacle 1
+	SetNumOfShape();
+	pickedShape = 28;
+	SetShapeTex(pickedShape, 6);
+	shapeTransformation(xScale, 100);
+	shapeTransformation(yScale, 50);
+	shapeTransformation(zScale, 50);
+	//shapeTransformation(xGlobalTranslate, -8);
+	shapeTransformation(yGlobalTranslate, -5);
+	shapeTransformation(zGlobalTranslate, -5);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeCopy(2, -1, TRIANGLES); //29 Add copy cube = Obstacle 1
+	SetNumOfShape();
+	pickedShape = 29;
+	SetShapeTex(pickedShape, 6);
+	shapeTransformation(xScale, 100);
+	shapeTransformation(yScale, 50);
+	shapeTransformation(zScale, 50);
+	//shapeTransformation(xGlobalTranslate, -13);
+	//shapeTransformation(yGlobalTranslate, -10 / 2);
+	shapeTransformation(zGlobalTranslate, 5);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeCopy(2, -1, TRIANGLES); //30 Add copy cube = Obstacle 1
+	SetNumOfShape();
+	pickedShape = 30;
+	SetShapeTex(pickedShape, 6);
+	shapeTransformation(xScale, 50);
+	shapeTransformation(yScale, 50);
+	shapeTransformation(zScale, 100);
+	shapeTransformation(xGlobalTranslate, -10);
+	shapeTransformation(yGlobalTranslate, -2);
+	shapeTransformation(zGlobalTranslate, -5);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeCopy(2, -1, TRIANGLES); //31 Add copy cube = Obstacle 1
+	SetNumOfShape();
+	pickedShape = 31;
+	SetShapeTex(pickedShape, 6);
+	shapeTransformation(xScale, 50);
+	shapeTransformation(yScale, 50);
+	shapeTransformation(zScale, 100);
+	shapeTransformation(xGlobalTranslate, -10);
+	shapeTransformation(yGlobalTranslate, -8);
+	shapeTransformation(zGlobalTranslate, 3);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 }
 
 void Game::addRewards()
 {
-	//Rewards - 10:
-	addShape(Octahedron, -1, TRIANGLES, nullptr); //27 Add an Octahedron = Reward 1
+	//Rewards:
+	addShape(Octahedron, -1, TRIANGLES, nullptr); //32 Add an Octahedron = Reward 1
 	SetNumOfShape();
-	pickedShape = 27;
+	pickedShape = 32;
 	SetShapeTex(pickedShape, 7);
-	shapeTransformation(xGlobalTranslate, -5);
+	shapeTransformation(xGlobalTranslate, 730);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShape(Octahedron, -1, TRIANGLES, nullptr); //33 Add an Octahedron = Reward 1
+	SetNumOfShape();
+	pickedShape = 33;
+	SetShapeTex(pickedShape, 7);
+	shapeTransformation(xGlobalTranslate, 730);
+	shapeTransformation(zGlobalTranslate, 100);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 }
 
@@ -271,8 +339,6 @@ void Game::Init()
 
 	//Create the snake:
 	snake = new Player((Scene*) this, GetSizeOfShapes() + 1, 3);
-
-	//cameras[1]->myRotate()
 
 	//Activate();
 

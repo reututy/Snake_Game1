@@ -115,6 +115,7 @@ public:
 	void SetPickedShape(int value);
 	int GetNumOfShapes();
 	int GetCameraMode();
+	Camera* GetCamera(int index);
 
 	void SetCameraMode(int mode);
 	void SetNumOfShape();

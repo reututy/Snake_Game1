@@ -7,16 +7,18 @@ int main(int argc, char *argv[])
 	const int DISPLAY_HEIGHT = 800;
 	const float zFar = 10000.0f;
 	const float zNear = 1.0f;
-	const float CAM_ANGLE = 60.0f;
+	const float CAM_ANGLE = 100.0f;
 	const float relation = (float)DISPLAY_WIDTH / (float)DISPLAY_HEIGHT;
 	//Viewport vp1(400, 0, DISPLAY_WIDTH - 400, DISPLAY_HEIGHT - 0);
 	Viewport vp2(0, 0, 400, 266);
 	Viewport vp1(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
 	//Game *scn = new Game(glm::vec3(1.0f, 0.0f, 0.0f), CAM_ANGLE, zNear, zFar, vp1);
-	Game *scn = new Game(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1); //free view camera
+	Game *scn = new Game(glm::vec3(800.0f, 0.0f, 0.0f), CAM_ANGLE, zNear, zFar, vp1); //free view camera
 	scn->AddCamera(glm::vec3(4.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1);	//snake view camera
 	scn->AddCamera(glm::vec3(0.0f, 4.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1);	//up view camera
+
+	//scn->GetCamera(0)->SetProjection(zNear, zFar, vp2);
 
 	Display display(DISPLAY_WIDTH, DISPLAY_HEIGHT, "OpenGL");
 
@@ -33,6 +35,7 @@ int main(int argc, char *argv[])
 	//scn->addShader("../res/shaders/LBSShader"); //2
 	scn->addShader("../res/shaders/basicTrans1"); //3 - LBS
 	//scn->addShader("../res/shaders/basicShadertex");
+	scn->addShader("../res/shaders/basicShader2D"); //4
 
 	//snake textures:
 	scn->AddTexture("../res/textures/snake1.png", false); //0
@@ -46,12 +49,23 @@ int main(int argc, char *argv[])
 	scn->AddTexture("../res/textures/rock.png", false); //6
 	scn->AddTexture("../res/textures/gold_shine.png", false); //7
 	
-
+	/*
+	scn->AddTexture("../res/textures/plane.png", true);
+	scn->AddTexture(vp1.GetWidth(), vp1.GetHeight(), COLOR);
+	scn->AddTexture(vp1.GetWidth(), vp1.GetHeight(), DEPTH);
+	scn->AddBuffer(2, 0, COLOR);
+	
+	scn->AddCamera(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp2);
+	*/
 	display.setScene(scn);
 
 	while (!display.closeWindow())
 	{
+		//for (int i = 0; i < 2; i++)
 		scn->Draw(1, scn->GetCameraMode(), BACK, true, false);
+		//scn->Draw(1, scn->GetCameraMode(), COLOR, true, false);
+
+		//scn->Draw2D(4, 1, BACK, false, false);
 		scn->Motion();
 		display.SwapBuffers();
 		display.PollEvents();

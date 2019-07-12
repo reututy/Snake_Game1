@@ -453,8 +453,7 @@ void Scene::shapeTransformation(int type,float amt)
 				//newAxis = findAxis(vec3(0,1,0));
 				int i = pickedShape;
 				for (; chainParents[i] > 0; i = chainParents[i]);
-
-				shapes[i]->translateInSystem(*this, vec3(0, amt, 0), 0, false);
+					shapes[i]->translateInSystem(*this, vec3(0, amt, 0), 0, false);
 			}
 			break;
 		case zCameraTranslate:
@@ -465,8 +464,7 @@ void Scene::shapeTransformation(int type,float amt)
 				//	newAxis = findAxis(vec3(0,0,1));
 				int i = pickedShape;
 				for (; chainParents[i] > 0; i = chainParents[i]);
-
-				shapes[i]->translateInSystem(*this, vec3(0, 0, amt), 0, false);
+					shapes[i]->translateInSystem(*this, vec3(0, 0, amt), 0, false);
 			}
 			break;
 		default:
@@ -722,6 +720,11 @@ int Scene::GetNumOfShapes()
 int Scene::GetCameraMode()
 {
 	return camera_mode;
+}
+
+Camera* Scene::GetCamera(int index)
+{
+	return cameras[index];
 }
 
 void Scene::SetCameraMode(int mode)

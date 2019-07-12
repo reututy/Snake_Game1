@@ -76,7 +76,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				break;
 			case GLFW_KEY_UP:
 				if (scn->GetCameraMode() == scn->camera_mode::free_view && play == false)
-					scn->globalSystemRot(-5, glm::vec3(0, 0, 1), 1);
+					scn->globalSystemRot(5, glm::vec3(0, 0, 1), -1);
 					//scn->translateInSystem(*scn->GetShape(20), glm::vec3(0,0,1), 20, 0);
 				else if (scn->GetCameraMode() == scn->camera_mode::free_view && play == true)
 				{
@@ -93,7 +93,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				break;
 			case GLFW_KEY_DOWN:
 				if (scn->GetCameraMode() == scn->camera_mode::free_view && play == false)
-					scn->globalSystemRot(5, glm::vec3(0, 0, 1), 1);
+					scn->globalSystemRot(-5, glm::vec3(0, 0, 1), -1);
 				else if (scn->GetCameraMode() == scn->camera_mode::free_view && play == true)
 				{
 					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
@@ -138,10 +138,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				scn->shapeTransformation(scn->xGlobalTranslate, -0.1f);
 				break;
 			case GLFW_KEY_S: //Zoom in
-				scn->shapeTransformation(scn->zCameraTranslate, 5.0f);
+				scn->SetPickedShape(-1);
+				scn->shapeTransformation(scn->xCameraTranslate, 5.0f);
 				break;
 			case GLFW_KEY_W: //Zoom out
-				scn->shapeTransformation(scn->zCameraTranslate, -5.0f);
+				scn->SetPickedShape(-1);
+				scn->shapeTransformation(scn->xCameraTranslate, -5.0f);
 				break;
 			case GLFW_KEY_P: //Play
 				if (play == false)
