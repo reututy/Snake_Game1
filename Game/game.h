@@ -5,6 +5,7 @@
 
 class Game : public Scene
 {
+
 	Player* snake;
 
 	Bezier1D *head;
@@ -44,7 +45,8 @@ public:
 	/* Reut's addings:*/
 	void SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::vec4 dqRot[5], glm::vec4 dqTrans[5], const int shaderIndx, int index);
 	void LBSUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], glm::ivec3 jointIndices, const int shaderIndx, int index);
-	
+	void playTune(char* str);
+
 	int CreateCurveControlPoints(int counter, Bezier1D *curve);
 	void MoveControlCubes();
 	

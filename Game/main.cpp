@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 	{
 		//for (int i = 0; i < 2; i++)
 		scn->Draw(1, scn->GetCameraMode(), BACK, true, false);
-		//scn->Draw(1, scn->GetCameraMode(), COLOR, true, false);
+		scn->Draw(1, scn->GetCameraMode(), COLOR, true, false);
 
 		//scn->Draw2D(4, 1, BACK, false, false);
 		scn->Motion();
