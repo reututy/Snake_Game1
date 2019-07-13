@@ -1,21 +1,23 @@
 #include "game.h"
 #include <iostream>
-#include <SDL.h>
+//#include <SDL.h>
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 800
 #define SPEED -0.003
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
-#define CYCLE 20
+#define CYCLE 30
 #define ANGLE 10.0f
 
 bool once = false;
 int cycle = 0;
+/*
 static Uint8 *audio_pos; // global pointer to the audio buffer to be played
 static Uint32 audio_len; // remaining length of the sample we have to play
+*/
 
-void my_audio_callback(void *userdata, Uint8 *stream, int len);
+//void my_audio_callback(void *userdata, Uint8 *stream, int len);
 
 static void printMat(const glm::mat4 mat)
 {
@@ -85,6 +87,7 @@ void Game::addShape(int type, int parent, unsigned int mode, Bezier1D* curve)
 	}
 }
 
+/*
 void my_audio_callback(void *userdata, Uint8 *stream, int len)
 {
 	if (audio_len == 0)
@@ -96,7 +99,7 @@ void my_audio_callback(void *userdata, Uint8 *stream, int len)
 
 	audio_pos += len;
 	audio_len -= len;
-}
+}*/
 
 void Game::addBasicShapes()
 {
@@ -175,6 +178,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(yGlobalRotate, 180);
 	shapeTransformation(xGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
 	num_of_front_cube = 20;
+	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
 	addShapeCopy(2, -1, TRIANGLES); //21 Add copy cube = back
 	SetNumOfShape();
@@ -185,6 +189,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(xGlobalTranslate, WATER_PLANE_SCALE / 0.1);
 	shapeTransformation(xGlobalRotate, 180);
 	num_of_back_cube = 21;
+	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
 	addShapeCopy(2, -1, TRIANGLES); //22 Add copy cube = up
 	SetNumOfShape();
@@ -194,6 +199,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(zScale, WATER_PLANE_SCALE);
 	shapeTransformation(yGlobalTranslate, WATER_PLANE_SCALE / 0.1);
 	num_of_up_cube = 22;
+	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
 	addShapeCopy(2, -1, TRIANGLES); //23 Add copy cube = down
 	SetNumOfShape();
@@ -203,6 +209,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(zScale, WATER_PLANE_SCALE);
 	shapeTransformation(yGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
 	num_of_down_cube = 23;
+	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
 	addShapeCopy(2, -1, TRIANGLES); //24 Add copy cube = right
 	SetNumOfShape();
@@ -214,6 +221,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(xGlobalRotate, 180);
 	shapeTransformation(zGlobalRotate, 180);
 	num_of_right_cube = 24;
+	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
 	addShapeCopy(2, -1, TRIANGLES); //25 Add copy cube = right
 	SetNumOfShape();
@@ -225,6 +233,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(xGlobalRotate, 180);
 	shapeTransformation(zGlobalRotate, 180);
 	num_of_left_cube = 25;
+	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
 	//Set the parents to connect the Boxes:
 	/*
@@ -267,6 +276,7 @@ void Game::addObstacles()
 	//shapeTransformation(yGlobalTranslate, -10 / 2);
 	shapeTransformation(zGlobalTranslate, 5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
 	addShapeCopy(2, -1, TRIANGLES); //27 Add copy cube = Obstacle 1
 	SetNumOfShape();
@@ -279,6 +289,7 @@ void Game::addObstacles()
 	shapeTransformation(yGlobalTranslate, -2);
 	//shapeTransformation(zGlobalTranslate, 5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
 	addShapeCopy(2, -1, TRIANGLES); //28 Add copy cube = Obstacle 1
 	SetNumOfShape();
@@ -291,6 +302,7 @@ void Game::addObstacles()
 	shapeTransformation(yGlobalTranslate, -5);
 	shapeTransformation(zGlobalTranslate, -5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
 	addShapeCopy(2, -1, TRIANGLES); //29 Add copy cube = Obstacle 1
 	SetNumOfShape();
@@ -303,6 +315,7 @@ void Game::addObstacles()
 	//shapeTransformation(yGlobalTranslate, -10 / 2);
 	shapeTransformation(zGlobalTranslate, 5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
 	addShapeCopy(2, -1, TRIANGLES); //30 Add copy cube = Obstacle 1
 	SetNumOfShape();
@@ -315,6 +328,7 @@ void Game::addObstacles()
 	shapeTransformation(yGlobalTranslate, -2);
 	shapeTransformation(zGlobalTranslate, -5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
 	addShapeCopy(2, -1, TRIANGLES); //31 Add copy cube = Obstacle 1
 	SetNumOfShape();
@@ -327,6 +341,7 @@ void Game::addObstacles()
 	shapeTransformation(yGlobalTranslate, -8);
 	shapeTransformation(zGlobalTranslate, 3);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 }
 
 void Game::addRewards()
@@ -336,20 +351,25 @@ void Game::addRewards()
 	SetNumOfShape();
 	pickedShape = 32;
 	SetShapeTex(pickedShape, 7);
-	shapeTransformation(xGlobalTranslate, 730);
+	shapeTransformation(xGlobalTranslate, -5);
+	//shapeTransformation(xGlobalTranslate, 730);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::Reward);
 
+	/*
 	addShape(Octahedron, -1, TRIANGLES, nullptr); //33 Add an Octahedron = Reward 1
 	SetNumOfShape();
 	pickedShape = 33;
 	SetShapeTex(pickedShape, 7);
-	shapeTransformation(xGlobalTranslate, 730);
-	shapeTransformation(zGlobalTranslate, 100);
+	//shapeTransformation(xGlobalTranslate, 730);
+	//shapeTransformation(zGlobalTranslate, 100);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	*/
 }
 
 void Game::AddBubbles()
 {
+	/*
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP);	//bubble ball
 	SetNumOfShape();
 	pickedShape = 34;
@@ -392,6 +412,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -150);
 	shapeTransformation(xGlobalTranslate, -60);
 	SetShapeShader(pickedShape, LBS_SHADER);
+	*/
 }
 
 void Game::Init()
@@ -408,6 +429,15 @@ void Game::Init()
 
 	plane2D = new Shape(Plane, TRIANGLES);
 	plane2D->SetShader(4);
+	
+	for (int i = 0; i < shapes.size(); i++)
+	{
+		if (shapes[i]->GetType() != MeshConstructor::Kind::Bubble && 
+			shapes[i]->GetType() != MeshConstructor::Kind::Default && shapes[i]->GetMode() == TRIANGLES)
+		{
+			CreateBoundingBoxes(shapes[i]->GetMesh()->GetBVH(), i, 0);
+		}
+	}
 
 	//playTune("Sounds/Jump.wav");
 
@@ -440,6 +470,35 @@ void Game::Init()
 	pickedShape = -1;
 	//Activate();
 	*/
+}
+
+void Game::CreateBoundingBoxes(BVH* bvh, int parent, int level)
+{
+	addShapeCopy(1, -1, LINE_LOOP);
+	pickedShape = shapes.size() - 1;
+	bvh->GetBox()->SetNumOfShape(pickedShape);
+	bvh->SetLevel(level);
+
+	shapeTransformation(xLocalTranslate, bvh->GetBox()->GetFixedCenter().x);
+	shapeTransformation(yLocalTranslate, bvh->GetBox()->GetFixedCenter().y);
+	shapeTransformation(zLocalTranslate, bvh->GetBox()->GetFixedCenter().z);
+
+	shapeTransformation(xScale, bvh->GetBox()->GetSize().x);
+	shapeTransformation(yScale, bvh->GetBox()->GetSize().y);
+	shapeTransformation(zScale, bvh->GetBox()->GetSize().z);
+
+	//Hides all the shapes unless the large boxes
+	shapes[pickedShape]->Hide();
+	chainParents[pickedShape] = parent;
+	if (level == 0)
+		shapes[pickedShape]->Unhide();
+
+	//if (level == 8)
+	//shapes[pickedShape]->Unhide();
+	if (bvh->GetLeft() != nullptr)
+		CreateBoundingBoxes(bvh->GetLeft(), parent, level + 1);
+	if (bvh->GetRight() != nullptr)
+		CreateBoundingBoxes(bvh->GetRight(), parent, level + 1);
 }
 
 void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, const int shaderIndx)
@@ -493,6 +552,7 @@ void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
+	CheckCollisionDetection();
 }
 
 void Game::WhenRotate()
@@ -533,6 +593,7 @@ void Game::Motion()
 					pickedShape++;
 					shapeTransformation(zLocalRotate, ANGLE);
 					cycle = 0;
+					//playTune("Sounds/swim.wav");
 				}
 				else if (cycle == CYCLE) //not tail and not head
 				{
@@ -571,6 +632,7 @@ void Game::Motion()
 					pickedShape++;
 					shapeTransformation(zLocalRotate, -ANGLE);
 					cycle = 0;
+
 				}
 				else if (cycle == CYCLE) //not tail and not head
 				{
@@ -788,6 +850,7 @@ void Game::LBSUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm
 	s->Unbind();
 }
 
+/*
 void Game::playTune(char* str) 
 {
 
@@ -811,13 +874,13 @@ void Game::playTune(char* str)
 	audio_pos = wav_buffer; // copy sound buffer
 	audio_len = wav_length; // copy file length
 
-							/* Open the audio device */
+	//Open the audio device :
 	if (SDL_OpenAudio(&wav_spec, NULL) < 0) {
 		fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
 		exit(-1);
 	}
 
-	/* Start playing */
+	//Start playing:
 	SDL_PauseAudio(0);
 
 	// wait until we're don't playing
@@ -830,6 +893,7 @@ void Game::playTune(char* str)
 	SDL_FreeWAV(wav_buffer);
 
 }
+*/
 
 int Game::GetMINCTRL()
 {

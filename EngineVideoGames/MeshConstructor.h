@@ -5,16 +5,21 @@
 #include "Mesh.h"
 #include "bezier1D.h"
 #include "kdtree.h"
-
+#include "BVH.h"
 
 class MeshConstructor
 {
 	VertexArray vao;
 	IndexBuffer *ib;
+
+	/* Reut's Addings: */
+	Kdtree kdtree;
+	BVH bvh;
+	int kind;
+
 	std::vector<VertexBuffer*> vbs;
 	bool is2D;
 	int unsigned indicesNum;
-	IndexedModel model;
 	
 	void InitMesh(IndexedModel &model);
 	void CopyMesh(const MeshConstructor &mesh);
@@ -23,6 +28,7 @@ class MeshConstructor
 	static const unsigned int VEC2_ATTRIB_NUM = 1;
 	
 public:
+	enum Kind { Default, Snake, Reward, WallLoose, WallWin, Bubble };
 	enum SimpleShapes
 	{
 		Axis,
@@ -45,6 +51,13 @@ public:
 	void InitLine(IndexedModel &model);
 	~MeshConstructor(void);
 
-	IndexedModel* GetModel();
+	void CreateTree(std::vector<glm::vec3> positions);
+	BVH* CreateBVH(std::vector<glm::vec3> points, Node* curr_node, int level);
+	BoundingBox* MeshConstructor::CollisionDetection(MeshConstructor* other, glm::mat4 this_trans, glm::mat4 this_rot,
+		glm::mat4 other_trans, glm::mat4 other_rot);
+
+	BVH* GetBVH();
+	int GetKind();
+	void SetKind(int kind);
 };
 

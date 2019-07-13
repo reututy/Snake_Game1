@@ -9,16 +9,19 @@
 class Shape : public MovableGLM
 {
 private:
-
 	MeshConstructor *mesh = nullptr;
 	int texID;
 	int shaderID;
 	bool isCopy;
 	unsigned int mode;
+	int type;
 	bool toRender;
 	int num_of_shape;
+	bool found; //for rewards
 
 public:
+	enum Type {Snake, Rock, Reward, WallLoose, WallWin, Bubble};
+
 	Shape(const Shape& shape,unsigned int mode);
 	Shape(const std::string& fileName,unsigned int mode);
 	Shape(const int SimpleShapeType,unsigned int mode);
@@ -37,8 +40,14 @@ public:
 	
 	/* Reut's addings:*/
 	MeshConstructor* GetMesh();
+	unsigned int GetMode();
+	int GetType();
+	bool Getfound();
+	void Setfound(bool value);
+	void SetType(int value);
 	void ChangeMode(unsigned int new_mode);
 	void SetNumOfShape(int value);
 	int GetNumOfShape();
+	int CollisionDetection(Shape* other);
 };
 

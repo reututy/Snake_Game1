@@ -3,9 +3,15 @@
 #include "scene.h"
 #include <iostream>
 #include <glm/gtc/quaternion.hpp>
+#include <SDL.h>
 
 using namespace std;
 using namespace glm;
+
+static Uint8 *audio_pos; // global pointer to the audio buffer to be played
+static Uint32 audio_len; // remaining length of the sample we have to play
+
+void my_audio_callback(void *userdata, Uint8 *stream, int len);
 
 static void printMat(const mat4 mat)
 {
@@ -16,6 +22,62 @@ static void printMat(const mat4 mat)
 			printf("%f ", mat[j][i]);
 		printf("\n");
 	}
+}
+
+void my_audio_callback(void *userdata, Uint8 *stream, int len)
+{
+	if (audio_len == 0)
+		return;
+
+	len = (len > audio_len ? audio_len : len);
+	//SDL_memcpy (stream, audio_pos, len); 					// simply copy from one buffer into the other
+	SDL_MixAudio(stream, audio_pos, len, SDL_MIX_MAXVOLUME);// mix from one buffer into another
+
+	audio_pos += len;
+	audio_len -= len;
+}
+
+void Scene::playTune(char* str)
+{
+
+	if (SDL_Init(SDL_INIT_AUDIO) < 0)
+		return;
+
+	//local variables
+	static Uint32 wav_length; // length of our sample
+	static Uint8 *wav_buffer; // buffer containing our audio file
+	static SDL_AudioSpec wav_spec; // the specs of our piece of music
+
+
+
+	if (SDL_LoadWAV(str, &wav_spec, &wav_buffer, &wav_length) == NULL) {
+		return;
+	}
+	// set the callback function
+	wav_spec.callback = my_audio_callback;
+	wav_spec.userdata = NULL;
+	// set our global static variables
+	audio_pos = wav_buffer; // copy sound buffer
+	audio_len = wav_length; // copy file length
+
+							/* Open the audio device */
+	if (SDL_OpenAudio(&wav_spec, NULL) < 0) {
+		fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
+		exit(-1);
+	}
+
+	/* Start playing */
+	SDL_PauseAudio(0);
+
+	// wait until we're don't playing
+	while (audio_len > 0) {
+		SDL_Delay(100);
+	}
+
+	// shut everything down
+	SDL_CloseAudio();
+	SDL_FreeWAV(wav_buffer);
+
 }
 
 Scene::Scene()
@@ -742,4 +804,44 @@ void Scene::SetNumOfShape()
 	pickedShape = shapes.size() - 1;
 	shapes[pickedShape]->SetNumOfShape(pickedShape);
 	pickedShape = -1;
+}
+
+//Checks collision for each pair of shapes in scene and if collide, draw the appropriate bounding boxes.
+void Scene::CheckCollisionDetection()
+{
+	int box_to_draw_index;
+	bool cannot_move = false;
+	for (Shape* shape1 : shapes)
+	{
+		if (shape1->GetMode() == TRIANGLES && 
+			shape1->GetType() != MeshConstructor::Kind::Bubble && 
+			shape1->GetType() != MeshConstructor::Kind::Default)
+		{
+			for (Shape* shape2 : shapes)
+			{
+				if (shape2->GetMode() == TRIANGLES && 
+					shape2->GetType() != MeshConstructor::Kind::Bubble && 
+					shape2->GetType() != MeshConstructor::Kind::Default &&
+					shape1->GetNumOfShape() != shape2->GetNumOfShape())
+				{
+					box_to_draw_index = shape1->CollisionDetection(shape2);
+					if (box_to_draw_index > -1)
+					{
+						if (shape1->GetType() == Shape::Type::Reward && shape1->Getfound() == false)
+						{
+							shape2->Hide();
+							shape1->Setfound(true);
+						}
+						else if (shape2->GetType() == Shape::Type::Reward && shape2->Getfound() == false)
+						{
+							shape2->Hide();
+							shape2->Setfound(true);
+							playTune("Sounds/eat.wav");
+						}
+						//shapes[box_to_draw_index]->Unhide();
+					}
+				}
+			}
+		}
+	}
 }

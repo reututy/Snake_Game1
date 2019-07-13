@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)res/includes;$(SolutionDir)EngineVideoGame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)res/includes;$(SolutionDir)EngineVideoGame;$(SolutionDir)SDL2/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -76,6 +76,7 @@
   <ItemGroup>
     <ClCompile Include="bezier1D.cpp" />
     <ClCompile Include="bezier2D.cpp" />
+    <ClCompile Include="BVH.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="DrawBuffer.cpp" />
     <ClCompile Include="EulerAngles.cpp" />
@@ -98,6 +99,7 @@
   <ItemGroup>
     <ClInclude Include="bezier1D.h" />
     <ClInclude Include="bezier2D.h" />
+    <ClInclude Include="BVH.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="DrawBuffer.h" />
     <ClInclude Include="EulerAngles.h" />

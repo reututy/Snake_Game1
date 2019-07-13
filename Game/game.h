@@ -35,6 +35,7 @@ public:
 	void addObstacles(); 
 	void addRewards();
 	void AddBubbles();
+	void CreateBoundingBoxes(BVH* bvh, int parent, int level);
 
 	//	void Update( glm::mat4 MVP ,glm::mat4 *jointTransforms,const int length,const int  shaderIndx);
 	void Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, const int shaderIndx);
@@ -46,7 +47,7 @@ public:
 	/* Reut's addings:*/
 	void SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::vec4 dqRot[5], glm::vec4 dqTrans[5], const int shaderIndx, int index);
 	void LBSUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], glm::ivec3 jointIndices, const int shaderIndx, int index);
-	void playTune(char* str);
+	//void playTune(char* str);
 
 	int CreateCurveControlPoints(int counter, Bezier1D *curve);
 	void MoveControlCubes();

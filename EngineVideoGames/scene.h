@@ -120,7 +120,8 @@ public:
 	void SetCameraMode(int mode);
 	void SetNumOfShape();
 	void SetNumOfShapes(int value);
-
+	void CheckCollisionDetection();
+	void playTune(char* str);
 
 private:	
 	std::vector<DrawBuffer*> buffers;

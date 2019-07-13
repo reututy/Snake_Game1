@@ -76,6 +76,31 @@ MeshConstructor* Shape::GetMesh()
 	return mesh;
 }
 
+unsigned int Shape::GetMode()
+{
+	return mode;
+}
+
+int Shape::GetType()
+{
+	return type;
+}
+
+bool Shape::Getfound()
+{
+	return found;
+}
+
+void Shape::Setfound(bool value)
+{
+	found = value;
+}
+
+void Shape::SetType(int value)
+{
+	type = value;
+}
+
 void Shape::ChangeMode(unsigned int new_mode)
 {
 	this->mode = new_mode;
@@ -89,5 +114,16 @@ void Shape::SetNumOfShape(int value)
 int Shape::GetNumOfShape()
 {
 	return num_of_shape;
+}
+
+// Returns -1 if there is no collision 
+int Shape::CollisionDetection(Shape* other)
+{
+	BoundingBox* box_that_collides = mesh->CollisionDetection(other->GetMesh(),
+		glm::translate(glm::mat4(1), glm::vec3(this->getTraslate())), GetRot(),
+		glm::translate(glm::mat4(1), glm::vec3(other->getTraslate())), other->GetRot());
+	if (box_that_collides != nullptr)
+		return box_that_collides->GetNumOfShape();
+	return -1;
 }
 

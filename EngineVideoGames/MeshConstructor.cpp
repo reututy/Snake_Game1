@@ -6,9 +6,11 @@
 #include "bezier2D.h"
 #include "obj_loader.h"
 
+#define MINIMUM_VERTCIES_FOR_BVH 2
 
 MeshConstructor::MeshConstructor(const int type)
 {
+	this->kind = Kind::Default;
 	switch (type)
 	{
 	case Axis:	
@@ -34,6 +36,7 @@ MeshConstructor::MeshConstructor(const int type)
 
 MeshConstructor::MeshConstructor(const std::string& fileName)
 {
+	this->kind = Kind::Default;
 	InitMesh(OBJModel(fileName).ToIndexedModel());
 }
 
@@ -41,14 +44,14 @@ MeshConstructor::MeshConstructor(Bezier1D *curve,bool isSurface,unsigned int res
 {
 	if (isSurface)
 	{
+		this->kind = Kind::Default;
 		Bezier2D surface(*curve, curve->GetAxis(), 4);
-		model = surface.GetSurface(resT, resS);
-		InitMesh(model);
+		InitMesh(surface.GetSurface(resT, resS));
 	}
 	else
 	{
-		model = curve->GetLine(resT);
-		InitLine(model);
+		this->kind = Kind::Default;
+		InitLine(curve->GetLine(resT));
 	}
 }
 
@@ -92,7 +95,10 @@ void MeshConstructor::InitLine(IndexedModel &model){
 	
 }
 
-void MeshConstructor::InitMesh( IndexedModel &model){
+void MeshConstructor::InitMesh(IndexedModel &model)
+{
+	if (kind != Kind::Default && kind != Kind::Bubble)
+		CreateTree(model.positions);
 
 	int verticesNum = model.positions.size();
 	indicesNum = model.indices.size();
@@ -158,7 +164,128 @@ void MeshConstructor::CopyMesh(const MeshConstructor &mesh){
 	
 }
 
-IndexedModel* MeshConstructor::GetModel()
+void MeshConstructor::CreateTree(std::vector<glm::vec3> positions)
 {
-	return &model;
+	std::list<glm::vec4> points;
+	for (int i = 0; i < positions.size(); i++)
+		points.push_back(glm::vec4(positions.at(i), 1));
+	kdtree.makeTree(points);
+	//kdtree.printTree(kdtree.getRoot());
+
+	this->bvh = *CreateBVH(positions, kdtree.getRoot(), 0);
+}
+
+BVH* MeshConstructor::CreateBVH(std::vector<glm::vec3> points, Node* curr_node, int level)
+{
+	BVH* bvh = new BVH();
+	int curr_cut = level % 3;
+	glm::vec3 center = glm::vec3(0);
+	glm::vec3 size = glm::vec3(0);
+	glm::vec3 sum = glm::vec3(0);
+	glm::vec3 max = glm::vec3(0);
+
+	//Calculates the center of the box:
+	for (int i = 0; i < points.size(); i++)
+		sum += points[i];
+	center = (1.0f / points.size()) * sum;
+	//Calculates the size of the box:
+	for (int i = 0; i < points.size(); i++)
+		size = glm::max(size, glm::abs(points[i] - center));
+
+	bvh->SetBoundingBox(center, size);
+	bvh->GetBox()->SetNumOfPoints(points.size());
+
+	std::vector<glm::vec3> new_points;
+	if (curr_node->left != nullptr && points.size() >= MINIMUM_VERTCIES_FOR_BVH)
+	{
+		for (int i = 0; i < points.size(); i++)
+		{
+			if (points[i][curr_cut] <= curr_node->data[curr_cut])
+			{
+				new_points.push_back(points[i]);
+			}
+		}
+		bvh->SetLeft(CreateBVH(new_points, curr_node->left, level + 1));
+	}
+	new_points.clear();
+	if (curr_node->right != nullptr && points.size() >= MINIMUM_VERTCIES_FOR_BVH)
+	{
+		for (int i = 0; i < points.size(); i++)
+		{
+			if (points[i][curr_cut] > curr_node->data[curr_cut])
+			{
+				new_points.push_back(points[i]);
+			}
+		}
+		bvh->SetRight(CreateBVH(new_points, curr_node->right, level + 1));
+	}
+	return bvh;
+}
+
+BVH* MeshConstructor::GetBVH()
+{
+	return &bvh;
+}
+
+int MeshConstructor::GetKind()
+{
+	return kind;
+}
+
+void MeshConstructor::SetKind(int kind)
+{
+	this->kind = kind;
+}
+
+// Checks collision between two bvh using BB CheckCollision
+BoundingBox* MeshConstructor::CollisionDetection(MeshConstructor* other, glm::mat4 this_trans, glm::mat4 this_rot,
+	glm::mat4 other_trans, glm::mat4 other_rot)
+{
+	//First Checks if the big boxes collides:
+	std::vector<std::pair<BVH*, BVH*>> queue;
+	BVH* this_curr = &this->bvh;
+	BVH* other_curr = other->GetBVH();
+
+	queue.emplace_back(this_curr, other_curr);
+	while (!queue.empty())
+	{
+		this_curr = queue.back().first;
+		other_curr = queue.back().second;
+		queue.pop_back();
+
+		if (this_curr != nullptr && other_curr != nullptr)
+		{
+			this_curr->GetBox()->UpdateDynamicVectors(this_trans, this_rot);
+			other_curr->GetBox()->UpdateDynamicVectors(other_trans, other_rot);
+			if (this_curr->GetBox()->CheckCollision(other_curr->GetBox()))
+			{
+				if (this_curr->IsSmallestBox() && other_curr->IsSmallestBox())
+				{
+					//std::cout << "this_level: " << this_curr->GetLevel() << std::endl;
+					//std::cout << "other_curr: " << other_curr->GetLevel() << std::endl;
+					//std::cout << "They collide! " << std::endl;
+					return this_curr->GetBox();
+				}
+				//Pushes children boxes into queue
+				if (this_curr->IsSmallestBox() && other_curr != nullptr)
+				{
+					queue.emplace_back(this_curr, other_curr->GetLeft());
+					queue.emplace_back(this_curr, other_curr->GetRight());
+				}
+				else if (other_curr->IsSmallestBox() && this_curr != nullptr)
+				{
+					queue.emplace_back(this_curr->GetLeft(), other_curr);
+					queue.emplace_back(this_curr->GetRight(), other_curr);
+				}
+				else
+				{
+					queue.emplace_back(this_curr->GetLeft(), other_curr->GetLeft());
+					queue.emplace_back(this_curr->GetLeft(), other_curr->GetRight());
+					queue.emplace_back(this_curr->GetRight(), other_curr->GetLeft());
+					queue.emplace_back(this_curr->GetRight(), other_curr->GetRight());
+				}
+			}
+		}
+	}
+	return nullptr;
 }
