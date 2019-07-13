@@ -39,10 +39,10 @@ public:
 		BezierLine,
 		BezierSurface,
 	};
-	MeshConstructor(const int type);
-	MeshConstructor(Bezier1D *curve,bool isSurface,unsigned int resT,unsigned int resS);
+	MeshConstructor(const int type, const int kind);
+	MeshConstructor(Bezier1D *curve,bool isSurface,unsigned int resT,unsigned int resS, const int kind);
 	MeshConstructor(const MeshConstructor &mesh);
-	MeshConstructor(const std::string& fileName);
+	MeshConstructor(const std::string& fileName, const int kind);
 
 	void Bind() {vao.Bind();}
 	void Unbind() {vao.Unbind();}

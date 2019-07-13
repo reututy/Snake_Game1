@@ -20,7 +20,7 @@ Player::Player(Scene* Scn, int Head_index, int Num_of_links)
 	move_left = false;
 	move_up = false;
 	move_down = false;
-	direction = glm::vec3(-0.001, 0, 0);
+	direction = glm::vec3(-1, 0, 0);
 	curr_num_of_shape = head_index;
 }
 
@@ -36,7 +36,7 @@ void Player::CreatePlayer()
 	{
 		if (i == head_index)
 		{
-			scn->addShapeCopy(7, -1, Scene::QUADS); //Add copy of head (7)
+			scn->addShapeCopy(7, -1, Scene::QUADS, MeshConstructor::Kind::Snake); //Add copy of head (7)
 			scn->SetNumOfShape();
 			scn->SetPickedShape(head_index);
 			scn->shapeTransformation(Scene::xGlobalRotate, 180.0f);	//in order to put the eyes in place
@@ -45,7 +45,7 @@ void Player::CreatePlayer()
 		}
 		else if (i == head_index + num_of_links + 1)
 		{
-			scn->addShapeCopy(13, -1, Scene::QUADS); //Add copy of tail
+			scn->addShapeCopy(13, -1, Scene::QUADS, MeshConstructor::Kind::Default); //Add copy of tail
 			scn->SetNumOfShape();
 			scn->SetPickedShape(scn->GetSizeOfShapes());
 			scn->shapeTransformation(Scene::xGlobalRotate, 180.0f);	//in order to put the eyes in place
@@ -56,7 +56,7 @@ void Player::CreatePlayer()
 		}
 		else
 		{
-			scn->addShapeCopy(19, -1, Scene::QUADS); //Add copy of cylinder (19) for body
+			scn->addShapeCopy(19, -1, Scene::QUADS, MeshConstructor::Kind::Default); //Add copy of cylinder (19) for body
 			scn->SetNumOfShape();
 			scn->SetPickedShape(scn->GetSizeOfShapes());
 			scn->shapeTransformation(Scene::xGlobalRotate, 180.0f);	//in order to put the eyes in place

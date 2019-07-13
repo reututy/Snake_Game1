@@ -8,9 +8,9 @@
 
 #define MINIMUM_VERTCIES_FOR_BVH 2
 
-MeshConstructor::MeshConstructor(const int type)
+MeshConstructor::MeshConstructor(const int type, const int kind)
 {
-	this->kind = Kind::Default;
+	this->kind = kind;
 	switch (type)
 	{
 	case Axis:	
@@ -34,23 +34,23 @@ MeshConstructor::MeshConstructor(const int type)
 	
 }
 
-MeshConstructor::MeshConstructor(const std::string& fileName)
+MeshConstructor::MeshConstructor(const std::string& fileName, const int kind)
 {
-	this->kind = Kind::Default;
+	this->kind = kind;
 	InitMesh(OBJModel(fileName).ToIndexedModel());
 }
 
-MeshConstructor::MeshConstructor(Bezier1D *curve,bool isSurface,unsigned int resT,unsigned int resS)
+MeshConstructor::MeshConstructor(Bezier1D *curve,bool isSurface,unsigned int resT,unsigned int resS, const int kind)
 {
 	if (isSurface)
 	{
-		this->kind = Kind::Default;
+		this->kind = kind;
 		Bezier2D surface(*curve, curve->GetAxis(), 4);
 		InitMesh(surface.GetSurface(resT, resS));
 	}
 	else
 	{
-		this->kind = Kind::Default;
+		this->kind = kind;
 		InitLine(curve->GetLine(resT));
 	}
 }

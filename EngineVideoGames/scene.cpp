@@ -115,19 +115,19 @@ Scene::Scene(vec3 position,float angle,float near, float far,Viewport &vp)
 void Scene::addShapeFromFile(const std::string& fileName,int parent,unsigned int mode)
 {
 	chainParents.push_back(parent);
-	shapes.push_back(new Shape(fileName,mode));
+	shapes.push_back(new Shape(fileName,mode, MeshConstructor::Kind::Default));
 }
 
-void Scene::addShape(int type, int parent,unsigned int mode)
+void Scene::addShape(int type, int parent,unsigned int mode, const int kind)
 {
 	chainParents.push_back(parent);
-	shapes.push_back(new Shape(type,mode));
+	shapes.push_back(new Shape(type,mode, kind));
 }
 
-void Scene::addShapeCopy(int indx,int parent,unsigned int mode)
+void Scene::addShapeCopy(int indx,int parent,unsigned int mode, const int kind)
 {
 	chainParents.push_back(parent);
-	shapes.push_back(new Shape(*shapes[indx],mode));
+	shapes.push_back(new Shape(*shapes[indx],mode, kind));
 }
 
 void Scene::addShader(const std::string& fileName)
@@ -811,34 +811,38 @@ void Scene::CheckCollisionDetection()
 {
 	int box_to_draw_index;
 	bool cannot_move = false;
-	for (Shape* shape1 : shapes)
+	//for (Shape* shape1 : shapes)
+	for (int i = 0; i < shapes.size(); i++)
 	{
+		Shape* shape1 = shapes[i];
 		if (shape1->GetMode() == TRIANGLES && 
-			shape1->GetType() != MeshConstructor::Kind::Bubble && 
-			shape1->GetType() != MeshConstructor::Kind::Default)
+			shape1->GetMesh()->GetKind() != MeshConstructor::Kind::Bubble && 
+			shape1->GetMesh()->GetKind() != MeshConstructor::Kind::Default)
 		{
-			for (Shape* shape2 : shapes)
+			//for (Shape* shape2 : shapes)
+			for (int j = 0; j < shapes.size(); j++)
 			{
+				Shape* shape2 = shapes[j];
 				if (shape2->GetMode() == TRIANGLES && 
-					shape2->GetType() != MeshConstructor::Kind::Bubble && 
-					shape2->GetType() != MeshConstructor::Kind::Default &&
+					shape2->GetMesh()->GetKind() != MeshConstructor::Kind::Bubble &&
+					shape2->GetMesh()->GetKind() != MeshConstructor::Kind::Default &&
 					shape1->GetNumOfShape() != shape2->GetNumOfShape())
 				{
 					box_to_draw_index = shape1->CollisionDetection(shape2);
 					if (box_to_draw_index > -1)
 					{
-						if (shape1->GetType() == Shape::Type::Reward && shape1->Getfound() == false)
+						if (shape1->GetMesh()->GetKind() == Shape::Type::Reward && shape1->Getfound() == false)
 						{
 							shape2->Hide();
 							shape1->Setfound(true);
 						}
-						else if (shape2->GetType() == Shape::Type::Reward && shape2->Getfound() == false)
+						else if (shape2->GetMesh()->GetKind() == Shape::Type::Reward && shape2->Getfound() == false)
 						{
 							shape2->Hide();
 							shape2->Setfound(true);
 							playTune("Sounds/eat.wav");
 						}
-						//shapes[box_to_draw_index]->Unhide();
+						shapes[box_to_draw_index]->Unhide();
 					}
 				}
 			}

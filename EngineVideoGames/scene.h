@@ -46,8 +46,8 @@ public:
 	Scene(glm::vec3 position,float angle,float near, float far,Viewport &vp);
 	
 	void addShapeFromFile(const std::string& fileName,int parent,unsigned int mode);
-	virtual void addShape(int type,int parent,unsigned int mode);
-	void addShapeCopy(int indx,int parent,unsigned int mode);
+	virtual void addShape(int type,int parent,unsigned int mode, const int kind);
+	void addShapeCopy(int indx,int parent,unsigned int mode, const int kind);
 	
 	void addShader(const std::string& fileName);
 	void AddTexture(const std::string& textureFileName, bool for2D);

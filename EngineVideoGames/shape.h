@@ -22,10 +22,10 @@ private:
 public:
 	enum Type {Snake, Rock, Reward, WallLoose, WallWin, Bubble};
 
-	Shape(const Shape& shape,unsigned int mode);
-	Shape(const std::string& fileName,unsigned int mode);
-	Shape(const int SimpleShapeType,unsigned int mode);
-	Shape(Bezier1D *curve, unsigned int xResolution,unsigned int yResolution,bool is2D,unsigned int mode);
+	Shape(const Shape& shape,unsigned int mode, const int kind);
+	Shape(const std::string& fileName,unsigned int mode, const int kind);
+	Shape(const int SimpleShapeType,unsigned int mode, const int kind);
+	Shape(Bezier1D *curve, unsigned int xResolution,unsigned int yResolution,bool is2D,unsigned int mode, const int kind);
 	virtual ~Shape(void);
 	
 	void Draw(const std::vector<Shader*> shaders, const std::vector<Texture*> textures,bool isPicking);

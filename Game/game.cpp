@@ -4,7 +4,7 @@
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 800
-#define SPEED -0.003
+#define SPEED 0.01
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 #define CYCLE 30
@@ -73,17 +73,17 @@ Game::~Game(void)
 	delete body1;
 }
 
-void Game::addShape(int type, int parent, unsigned int mode, Bezier1D* curve)
+void Game::addShape(int type, int parent, unsigned int mode, Bezier1D* curve, int kind)
 {
 	chainParents.push_back(parent);
 	if (type != BezierLine && type != BezierSurface)
-		shapes.push_back(new Shape(type, mode));
+		shapes.push_back(new Shape(type, mode, kind));
 	else
 	{
 		if (type == BezierLine)
-			shapes.push_back(new Shape(curve, 30, 30, false, mode));
+			shapes.push_back(new Shape(curve, 30, 30, false, mode, kind));
 		else
-			shapes.push_back(new Shape(curve, 30, 30, true, mode));
+			shapes.push_back(new Shape(curve, 30, 30, true, mode, kind));
 	}
 }
 
@@ -103,10 +103,10 @@ void my_audio_callback(void *userdata, Uint8 *stream, int len)
 
 void Game::addBasicShapes()
 {
-	addShape(Axis, -1, LINES, nullptr); //0 Add Axis
+	addShape(Axis, -1, LINES, nullptr, MeshConstructor::Kind::Default); //0 Add Axis
 	SetNumOfShape();
 	//HideShape(0);
-	addShape(BezierLine, -1, LINE_STRIP, head); //1 Add curve
+	addShape(BezierLine, -1, LINE_STRIP, head, MeshConstructor::Kind::Default); //1 Add curve
 	SetNumOfShape();
 	//Translate all scene away from camera
 	myTranslate(glm::vec3(0, 0, -20), 0);
@@ -117,7 +117,7 @@ void Game::addBasicShapes()
 	shapeTransformation(xScale, 20);
 	shapeTransformation(zScale, 20);
 
-	addShape(Cube, -1, TRIANGLES, nullptr); //2 Add Cube for copying
+	addShape(Cube, -1, TRIANGLES, nullptr, MeshConstructor::Kind::Default); //2 Add Cube for copying
 	SetNumOfShape();
 	pickedShape = 2;
 	HideShape(pickedShape);
@@ -127,7 +127,7 @@ void Game::addBasicShapes()
 	MAX_CTRL = num_of_shapes;
 
 	//create 3d of head to copy:
-	addShape(Scene::shapes::BezierSurface, -1, QUADS, head); //7 Add head to copy
+	addShape(Scene::shapes::BezierSurface, -1, QUADS, head, MeshConstructor::Kind::Default); //7 Add head to copy
 	SetNumOfShape();
 	for (int i = MIN_CTRL - 2; i < MAX_CTRL; i++)
 	{
@@ -136,11 +136,11 @@ void Game::addBasicShapes()
 	}
 
 	//create 3d of a tail to copy:
-	addShape(BezierLine, -1, LINE_STRIP, tail); //8 Add curve
+	addShape(BezierLine, -1, LINE_STRIP, tail, MeshConstructor::Kind::Default); //8 Add curve
 	SetNumOfShape();
 	num_of_shapes = CreateCurveControlPoints(9, tail); //returns 13
 
-	addShape(Scene::shapes::BezierSurface, -1, QUADS, tail); // 13 Add tail to copy
+	addShape(Scene::shapes::BezierSurface, -1, QUADS, tail, MeshConstructor::Kind::Default); // 13 Add tail to copy
 	SetNumOfShape();
 	for (int i = 8; i < num_of_shapes + 1; i++)
 	{
@@ -149,11 +149,11 @@ void Game::addBasicShapes()
 	}
 
 	//create 3d of a cylinder to copy:
-	addShape(BezierLine, -1, LINE_STRIP, body1); //14 Add curve 
+	addShape(BezierLine, -1, LINE_STRIP, body1, MeshConstructor::Kind::Default); //14 Add curve 
 	SetNumOfShape();
 	num_of_shapes = CreateCurveControlPoints(15, body1); //returns 19
 
-	addShape(Scene::shapes::BezierSurface, -1, QUADS, body1); // 19 Add cylinder to copy 
+	addShape(Scene::shapes::BezierSurface, -1, QUADS, body1, MeshConstructor::Kind::Default); // 19 Add cylinder to copy 
 	SetNumOfShape();
 	for (int i = 14; i < num_of_shapes + 1; i++)
 	{
@@ -169,7 +169,7 @@ void Game::addBasicShapes()
 void Game::addBoundryBoxes()
 {
 	//Added boundry Boxes of the game: 
-	addShapeCopy(2, -1, TRIANGLES); //20 Add copy cube = front
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //20 Add copy cube = front
 	SetNumOfShape();
 	pickedShape = 20;
 	shapeTransformation(xScale, 0.1);
@@ -178,9 +178,8 @@ void Game::addBoundryBoxes()
 	shapeTransformation(yGlobalRotate, 180);
 	shapeTransformation(xGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
 	num_of_front_cube = 20;
-	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
-	addShapeCopy(2, -1, TRIANGLES); //21 Add copy cube = back
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //21 Add copy cube = back
 	SetNumOfShape();
 	pickedShape = 21;
 	shapeTransformation(xScale, 0.1);
@@ -189,9 +188,8 @@ void Game::addBoundryBoxes()
 	shapeTransformation(xGlobalTranslate, WATER_PLANE_SCALE / 0.1);
 	shapeTransformation(xGlobalRotate, 180);
 	num_of_back_cube = 21;
-	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
-	addShapeCopy(2, -1, TRIANGLES); //22 Add copy cube = up
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //22 Add copy cube = up
 	SetNumOfShape();
 	pickedShape = 22;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
@@ -199,9 +197,8 @@ void Game::addBoundryBoxes()
 	shapeTransformation(zScale, WATER_PLANE_SCALE);
 	shapeTransformation(yGlobalTranslate, WATER_PLANE_SCALE / 0.1);
 	num_of_up_cube = 22;
-	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
-	addShapeCopy(2, -1, TRIANGLES); //23 Add copy cube = down
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //23 Add copy cube = down
 	SetNumOfShape();
 	pickedShape = 23;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
@@ -209,9 +206,8 @@ void Game::addBoundryBoxes()
 	shapeTransformation(zScale, WATER_PLANE_SCALE);
 	shapeTransformation(yGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
 	num_of_down_cube = 23;
-	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
-	addShapeCopy(2, -1, TRIANGLES); //24 Add copy cube = right
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //24 Add copy cube = right
 	SetNumOfShape();
 	pickedShape = 24;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
@@ -221,9 +217,8 @@ void Game::addBoundryBoxes()
 	shapeTransformation(xGlobalRotate, 180);
 	shapeTransformation(zGlobalRotate, 180);
 	num_of_right_cube = 24;
-	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
-	addShapeCopy(2, -1, TRIANGLES); //25 Add copy cube = right
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //25 Add copy cube = right
 	SetNumOfShape();
 	pickedShape = 25;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
@@ -233,7 +228,6 @@ void Game::addBoundryBoxes()
 	shapeTransformation(xGlobalRotate, 180);
 	shapeTransformation(zGlobalRotate, 180);
 	num_of_left_cube = 25;
-	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
 	//Set the parents to connect the Boxes:
 	/*
@@ -265,7 +259,7 @@ void Game::addBoundryBoxes()
 void Game::addObstacles()
 {
 	//Obstacles:
-	addShapeCopy(2, -1, TRIANGLES); //26 Add copy cube = Obstacle 1
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //26 Add copy cube = Obstacle 1
 	SetNumOfShape();
 	pickedShape = 26;
 	SetShapeTex(pickedShape, 6);
@@ -276,9 +270,8 @@ void Game::addObstacles()
 	//shapeTransformation(yGlobalTranslate, -10 / 2);
 	shapeTransformation(zGlobalTranslate, 5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
-	addShapeCopy(2, -1, TRIANGLES); //27 Add copy cube = Obstacle 1
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //27 Add copy cube = Obstacle 1
 	SetNumOfShape();
 	pickedShape = 27;
 	SetShapeTex(pickedShape, 6);
@@ -289,9 +282,8 @@ void Game::addObstacles()
 	shapeTransformation(yGlobalTranslate, -2);
 	//shapeTransformation(zGlobalTranslate, 5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
-	addShapeCopy(2, -1, TRIANGLES); //28 Add copy cube = Obstacle 1
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //28 Add copy cube = Obstacle 1
 	SetNumOfShape();
 	pickedShape = 28;
 	SetShapeTex(pickedShape, 6);
@@ -302,9 +294,8 @@ void Game::addObstacles()
 	shapeTransformation(yGlobalTranslate, -5);
 	shapeTransformation(zGlobalTranslate, -5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
-	addShapeCopy(2, -1, TRIANGLES); //29 Add copy cube = Obstacle 1
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //29 Add copy cube = Obstacle 1
 	SetNumOfShape();
 	pickedShape = 29;
 	SetShapeTex(pickedShape, 6);
@@ -315,9 +306,8 @@ void Game::addObstacles()
 	//shapeTransformation(yGlobalTranslate, -10 / 2);
 	shapeTransformation(zGlobalTranslate, 5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
-	addShapeCopy(2, -1, TRIANGLES); //30 Add copy cube = Obstacle 1
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //30 Add copy cube = Obstacle 1
 	SetNumOfShape();
 	pickedShape = 30;
 	SetShapeTex(pickedShape, 6);
@@ -328,9 +318,8 @@ void Game::addObstacles()
 	shapeTransformation(yGlobalTranslate, -2);
 	shapeTransformation(zGlobalTranslate, -5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 
-	addShapeCopy(2, -1, TRIANGLES); //31 Add copy cube = Obstacle 1
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //31 Add copy cube = Obstacle 1
 	SetNumOfShape();
 	pickedShape = 31;
 	SetShapeTex(pickedShape, 6);
@@ -341,20 +330,27 @@ void Game::addObstacles()
 	shapeTransformation(yGlobalTranslate, -8);
 	shapeTransformation(zGlobalTranslate, 3);
 	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::WallLoose);
 }
 
 void Game::addRewards()
 {
 	//Rewards:
-	addShape(Octahedron, -1, TRIANGLES, nullptr); //32 Add an Octahedron = Reward 1
+	addShape(Octahedron, -1, TRIANGLES, nullptr, MeshConstructor::Kind::Reward); //32 Add an Octahedron for copy = Reward 1
 	SetNumOfShape();
 	pickedShape = 32;
 	SetShapeTex(pickedShape, 7);
 	shapeTransformation(xGlobalTranslate, -5);
 	//shapeTransformation(xGlobalTranslate, 730);
 	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->GetMesh()->SetKind(MeshConstructor::Kind::Reward);
+
+	/*
+	addShapeCopy(32, -1, TRIANGLES, MeshConstructor::Kind::Reward); //33 Add copy cube = Obstacle 1
+	SetNumOfShape();
+	pickedShape = 33;
+	SetShapeTex(pickedShape, 7);
+	shapeTransformation(xGlobalTranslate, -5);
+	//shapeTransformation(xGlobalTranslate, 730);
+	SetShapeShader(pickedShape, BASIC_SHADER);*/
 
 	/*
 	addShape(Octahedron, -1, TRIANGLES, nullptr); //33 Add an Octahedron = Reward 1
@@ -427,14 +423,18 @@ void Game::Init()
 	//Create the snake:
 	snake = new Player((Scene*) this, GetSizeOfShapes() + 1, 3);
 
-	plane2D = new Shape(Plane, TRIANGLES);
-	plane2D->SetShader(4);
-	
+	//plane2D = new Shape(Plane, TRIANGLES);
+	//plane2D->SetShader(4);
+	int x;
 	for (int i = 0; i < shapes.size(); i++)
 	{
-		if (shapes[i]->GetType() != MeshConstructor::Kind::Bubble && 
-			shapes[i]->GetType() != MeshConstructor::Kind::Default && shapes[i]->GetMode() == TRIANGLES)
+		if (shapes[i]->GetMesh()->GetKind() != MeshConstructor::Kind::Bubble && 
+			shapes[i]->GetMesh()->GetKind() != MeshConstructor::Kind::Default && shapes[i]->GetMode() == TRIANGLES)
 		{
+			if (i == 37) 
+			{ 
+				x = 7; 
+			}
 			CreateBoundingBoxes(shapes[i]->GetMesh()->GetBVH(), i, 0);
 		}
 	}
@@ -474,7 +474,7 @@ void Game::Init()
 
 void Game::CreateBoundingBoxes(BVH* bvh, int parent, int level)
 {
-	addShapeCopy(1, -1, LINE_LOOP);
+	addShapeCopy(2, -1, LINE_LOOP, MeshConstructor::Kind::Default);
 	pickedShape = shapes.size() - 1;
 	bvh->GetBox()->SetNumOfShape(pickedShape);
 	bvh->SetLevel(level);
@@ -584,9 +584,9 @@ void Game::Motion()
 			{
 				if (pickedShape == snake->GetHeadIndex())
 				{
-					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
-					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
-					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+					shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(zLocalRotate, -ANGLE);
 					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0)));
@@ -597,9 +597,9 @@ void Game::Motion()
 				}
 				else if (cycle == CYCLE) //not tail and not head
 				{
-					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
-					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
-					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+					shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(zLocalRotate, -ANGLE);
 					pickedShape++;
@@ -609,9 +609,9 @@ void Game::Motion()
 			}
 			else if (cycle == CYCLE) //if tail
 			{
-				shapeTransformation(xLocalTranslate, snake->GetDirection().x);
-				shapeTransformation(yLocalTranslate, snake->GetDirection().y);
-				shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+				shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+				shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+				shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 				shapeTransformation(zLocalRotate, -ANGLE);
 				snake->SetMoveUp(false);
@@ -623,9 +623,9 @@ void Game::Motion()
 			{
 				if (pickedShape == snake->GetHeadIndex())
 				{
-					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
-					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
-					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+					shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(zLocalRotate, ANGLE);
 					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0)));
@@ -636,9 +636,9 @@ void Game::Motion()
 				}
 				else if (cycle == CYCLE) //not tail and not head
 				{
-					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
-					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
-					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+					shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(zLocalRotate, ANGLE);
 					pickedShape++;
@@ -648,9 +648,9 @@ void Game::Motion()
 			}
 			else if (cycle == CYCLE) //if tail
 			{
-				shapeTransformation(xLocalTranslate, snake->GetDirection().x);
-				shapeTransformation(yLocalTranslate, snake->GetDirection().y);
-				shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+				shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+				shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+				shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 				shapeTransformation(zLocalRotate, ANGLE);
 				snake->SetMoveDown(false);
@@ -662,9 +662,9 @@ void Game::Motion()
 			{
 				if (pickedShape == snake->GetHeadIndex())
 				{
-					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
-					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
-					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+					shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(yLocalRotate, -ANGLE);
 					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0)));
@@ -674,9 +674,9 @@ void Game::Motion()
 				}
 				else if (cycle == CYCLE) //not tail and not head
 				{
-					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
-					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
-					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+					shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(yLocalRotate, -ANGLE);
 					pickedShape++;
@@ -686,9 +686,9 @@ void Game::Motion()
 			}
 			else if (cycle == CYCLE) //if tail
 			{
-				shapeTransformation(xLocalTranslate, snake->GetDirection().x);
-				shapeTransformation(yLocalTranslate, snake->GetDirection().y);
-				shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+				shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+				shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+				shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 				shapeTransformation(yLocalRotate, -ANGLE);
 				snake->SetMoveRight(false);
@@ -700,9 +700,9 @@ void Game::Motion()
 			{
 				if (pickedShape == snake->GetHeadIndex())
 				{
-					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
-					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
-					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+					shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(yLocalRotate, ANGLE);
 					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0)));
@@ -712,9 +712,9 @@ void Game::Motion()
 				}
 				else if (cycle == CYCLE) //not tail and not head
 				{
-					shapeTransformation(xLocalTranslate, snake->GetDirection().x);
-					shapeTransformation(yLocalTranslate, snake->GetDirection().y);
-					shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+					shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(yLocalRotate, ANGLE);
 					pickedShape++;
@@ -724,17 +724,17 @@ void Game::Motion()
 			}
 			else if (cycle == CYCLE) //if tail
 			{
-				shapeTransformation(xLocalTranslate, snake->GetDirection().x);
-				shapeTransformation(yLocalTranslate, snake->GetDirection().y);
-				shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+				shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+				shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+				shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 				shapeTransformation(yLocalRotate, ANGLE);
 				snake->SetMoveLeft(false);
 			}
 		}
-		shapeTransformation(xLocalTranslate, snake->GetDirection().x);
-		shapeTransformation(yLocalTranslate, snake->GetDirection().y);
-		shapeTransformation(zLocalTranslate, snake->GetDirection().z);
+		shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+		shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+		shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 		cycle++;
 	}
 }
@@ -748,7 +748,7 @@ int Game::CreateCurveControlPoints(int counter, Bezier1D *curve)
 		modulu = 0;
 		for (int i = 0; i < 4; i++)
 		{
-			addShapeCopy(2, -1, TRIANGLES);
+			addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Default);
 			pickedShape = counter++;
 			control_point = *(curve->GetControlPoint(k, i)).GetPos();
 			//scaling the cube

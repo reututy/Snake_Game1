@@ -4,7 +4,7 @@
 #include "Log.hpp"
 
 
-Shape::Shape(const Shape& shape,unsigned int mode)
+Shape::Shape(const Shape& shape,unsigned int mode, const int kind)
 {
 	mesh = new MeshConstructor(*shape.mesh);
 	//tex = shape.tex;
@@ -15,9 +15,9 @@ Shape::Shape(const Shape& shape,unsigned int mode)
 	shaderID = 1;
 }
 
-Shape::Shape(const std::string& fileName, unsigned int mode)
+Shape::Shape(const std::string& fileName, unsigned int mode, const int kind)
 {
-	mesh = new MeshConstructor(fileName);
+	mesh = new MeshConstructor(fileName, kind);
 	isCopy = false;
 	this->mode = mode;
 	toRender = true;
@@ -25,9 +25,9 @@ Shape::Shape(const std::string& fileName, unsigned int mode)
 	shaderID = 1;
 }
 
-Shape::Shape(const int SimpleShapeType,unsigned int mode)
+Shape::Shape(const int SimpleShapeType,unsigned int mode, const int kind)
 {
-	mesh = new MeshConstructor(SimpleShapeType);
+	mesh = new MeshConstructor(SimpleShapeType, kind);
 	//mesh->Bind();
 	this->mode = mode;
 	isCopy = false;
@@ -36,9 +36,9 @@ Shape::Shape(const int SimpleShapeType,unsigned int mode)
 	shaderID = 1;
 }
 
-Shape::Shape(Bezier1D *curve, unsigned int xResolution,unsigned int yResolution,bool is2D,unsigned int mode)
+Shape::Shape(Bezier1D *curve, unsigned int xResolution,unsigned int yResolution,bool is2D,unsigned int mode, const int kind)
 {
-	mesh = new MeshConstructor(curve,is2D,xResolution,yResolution);
+	mesh = new MeshConstructor(curve,is2D,xResolution,yResolution, kind);
 	this->mode = mode;
 	isCopy = false;
 	toRender = true;

@@ -28,7 +28,7 @@ public:
 	Game(glm::vec3 position, float angle, float near, float far, Viewport &vp);
 	~Game(void);
 	void Init();
-	void addShape(int type, int parent, unsigned int mode, Bezier1D* curve);
+	void addShape(int type, int parent, unsigned int mode, Bezier1D* curve, int kind);
 	/* Reut's addings:*/
 	void addBasicShapes(); 
 	void addBoundryBoxes(); 
