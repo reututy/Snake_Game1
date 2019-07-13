@@ -14,14 +14,11 @@ private:
 	int shaderID;
 	bool isCopy;
 	unsigned int mode;
-	int type;
 	bool toRender;
 	int num_of_shape;
 	bool found; //for rewards
 
 public:
-	enum Type {Snake, Rock, Reward, WallLoose, WallWin, Bubble};
-
 	Shape(const Shape& shape,unsigned int mode, const int kind);
 	Shape(const std::string& fileName,unsigned int mode, const int kind);
 	Shape(const int SimpleShapeType,unsigned int mode, const int kind);
@@ -41,10 +38,8 @@ public:
 	/* Reut's addings:*/
 	MeshConstructor* GetMesh();
 	unsigned int GetMode();
-	int GetType();
 	bool Getfound();
 	void Setfound(bool value);
-	void SetType(int value);
 	void ChangeMode(unsigned int new_mode);
 	void SetNumOfShape(int value);
 	int GetNumOfShape();

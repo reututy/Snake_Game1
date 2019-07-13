@@ -39,7 +39,6 @@ void my_audio_callback(void *userdata, Uint8 *stream, int len)
 
 void Scene::playTune(char* str)
 {
-
 	if (SDL_Init(SDL_INIT_AUDIO) < 0)
 		return;
 
@@ -47,8 +46,6 @@ void Scene::playTune(char* str)
 	static Uint32 wav_length; // length of our sample
 	static Uint8 *wav_buffer; // buffer containing our audio file
 	static SDL_AudioSpec wav_spec; // the specs of our piece of music
-
-
 
 	if (SDL_LoadWAV(str, &wav_spec, &wav_buffer, &wav_length) == NULL) {
 		return;
@@ -60,7 +57,7 @@ void Scene::playTune(char* str)
 	audio_pos = wav_buffer; // copy sound buffer
 	audio_len = wav_length; // copy file length
 
-							/* Open the audio device */
+	/* Open the audio device */
 	if (SDL_OpenAudio(&wav_spec, NULL) < 0) {
 		fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
 		exit(-1);
@@ -77,7 +74,6 @@ void Scene::playTune(char* str)
 	// shut everything down
 	SDL_CloseAudio();
 	SDL_FreeWAV(wav_buffer);
-
 }
 
 Scene::Scene()
@@ -831,12 +827,12 @@ void Scene::CheckCollisionDetection()
 					box_to_draw_index = shape1->CollisionDetection(shape2);
 					if (box_to_draw_index > -1)
 					{
-						if (shape1->GetMesh()->GetKind() == Shape::Type::Reward && shape1->Getfound() == false)
+						if (shape1->GetMesh()->GetKind() == MeshConstructor::Kind::Reward && shape1->Getfound() == false)
 						{
 							shape2->Hide();
 							shape1->Setfound(true);
 						}
-						else if (shape2->GetMesh()->GetKind() == Shape::Type::Reward && shape2->Getfound() == false)
+						else if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Reward && shape2->Getfound() == false)
 						{
 							shape2->Hide();
 							shape2->Setfound(true);

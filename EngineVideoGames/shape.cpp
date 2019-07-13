@@ -6,7 +6,7 @@
 
 Shape::Shape(const Shape& shape,unsigned int mode, const int kind)
 {
-	mesh = new MeshConstructor(*shape.mesh);
+	mesh = new MeshConstructor(*shape.mesh, kind);
 	//tex = shape.tex;
 	isCopy = true;
 	this->mode = mode;
@@ -81,11 +81,6 @@ unsigned int Shape::GetMode()
 	return mode;
 }
 
-int Shape::GetType()
-{
-	return type;
-}
-
 bool Shape::Getfound()
 {
 	return found;
@@ -94,11 +89,6 @@ bool Shape::Getfound()
 void Shape::Setfound(bool value)
 {
 	found = value;
-}
-
-void Shape::SetType(int value)
-{
-	type = value;
 }
 
 void Shape::ChangeMode(unsigned int new_mode)

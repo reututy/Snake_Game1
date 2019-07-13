@@ -55,8 +55,9 @@ MeshConstructor::MeshConstructor(Bezier1D *curve,bool isSurface,unsigned int res
 	}
 }
 
-MeshConstructor::MeshConstructor(const MeshConstructor &mesh)
+MeshConstructor::MeshConstructor(const MeshConstructor &mesh, const int kind)
 {
+	this->kind = kind;
 	indicesNum = mesh.indicesNum;
 	if(mesh.is2D)
 		CopyMesh(mesh);

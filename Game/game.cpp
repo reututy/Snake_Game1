@@ -431,7 +431,7 @@ void Game::Init()
 		if (shapes[i]->GetMesh()->GetKind() != MeshConstructor::Kind::Bubble && 
 			shapes[i]->GetMesh()->GetKind() != MeshConstructor::Kind::Default && shapes[i]->GetMode() == TRIANGLES)
 		{
-			if (i == 37) 
+			if (i == 20) 
 			{ 
 				x = 7; 
 			}
