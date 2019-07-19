@@ -7,7 +7,7 @@
 #define SPEED 0.01
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
-#define CYCLE 30
+#define CYCLE 25
 #define ANGLE 10.0f
 
 bool once = false;
@@ -425,13 +425,14 @@ void Game::Init()
 
 	//plane2D = new Shape(Plane, TRIANGLES);
 	//plane2D->SetShader(4);
+	
 	int x;
 	for (int i = 0; i < shapes.size(); i++)
 	{
 		if (shapes[i]->GetMesh()->GetKind() != MeshConstructor::Kind::Bubble && 
-			shapes[i]->GetMesh()->GetKind() != MeshConstructor::Kind::Default && shapes[i]->GetMode() == TRIANGLES)
+			shapes[i]->GetMesh()->GetKind() != MeshConstructor::Kind::Default && (shapes[i]->GetMode() == TRIANGLES || shapes[i]->GetMode() == Scene::QUADS))
 		{
-			if (i == 20) 
+			if (i == 32) 
 			{ 
 				x = 7; 
 			}
@@ -589,9 +590,20 @@ void Game::Motion()
 					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(zLocalRotate, -ANGLE);
-					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0)));
+					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(-1, 0, 0)));
+					glm::vec3 tip_pos_before = GetTipPositionInSystem(pickedShape);
+					glm::vec3 tip_pos_before1 = GetTipPositionInSystem(pickedShape+1);
 					pickedShape++;
 					shapeTransformation(zLocalRotate, ANGLE);
+					glm::vec3 tip_pos_after = GetTipPositionInSystem(pickedShape - 1);
+					glm::vec3 tip_pos_diff = glm::vec3(tip_pos_before.x - tip_pos_after.x, tip_pos_before.y - tip_pos_after.y, tip_pos_before.z - tip_pos_after.z);
+					//std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
+					//std::cout << "tip_pos_before1: " << tip_pos_before1.x << " " << tip_pos_before1.y << " " << tip_pos_before1.z << std::endl;
+					//std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
+					//std::cout << "tip_pos_diff: " << tip_pos_diff.x << " " << tip_pos_diff.y << " " << tip_pos_diff.z << std::endl;
+					//shapeTransformation(xLocalTranslate, tip_pos_diff.x);
+					shapeTransformation(yLocalTranslate, tip_pos_diff.y);
+					//shapeTransformation(zLocalTranslate, tip_pos_diff.z);
 					cycle = 0;
 					//playTune("Sounds/swim.wav");
 				}
@@ -602,8 +614,16 @@ void Game::Motion()
 					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(zLocalRotate, -ANGLE);
+					glm::vec3 tip_pos_before = GetTipPositionInSystem(pickedShape);
 					pickedShape++;
 					shapeTransformation(zLocalRotate, ANGLE);
+					glm::vec3 tip_pos_after = GetTipPositionInSystem(pickedShape - 1);
+					glm::vec3 tip_pos_diff = glm::vec3(tip_pos_before.x - tip_pos_after.x, tip_pos_before.y - tip_pos_after.y, tip_pos_before.z - tip_pos_after.z);
+					shapeTransformation(zLocalTranslate, tip_pos_diff.y);
+					//std::cout << "NOT HEAD: " << std::endl;
+					//std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
+					//std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
+					//std::cout << "tip_pos_diff: " << tip_pos_diff.x << " " << tip_pos_diff.y << " " << tip_pos_diff.z << std::endl;
 					cycle = 0;
 				}
 			}
@@ -628,7 +648,7 @@ void Game::Motion()
 					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(zLocalRotate, ANGLE);
-					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0)));
+					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(-1, 0, 0)));
 					pickedShape++;
 					shapeTransformation(zLocalRotate, -ANGLE);
 					cycle = 0;
@@ -667,7 +687,7 @@ void Game::Motion()
 					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(yLocalRotate, -ANGLE);
-					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0)));
+					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(-1, 0, 0)));
 					pickedShape++;
 					shapeTransformation(yLocalRotate, ANGLE);
 					cycle = 0;
@@ -705,7 +725,7 @@ void Game::Motion()
 					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(yLocalRotate, ANGLE);
-					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(SPEED, 0, 0)));
+					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(-1, 0, 0)));
 					pickedShape++;
 					shapeTransformation(yLocalRotate, -ANGLE);
 					cycle = 0;

@@ -3,10 +3,10 @@
 Camera::Camera(const glm::vec3& pos, const glm::vec3& forward, float fov, float zNear, float zFar, const Viewport &view)
 {
 	this->pos = pos;
-	this->forward = forward;
+	this->forward = forward; //remove
 	this->up = glm::vec3(0.0f, 1.0f, 0.0f);
 	this->projection = glm::perspective(fov, GetWHRelation(), zNear, zFar);
-	this->projection = this->projection * glm::lookAt(pos, pos + forward, up);
+	this->projection = this->projection * glm::lookAt(pos, pos + forward, up); //remove
 	this->fov = fov;
 	this->near = zNear;
 	this->far = zFar;

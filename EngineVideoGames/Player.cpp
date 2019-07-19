@@ -68,7 +68,7 @@ void Player::CreatePlayer()
 		//Set snake shader - works with LBSUpdate:
 		scn->SetShapeShader(i, BASIC_SHADER);
 	}
-	//scn->SetPickedShape(head_index);
+	//scn->SetPickedShape(head_index); //to add camera->maketrans of the camera
 	//scn->shapeTransformation(Scene::xGlobalTranslate, 750);
 }
 

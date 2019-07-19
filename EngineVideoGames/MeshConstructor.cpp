@@ -98,6 +98,10 @@ void MeshConstructor::InitLine(IndexedModel &model){
 
 void MeshConstructor::InitMesh(IndexedModel &model)
 {
+	positions.clear();
+	//for (int i = 0; i < model.positions.size(); i++)
+		//positions.emplace_back(model.positions.at(i));
+	positions = model.positions;
 	if (kind != Kind::Default && kind != Kind::Bubble)
 		CreateTree(model.positions);
 
@@ -124,8 +128,8 @@ void MeshConstructor::InitMesh(IndexedModel &model)
 	
 }
 
-void MeshConstructor::CopyLine(const MeshConstructor &mesh){
-	
+void MeshConstructor::CopyLine(const MeshConstructor &mesh)
+{
 	vao.Bind();
 
 	for (int i = 0; i < 2; i++)
@@ -142,7 +146,10 @@ void MeshConstructor::CopyLine(const MeshConstructor &mesh){
 	
 }
 
-void MeshConstructor::CopyMesh(const MeshConstructor &mesh){
+void MeshConstructor::CopyMesh(const MeshConstructor &mesh)
+{
+	if (kind != Kind::Default && kind != Kind::Bubble)
+		CreateTree(mesh.positions);
 
 	vao.Bind();
 	int i = 0;
@@ -171,8 +178,6 @@ void MeshConstructor::CreateTree(std::vector<glm::vec3> positions)
 	for (int i = 0; i < positions.size(); i++)
 		points.push_back(glm::vec4(positions.at(i), 1));
 	kdtree.makeTree(points);
-	//kdtree.printTree(kdtree.getRoot());
-
 	this->bvh = *CreateBVH(positions, kdtree.getRoot(), 0);
 }
 

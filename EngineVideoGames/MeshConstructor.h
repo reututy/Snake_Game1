@@ -16,6 +16,7 @@ class MeshConstructor
 	Kdtree kdtree;
 	BVH bvh;
 	int kind;
+	std::vector<glm::vec3> positions;
 
 	std::vector<VertexBuffer*> vbs;
 	bool is2D;
