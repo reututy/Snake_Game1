@@ -11,6 +11,7 @@ class Player
 		bool is_alive;
 		glm::vec3 velocity; //TODO: delete?
 		glm::vec3 direction;
+		bool play;
 
 		bool move_right;
 		bool move_left;
@@ -46,5 +47,8 @@ class Player
 
 		glm::vec3 GetDirection();
 		void SetDirection(glm::vec3 dir);
+
+		bool GetPlay();
+		void SetPlay(bool value);
 
 };

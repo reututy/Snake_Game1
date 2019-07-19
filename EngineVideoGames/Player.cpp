@@ -20,6 +20,7 @@ Player::Player(Scene* Scn, int Head_index, int Num_of_links)
 	move_left = false;
 	move_up = false;
 	move_down = false;
+	play = false;
 	direction = glm::vec3(-1, 0, 0);
 	curr_num_of_shape = head_index;
 }
@@ -160,4 +161,14 @@ glm::vec3 Player::GetDirection()
 void Player::SetDirection(glm::vec3 dir)
 {
 	direction = dir;
+}
+
+bool Player::GetPlay()
+{
+	return play;
+}
+
+void Player::SetPlay(bool value)
+{
+	play = value;
 }

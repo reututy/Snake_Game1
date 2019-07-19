@@ -108,10 +108,10 @@ Scene::Scene(vec3 position,float angle,float near, float far,Viewport &vp)
 	camera_mode = free_view;
 }
 
-void Scene::addShapeFromFile(const std::string& fileName,int parent,unsigned int mode)
+void Scene::addShapeFromFile(const std::string& fileName,int parent,unsigned int mode, const int kind)
 {
 	chainParents.push_back(parent);
-	shapes.push_back(new Shape(fileName,mode, MeshConstructor::Kind::Default));
+	shapes.push_back(new Shape(fileName,mode, kind));
 }
 
 void Scene::addShape(int type, int parent,unsigned int mode, const int kind)
@@ -803,44 +803,32 @@ void Scene::SetNumOfShape()
 }
 
 //Checks collision for each pair of shapes in scene and if collide, draw the appropriate bounding boxes.
-void Scene::CheckCollisionDetection()
+void Scene::CheckCollisionDetection(int num_of_shape)
 {
 	int box_to_draw_index;
 	bool cannot_move = false;
-	//for (Shape* shape1 : shapes)
+	Shape* shape1 = shapes[num_of_shape]; //the snake
 	for (int i = 0; i < shapes.size(); i++)
 	{
-		Shape* shape1 = shapes[i];
-		if (shape1->GetMode() == TRIANGLES && 
-			shape1->GetMesh()->GetKind() != MeshConstructor::Kind::Bubble && 
-			shape1->GetMesh()->GetKind() != MeshConstructor::Kind::Default)
+		Shape* shape2 = shapes[i];
+		if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Reward ||
+			shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Obstacle)
 		{
-			//for (Shape* shape2 : shapes)
-			for (int j = 0; j < shapes.size(); j++)
+			box_to_draw_index = shape1->CollisionDetection(shape2);
+			if (box_to_draw_index > -1)
 			{
-				Shape* shape2 = shapes[j];
-				if (shape2->GetMode() == TRIANGLES && 
-					shape2->GetMesh()->GetKind() != MeshConstructor::Kind::Bubble &&
-					shape2->GetMesh()->GetKind() != MeshConstructor::Kind::Default &&
-					shape1->GetNumOfShape() != shape2->GetNumOfShape())
+				if (shape1->GetMesh()->GetKind() == MeshConstructor::Kind::Reward && shape1->Getfound() == false)
 				{
-					box_to_draw_index = shape1->CollisionDetection(shape2);
-					if (box_to_draw_index > -1)
-					{
-						if (shape1->GetMesh()->GetKind() == MeshConstructor::Kind::Reward && shape1->Getfound() == false)
-						{
-							shape2->Hide();
-							shape1->Setfound(true);
-						}
-						else if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Reward && shape2->Getfound() == false)
-						{
-							shape2->Hide();
-							shape2->Setfound(true);
-							playTune("Sounds/eat.wav");
-						}
-						shapes[box_to_draw_index]->Unhide();
-					}
+					shape2->Hide();
+					shape1->Setfound(true);
 				}
+				else if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Reward && shape2->Getfound() == false)
+				{
+					shape2->Hide();
+					shape2->Setfound(true);
+					playTune("Sounds/eat.wav");
+				}
+				shapes[box_to_draw_index]->Unhide();
 			}
 		}
 	}

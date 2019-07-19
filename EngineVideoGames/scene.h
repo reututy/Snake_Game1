@@ -45,7 +45,7 @@ public:
 	Scene();
 	Scene(glm::vec3 position,float angle,float near, float far,Viewport &vp);
 	
-	void addShapeFromFile(const std::string& fileName,int parent,unsigned int mode);
+	void addShapeFromFile(const std::string& fileName,int parent,unsigned int mode, const int kind);
 	virtual void addShape(int type,int parent,unsigned int mode, const int kind);
 	void addShapeCopy(int indx,int parent,unsigned int mode, const int kind);
 	
@@ -120,7 +120,7 @@ public:
 	void SetCameraMode(int mode);
 	void SetNumOfShape();
 	void SetNumOfShapes(int value);
-	void CheckCollisionDetection();
+	void CheckCollisionDetection(int num_of_shape);
 	void playTune(char* str);
 
 private:	

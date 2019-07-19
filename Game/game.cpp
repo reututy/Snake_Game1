@@ -4,11 +4,12 @@
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 800
-#define SPEED 0.01
+#define SPEED 0.1
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 #define CYCLE 25
 #define ANGLE 10.0f
+#define BALL_SCALE 0.05
 
 bool once = false;
 int cycle = 0;
@@ -169,7 +170,7 @@ void Game::addBasicShapes()
 void Game::addBoundryBoxes()
 {
 	//Added boundry Boxes of the game: 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //20 Add copy cube = front
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //20 Add copy cube = front
 	SetNumOfShape();
 	pickedShape = 20;
 	shapeTransformation(xScale, 0.1);
@@ -179,7 +180,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(xGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
 	num_of_front_cube = 20;
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //21 Add copy cube = back
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //21 Add copy cube = back
 	SetNumOfShape();
 	pickedShape = 21;
 	shapeTransformation(xScale, 0.1);
@@ -189,7 +190,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(xGlobalRotate, 180);
 	num_of_back_cube = 21;
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //22 Add copy cube = up
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //22 Add copy cube = up
 	SetNumOfShape();
 	pickedShape = 22;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
@@ -198,7 +199,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(yGlobalTranslate, WATER_PLANE_SCALE / 0.1);
 	num_of_up_cube = 22;
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //23 Add copy cube = down
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //23 Add copy cube = down
 	SetNumOfShape();
 	pickedShape = 23;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
@@ -207,7 +208,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(yGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
 	num_of_down_cube = 23;
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //24 Add copy cube = right
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //24 Add copy cube = right
 	SetNumOfShape();
 	pickedShape = 24;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
@@ -218,7 +219,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(zGlobalRotate, 180);
 	num_of_right_cube = 24;
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //25 Add copy cube = right
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //25 Add copy cube = right
 	SetNumOfShape();
 	pickedShape = 25;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
@@ -259,7 +260,7 @@ void Game::addBoundryBoxes()
 void Game::addObstacles()
 {
 	//Obstacles:
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //26 Add copy cube = Obstacle 1
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //26 Add copy cube = Obstacle 1
 	SetNumOfShape();
 	pickedShape = 26;
 	SetShapeTex(pickedShape, 6);
@@ -271,7 +272,7 @@ void Game::addObstacles()
 	shapeTransformation(zGlobalTranslate, 5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //27 Add copy cube = Obstacle 1
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //27 Add copy cube = Obstacle 1
 	SetNumOfShape();
 	pickedShape = 27;
 	SetShapeTex(pickedShape, 6);
@@ -283,7 +284,7 @@ void Game::addObstacles()
 	//shapeTransformation(zGlobalTranslate, 5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //28 Add copy cube = Obstacle 1
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //28 Add copy cube = Obstacle 1
 	SetNumOfShape();
 	pickedShape = 28;
 	SetShapeTex(pickedShape, 6);
@@ -295,7 +296,7 @@ void Game::addObstacles()
 	shapeTransformation(zGlobalTranslate, -5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //29 Add copy cube = Obstacle 1
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //29 Add copy cube = Obstacle 1
 	SetNumOfShape();
 	pickedShape = 29;
 	SetShapeTex(pickedShape, 6);
@@ -307,7 +308,7 @@ void Game::addObstacles()
 	shapeTransformation(zGlobalTranslate, 5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //30 Add copy cube = Obstacle 1
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //30 Add copy cube = Obstacle 1
 	SetNumOfShape();
 	pickedShape = 30;
 	SetShapeTex(pickedShape, 6);
@@ -319,7 +320,7 @@ void Game::addObstacles()
 	shapeTransformation(zGlobalTranslate, -5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallLoose); //31 Add copy cube = Obstacle 1
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //31 Add copy cube = Obstacle 1
 	SetNumOfShape();
 	pickedShape = 31;
 	SetShapeTex(pickedShape, 6);
@@ -335,6 +336,18 @@ void Game::addObstacles()
 void Game::addRewards()
 {
 	//Rewards:
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLES, MeshConstructor::Kind::Reward); //32
+	SetNumOfShape();
+	pickedShape = 32;
+	SetShapeTex(pickedShape, 7);
+	shapeTransformation(xScale, 0.05);
+	shapeTransformation(yScale, 0.05);
+	shapeTransformation(zScale, 0.05);
+	shapeTransformation(xGlobalTranslate, -5 / BALL_SCALE);
+	//shapeTransformation(xGlobalTranslate, 730);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	/*
 	addShape(Octahedron, -1, TRIANGLES, nullptr, MeshConstructor::Kind::Reward); //32 Add an Octahedron for copy = Reward 1
 	SetNumOfShape();
 	pickedShape = 32;
@@ -342,25 +355,8 @@ void Game::addRewards()
 	shapeTransformation(xGlobalTranslate, -5);
 	//shapeTransformation(xGlobalTranslate, 730);
 	SetShapeShader(pickedShape, BASIC_SHADER);
-
-	/*
-	addShapeCopy(32, -1, TRIANGLES, MeshConstructor::Kind::Reward); //33 Add copy cube = Obstacle 1
-	SetNumOfShape();
-	pickedShape = 33;
-	SetShapeTex(pickedShape, 7);
-	shapeTransformation(xGlobalTranslate, -5);
-	//shapeTransformation(xGlobalTranslate, 730);
-	SetShapeShader(pickedShape, BASIC_SHADER);*/
-
-	/*
-	addShape(Octahedron, -1, TRIANGLES, nullptr); //33 Add an Octahedron = Reward 1
-	SetNumOfShape();
-	pickedShape = 33;
-	SetShapeTex(pickedShape, 7);
-	//shapeTransformation(xGlobalTranslate, 730);
-	//shapeTransformation(zGlobalTranslate, 100);
-	SetShapeShader(pickedShape, BASIC_SHADER);
 	*/
+
 }
 
 void Game::AddBubbles()
@@ -430,12 +426,14 @@ void Game::Init()
 	for (int i = 0; i < shapes.size(); i++)
 	{
 		if (shapes[i]->GetMesh()->GetKind() != MeshConstructor::Kind::Bubble && 
-			shapes[i]->GetMesh()->GetKind() != MeshConstructor::Kind::Default && (shapes[i]->GetMode() == TRIANGLES || shapes[i]->GetMode() == Scene::QUADS))
+			shapes[i]->GetMesh()->GetKind() != MeshConstructor::Kind::Default && 
+			(shapes[i]->GetMode() == TRIANGLES || shapes[i]->GetMode() == Scene::QUADS))
 		{
 			if (i == 32) 
 			{ 
 				x = 7; 
 			}
+			//if (i != 32)
 			CreateBoundingBoxes(shapes[i]->GetMesh()->GetBVH(), i, 0);
 		}
 	}
@@ -480,13 +478,27 @@ void Game::CreateBoundingBoxes(BVH* bvh, int parent, int level)
 	bvh->GetBox()->SetNumOfShape(pickedShape);
 	bvh->SetLevel(level);
 
-	shapeTransformation(xLocalTranslate, bvh->GetBox()->GetFixedCenter().x);
-	shapeTransformation(yLocalTranslate, bvh->GetBox()->GetFixedCenter().y);
-	shapeTransformation(zLocalTranslate, bvh->GetBox()->GetFixedCenter().z);
+	
+	if (shapes[pickedShape]->GetMesh()->GetKind() == MeshConstructor::Kind::Reward)
+	{
+		shapeTransformation(xScale, bvh->GetBox()->GetSize().x * 0.05);
+		shapeTransformation(yScale, bvh->GetBox()->GetSize().y * 0.05);
+		shapeTransformation(zScale, bvh->GetBox()->GetSize().z * 0.05);
 
-	shapeTransformation(xScale, bvh->GetBox()->GetSize().x);
-	shapeTransformation(yScale, bvh->GetBox()->GetSize().y);
-	shapeTransformation(zScale, bvh->GetBox()->GetSize().z);
+		shapeTransformation(xLocalTranslate, bvh->GetBox()->GetFixedCenter().x / BALL_SCALE);
+		shapeTransformation(yLocalTranslate, bvh->GetBox()->GetFixedCenter().y / BALL_SCALE);
+		shapeTransformation(zLocalTranslate, bvh->GetBox()->GetFixedCenter().z / BALL_SCALE);
+	}
+	else
+	{
+		shapeTransformation(xLocalTranslate, bvh->GetBox()->GetFixedCenter().x);
+		shapeTransformation(yLocalTranslate, bvh->GetBox()->GetFixedCenter().y);
+		shapeTransformation(zLocalTranslate, bvh->GetBox()->GetFixedCenter().z);
+
+		shapeTransformation(xScale, bvh->GetBox()->GetSize().x);
+		shapeTransformation(yScale, bvh->GetBox()->GetSize().y);
+		shapeTransformation(zScale, bvh->GetBox()->GetSize().z);
+	}
 
 	//Hides all the shapes unless the large boxes
 	shapes[pickedShape]->Hide();
@@ -515,7 +527,7 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 	s->SetUniformMat4f("MV", MV, shaderIndx);
 	s->SetUniformMat4f("Projection", Projection, shaderIndx);
 	s->SetUniformMat4f("Normal", Normal, shaderIndx);
-	s->SetUniform4f("lightDirection", 0.0f, 0.0f, 0.0f, 0.0f);
+	s->SetUniform4f("lightDirection", 0.0f, 0.0f, -1.0f, 0.0f);
 
 	if (shaderIndx == 0) //picking shader
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
@@ -524,6 +536,8 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
+	if (!(GetCameraMode() == camera_mode::free_view && snake->GetPlay() == false))
+		CheckCollisionDetection(snake->GetHeadIndex());
 }
 
 void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], int linksNum, const int shaderIndx)
@@ -553,7 +567,7 @@ void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
-	CheckCollisionDetection();
+	CheckCollisionDetection(snake->GetHeadIndex());
 }
 
 void Game::WhenRotate()
