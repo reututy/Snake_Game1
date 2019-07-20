@@ -334,9 +334,10 @@ void Game::addRewards()
 	SetNumOfShape();
 	pickedShape = 32;
 	SetShapeTex(pickedShape, 7);
-	shapeTransformation(xGlobalTranslate, -10);
-	shapeTransformation(zGlobalTranslate, -1);
-	//shapeTransformation(xGlobalTranslate, 730);
+	shapeTransformation(xGlobalTranslate, -30);
+	//shapeTransformation(zGlobalTranslate, -20);
+	//shapeTransformation(xGlobalTranslate, -10);
+	//shapeTransformation(zGlobalTranslate, -1);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
 	/*
@@ -499,7 +500,7 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 	s->SetUniformMat4f("MV", MV, shaderIndx);
 	s->SetUniformMat4f("Projection", Projection, shaderIndx);
 	s->SetUniformMat4f("Normal", Normal, shaderIndx);
-	s->SetUniform4f("lightDirection", 0.0f, 0.0f, -1.0f, 0.0f);
+	s->SetUniform4f("lightDirection", 0.0f, -1.0f, -1.0f, 0.0f);
 
 	if (shaderIndx == 0) //picking shader
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);

@@ -828,6 +828,7 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 					shape2->Setfound(true);
 					playTune("Sounds/eat.wav");
 				}
+				std::cout << "boom" << std::endl;
 				shapes[box_to_draw_index]->Unhide();
 			}
 		}

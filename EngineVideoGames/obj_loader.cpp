@@ -82,10 +82,10 @@ OBJModel::OBJModel(const std::string& fileName, float ScaleMult)
 			{
 			case 'v':
 				if (lineCStr[1] == 't')
-					this->uvs.push_back(ParseOBJVec2(line));
+					this->uvs.push_back(ParseOBJVec2(line)*ScaleMult);
 				else if (lineCStr[1] == 'n')
 				{
-					this->normals.push_back(ParseOBJVec3(line));
+					this->normals.push_back(ParseOBJVec3(line)*ScaleMult);
 					this->colors.push_back(normals.back());
 				}
 				else if (lineCStr[1] == ' ' || lineCStr[1] == '\t')

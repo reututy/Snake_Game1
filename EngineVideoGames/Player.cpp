@@ -70,7 +70,7 @@ void Player::CreatePlayer()
 		scn->SetShapeShader(i, BASIC_SHADER);
 	}
 	//scn->SetPickedShape(head_index); //to add camera->maketrans of the camera
-	//scn->shapeTransformation(Scene::xGlobalTranslate, 750);
+	//scn->shapeTransformation(Scene::xGlobalTranslate, 20);
 }
 
 void Player::MoveRight()
