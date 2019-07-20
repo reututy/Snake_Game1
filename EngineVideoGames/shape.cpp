@@ -15,9 +15,9 @@ Shape::Shape(const Shape& shape,unsigned int mode, const int kind)
 	shaderID = 1;
 }
 
-Shape::Shape(const std::string& fileName, unsigned int mode, const int kind)
+Shape::Shape(const std::string& fileName, unsigned int mode, const int kind, float scale)
 {
-	mesh = new MeshConstructor(fileName, kind);
+	mesh = new MeshConstructor(fileName, kind, scale);
 	isCopy = false;
 	this->mode = mode;
 	toRender = true;

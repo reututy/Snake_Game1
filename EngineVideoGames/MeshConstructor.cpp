@@ -1,12 +1,13 @@
 #define GLEW_STATIC
 #include <GL\glew.h>
+#include <fstream> 
 #include "MeshConstructor.h"
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "bezier2D.h"
 #include "obj_loader.h"
 
-#define MINIMUM_VERTCIES_FOR_BVH 2
+#define MINIMUM_VERTCIES_FOR_BVH 100
 
 MeshConstructor::MeshConstructor(const int type, const int kind)
 {
@@ -34,10 +35,13 @@ MeshConstructor::MeshConstructor(const int type, const int kind)
 	
 }
 
-MeshConstructor::MeshConstructor(const std::string& fileName, const int kind)
+MeshConstructor::MeshConstructor(const std::string& fileName, const int kind, float scale)
 {
 	this->kind = kind;
-	InitMesh(OBJModel(fileName).ToIndexedModel());
+	if (kind == Reward)
+		InitMesh(OBJModel(fileName, scale).ToIndexedModel());
+	else
+		InitMesh(OBJModel(fileName).ToIndexedModel());
 }
 
 MeshConstructor::MeshConstructor(Bezier1D *curve,bool isSurface,unsigned int resT,unsigned int resS, const int kind)

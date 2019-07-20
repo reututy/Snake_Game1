@@ -45,7 +45,7 @@ public:
 	Scene();
 	Scene(glm::vec3 position,float angle,float near, float far,Viewport &vp);
 	
-	void addShapeFromFile(const std::string& fileName,int parent,unsigned int mode, const int kind);
+	void addShapeFromFile(const std::string& fileName,int parent,unsigned int mode, const int kind, float scale);
 	virtual void addShape(int type,int parent,unsigned int mode, const int kind);
 	void addShapeCopy(int indx,int parent,unsigned int mode, const int kind);
 	

@@ -13,12 +13,6 @@
 
 bool once = false;
 int cycle = 0;
-/*
-static Uint8 *audio_pos; // global pointer to the audio buffer to be played
-static Uint32 audio_len; // remaining length of the sample we have to play
-*/
-
-//void my_audio_callback(void *userdata, Uint8 *stream, int len);
 
 static void printMat(const glm::mat4 mat)
 {
@@ -336,14 +330,12 @@ void Game::addObstacles()
 void Game::addRewards()
 {
 	//Rewards:
-	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLES, MeshConstructor::Kind::Reward); //32
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLES, MeshConstructor::Kind::Reward, BALL_SCALE); //32
 	SetNumOfShape();
 	pickedShape = 32;
 	SetShapeTex(pickedShape, 7);
-	shapeTransformation(xScale, 0.05);
-	shapeTransformation(yScale, 0.05);
-	shapeTransformation(zScale, 0.05);
-	shapeTransformation(xGlobalTranslate, -5 / BALL_SCALE);
+	shapeTransformation(xGlobalTranslate, -10);
+	shapeTransformation(zGlobalTranslate, -1);
 	//shapeTransformation(xGlobalTranslate, 730);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
@@ -422,18 +414,12 @@ void Game::Init()
 	//plane2D = new Shape(Plane, TRIANGLES);
 	//plane2D->SetShader(4);
 	
-	int x;
 	for (int i = 0; i < shapes.size(); i++)
 	{
 		if (shapes[i]->GetMesh()->GetKind() != MeshConstructor::Kind::Bubble && 
 			shapes[i]->GetMesh()->GetKind() != MeshConstructor::Kind::Default && 
 			(shapes[i]->GetMode() == TRIANGLES || shapes[i]->GetMode() == Scene::QUADS))
 		{
-			if (i == 32) 
-			{ 
-				x = 7; 
-			}
-			//if (i != 32)
 			CreateBoundingBoxes(shapes[i]->GetMesh()->GetBVH(), i, 0);
 		}
 	}
@@ -477,28 +463,14 @@ void Game::CreateBoundingBoxes(BVH* bvh, int parent, int level)
 	pickedShape = shapes.size() - 1;
 	bvh->GetBox()->SetNumOfShape(pickedShape);
 	bvh->SetLevel(level);
-
 	
-	if (shapes[pickedShape]->GetMesh()->GetKind() == MeshConstructor::Kind::Reward)
-	{
-		shapeTransformation(xScale, bvh->GetBox()->GetSize().x * 0.05);
-		shapeTransformation(yScale, bvh->GetBox()->GetSize().y * 0.05);
-		shapeTransformation(zScale, bvh->GetBox()->GetSize().z * 0.05);
+	shapeTransformation(xLocalTranslate, bvh->GetBox()->GetFixedCenter().x);
+	shapeTransformation(yLocalTranslate, bvh->GetBox()->GetFixedCenter().y);
+	shapeTransformation(zLocalTranslate, bvh->GetBox()->GetFixedCenter().z);
 
-		shapeTransformation(xLocalTranslate, bvh->GetBox()->GetFixedCenter().x / BALL_SCALE);
-		shapeTransformation(yLocalTranslate, bvh->GetBox()->GetFixedCenter().y / BALL_SCALE);
-		shapeTransformation(zLocalTranslate, bvh->GetBox()->GetFixedCenter().z / BALL_SCALE);
-	}
-	else
-	{
-		shapeTransformation(xLocalTranslate, bvh->GetBox()->GetFixedCenter().x);
-		shapeTransformation(yLocalTranslate, bvh->GetBox()->GetFixedCenter().y);
-		shapeTransformation(zLocalTranslate, bvh->GetBox()->GetFixedCenter().z);
-
-		shapeTransformation(xScale, bvh->GetBox()->GetSize().x);
-		shapeTransformation(yScale, bvh->GetBox()->GetSize().y);
-		shapeTransformation(zScale, bvh->GetBox()->GetSize().z);
-	}
+	shapeTransformation(xScale, bvh->GetBox()->GetSize().x);
+	shapeTransformation(yScale, bvh->GetBox()->GetSize().y);
+	shapeTransformation(zScale, bvh->GetBox()->GetSize().z);
 
 	//Hides all the shapes unless the large boxes
 	shapes[pickedShape]->Hide();
@@ -883,51 +855,6 @@ void Game::LBSUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm
 		s->SetUniform4f("lightColor", 0.1f, 0.8f, 0.7f, 1.0f);
 	s->Unbind();
 }
-
-/*
-void Game::playTune(char* str) 
-{
-
-	if (SDL_Init(SDL_INIT_AUDIO) < 0)
-		return;
-
-	//local variables
-	static Uint32 wav_length; // length of our sample
-	static Uint8 *wav_buffer; // buffer containing our audio file
-	static SDL_AudioSpec wav_spec; // the specs of our piece of music
-
-
-
-	if (SDL_LoadWAV(str, &wav_spec, &wav_buffer, &wav_length) == NULL) {
-		return;
-	}
-	// set the callback function
-	wav_spec.callback = my_audio_callback;
-	wav_spec.userdata = NULL;
-	// set our global static variables
-	audio_pos = wav_buffer; // copy sound buffer
-	audio_len = wav_length; // copy file length
-
-	//Open the audio device :
-	if (SDL_OpenAudio(&wav_spec, NULL) < 0) {
-		fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
-		exit(-1);
-	}
-
-	//Start playing:
-	SDL_PauseAudio(0);
-
-	// wait until we're don't playing
-	while (audio_len > 0) {
-		SDL_Delay(100);
-	}
-
-	// shut everything down
-	SDL_CloseAudio();
-	SDL_FreeWAV(wav_buffer);
-
-}
-*/
 
 int Game::GetMINCTRL()
 {

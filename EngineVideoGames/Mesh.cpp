@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-#define NUM_OF_POINTS 2
+#define NUM_OF_POINTS 80
 
 void IndexedModel::CalcNormals()
 {

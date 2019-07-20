@@ -26,6 +26,7 @@ public:
     bool hasNormals;
     
     OBJModel(const std::string& fileName);
+	OBJModel(const std::string& fileName, float ScaleMult);
     
     IndexedModel ToIndexedModel();
 private:

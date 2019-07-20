@@ -37,9 +37,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				glfwSetWindowShouldClose(window,GLFW_TRUE);
 			break;
 			case GLFW_KEY_SPACE:
-				scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
-				scn->Activate();
-				//scn->GetPlayer()->SetMoveRight(true);
+				if (scn->IsActive() == false)
+				{
+					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
+					scn->Activate();
+				}
+				else
+				{
+					scn->SetPickedShape(scn->GetPlayer()->GetHeadIndex());
+					scn->Deactivate();
+				}
 			break;
 			case GLFW_KEY_RIGHT:
 				if (scn->GetCameraMode() == scn->camera_mode::free_view && scn->GetPlayer()->GetPlay() == false)

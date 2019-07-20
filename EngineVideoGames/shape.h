@@ -20,7 +20,7 @@ private:
 
 public:
 	Shape(const Shape& shape,unsigned int mode, const int kind);
-	Shape(const std::string& fileName,unsigned int mode, const int kind);
+	Shape(const std::string& fileName,unsigned int mode, const int kind, float scale);
 	Shape(const int SimpleShapeType,unsigned int mode, const int kind);
 	Shape(Bezier1D *curve, unsigned int xResolution,unsigned int yResolution,bool is2D,unsigned int mode, const int kind);
 	virtual ~Shape(void);

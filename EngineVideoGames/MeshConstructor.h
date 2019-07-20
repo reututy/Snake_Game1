@@ -43,7 +43,7 @@ public:
 	MeshConstructor(const int type, const int kind);
 	MeshConstructor(Bezier1D *curve,bool isSurface,unsigned int resT,unsigned int resS, const int kind);
 	MeshConstructor(const MeshConstructor &mesh, const int kind);
-	MeshConstructor(const std::string& fileName, const int kind);
+	MeshConstructor(const std::string& fileName, const int kind, float scale);
 
 	void Bind() {vao.Bind();}
 	void Unbind() {vao.Unbind();}

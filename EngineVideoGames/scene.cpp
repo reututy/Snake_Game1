@@ -108,10 +108,10 @@ Scene::Scene(vec3 position,float angle,float near, float far,Viewport &vp)
 	camera_mode = free_view;
 }
 
-void Scene::addShapeFromFile(const std::string& fileName,int parent,unsigned int mode, const int kind)
+void Scene::addShapeFromFile(const std::string& fileName,int parent,unsigned int mode, const int kind, float scale)
 {
 	chainParents.push_back(parent);
-	shapes.push_back(new Shape(fileName,mode, kind));
+	shapes.push_back(new Shape(fileName,mode, kind, scale));
 }
 
 void Scene::addShape(int type, int parent,unsigned int mode, const int kind)

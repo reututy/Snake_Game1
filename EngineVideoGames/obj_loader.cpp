@@ -57,6 +57,52 @@ OBJModel::OBJModel(const std::string& fileName)
     }
 }
 
+OBJModel::OBJModel(const std::string& fileName, float ScaleMult)
+{
+	hasUVs = false;
+	hasNormals = false;
+	std::ifstream file;
+	file.open(fileName.c_str());
+
+	std::string line;
+	if (file.is_open())
+	{
+		while (file.good())
+		{
+			getline(file, line);
+
+			unsigned int lineLength = line.length();
+
+			if (lineLength < 2)
+				continue;
+
+			const char* lineCStr = line.c_str();
+
+			switch (lineCStr[0])
+			{
+			case 'v':
+				if (lineCStr[1] == 't')
+					this->uvs.push_back(ParseOBJVec2(line));
+				else if (lineCStr[1] == 'n')
+				{
+					this->normals.push_back(ParseOBJVec3(line));
+					this->colors.push_back(normals.back());
+				}
+				else if (lineCStr[1] == ' ' || lineCStr[1] == '\t')
+					this->vertices.push_back(ParseOBJVec3(line)*ScaleMult);
+				break;
+			case 'f':
+				CreateOBJFace(line);
+				break;
+			default: break;
+			};
+		}
+	}
+	else
+	{
+		std::cerr << "Unable to load mesh: " << fileName << std::endl;
+	}
+}
 
 IndexedModel OBJModel::ToIndexedModel()
 {
