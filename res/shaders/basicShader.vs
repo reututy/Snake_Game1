@@ -13,6 +13,7 @@ out vec3 position0;
 
 uniform mat4 MV;
 uniform mat4 Projection;
+uniform mat4 Camera;
 uniform mat4 Normal;
 
 void main()
@@ -21,5 +22,5 @@ void main()
 	color0 = color;
 	normal0 = (Normal * vec4(normal, 0.0)).xyz;
 	position0 = vec3(Normal * vec4(position, 1.0));
-	gl_Position = Projection * MV * vec4(position, 1.0); //you must have gl_Position
+	gl_Position = Projection * Camera * MV * vec4(position, 1.0); //you must have gl_Position
 }

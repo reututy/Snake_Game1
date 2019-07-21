@@ -17,6 +17,7 @@ void Camera::SetProjection(float zNear, float zFar, Viewport &view)
 {
 	this->vp = view;
 	this->projection = glm::perspective(fov, view.GetWHRelation(), zNear, zFar)* glm::lookAt(pos, pos + forward, up);
+	this->projection = glm::perspective(fov, view.GetWHRelation(), zNear, zFar);
 	this->near = zNear;
 	this->far = zFar;
 }
@@ -68,11 +69,6 @@ void Camera::SetPos(glm::vec3 position)
 {
 	pos = position;
 }
-
-
-
-
-
 
 
 /* Reut's adding: */

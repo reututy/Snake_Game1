@@ -258,9 +258,9 @@ void Game::addObstacles()
 	SetNumOfShape();
 	pickedShape = 26;
 	SetShapeTex(pickedShape, 6);
-	shapeTransformation(xScale, 50);
-	shapeTransformation(yScale, 50);
-	shapeTransformation(zScale, 50);
+	shapeTransformation(xScale, 2);
+	shapeTransformation(yScale, 2);
+	shapeTransformation(zScale, 2);
 	shapeTransformation(xGlobalTranslate, 13);
 	//shapeTransformation(yGlobalTranslate, -10 / 2);
 	shapeTransformation(zGlobalTranslate, 5);
@@ -270,9 +270,9 @@ void Game::addObstacles()
 	SetNumOfShape();
 	pickedShape = 27;
 	SetShapeTex(pickedShape, 6);
-	shapeTransformation(xScale, 50);
-	shapeTransformation(yScale, 50);
-	shapeTransformation(zScale, 100);
+	shapeTransformation(xScale, 2);
+	shapeTransformation(yScale, 2);
+	shapeTransformation(zScale, 5);
 	shapeTransformation(xGlobalTranslate, 5);
 	shapeTransformation(yGlobalTranslate, -2);
 	//shapeTransformation(zGlobalTranslate, 5);
@@ -282,9 +282,9 @@ void Game::addObstacles()
 	SetNumOfShape();
 	pickedShape = 28;
 	SetShapeTex(pickedShape, 6);
-	shapeTransformation(xScale, 100);
-	shapeTransformation(yScale, 50);
-	shapeTransformation(zScale, 50);
+	shapeTransformation(xScale, 5);
+	shapeTransformation(yScale, 2);
+	shapeTransformation(zScale, 2);
 	//shapeTransformation(xGlobalTranslate, -8);
 	shapeTransformation(yGlobalTranslate, -5);
 	shapeTransformation(zGlobalTranslate, -5);
@@ -294,9 +294,9 @@ void Game::addObstacles()
 	SetNumOfShape();
 	pickedShape = 29;
 	SetShapeTex(pickedShape, 6);
-	shapeTransformation(xScale, 100);
-	shapeTransformation(yScale, 50);
-	shapeTransformation(zScale, 50);
+	shapeTransformation(xScale, 5);
+	shapeTransformation(yScale, 2);
+	shapeTransformation(zScale, 2);
 	//shapeTransformation(xGlobalTranslate, -13);
 	//shapeTransformation(yGlobalTranslate, -10 / 2);
 	shapeTransformation(zGlobalTranslate, 5);
@@ -306,9 +306,9 @@ void Game::addObstacles()
 	SetNumOfShape();
 	pickedShape = 30;
 	SetShapeTex(pickedShape, 6);
-	shapeTransformation(xScale, 50);
-	shapeTransformation(yScale, 50);
-	shapeTransformation(zScale, 100);
+	shapeTransformation(xScale, 2);
+	shapeTransformation(yScale, 2);
+	shapeTransformation(zScale, 5);
 	shapeTransformation(xGlobalTranslate, -10);
 	shapeTransformation(yGlobalTranslate, -2);
 	shapeTransformation(zGlobalTranslate, -5);
@@ -318,9 +318,9 @@ void Game::addObstacles()
 	SetNumOfShape();
 	pickedShape = 31;
 	SetShapeTex(pickedShape, 6);
-	shapeTransformation(xScale, 50);
-	shapeTransformation(yScale, 50);
-	shapeTransformation(zScale, 100);
+	shapeTransformation(xScale, 2);
+	shapeTransformation(yScale, 2);
+	shapeTransformation(zScale, 5);
 	shapeTransformation(xGlobalTranslate, -10);
 	shapeTransformation(yGlobalTranslate, -8);
 	shapeTransformation(zGlobalTranslate, 3);
@@ -330,6 +330,7 @@ void Game::addObstacles()
 void Game::addRewards()
 {
 	//Rewards:
+	/*
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLES, MeshConstructor::Kind::Reward, BALL_SCALE); //32
 	SetNumOfShape();
 	pickedShape = 32;
@@ -339,6 +340,7 @@ void Game::addRewards()
 	//shapeTransformation(xGlobalTranslate, -10);
 	//shapeTransformation(zGlobalTranslate, -1);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	*/
 
 	/*
 	addShape(Octahedron, -1, TRIANGLES, nullptr, MeshConstructor::Kind::Reward); //32 Add an Octahedron for copy = Reward 1
@@ -415,6 +417,7 @@ void Game::Init()
 	//plane2D = new Shape(Plane, TRIANGLES);
 	//plane2D->SetShader(4);
 	
+	/*
 	for (int i = 0; i < shapes.size(); i++)
 	{
 		if (shapes[i]->GetMesh()->GetKind() != MeshConstructor::Kind::Bubble && 
@@ -423,7 +426,10 @@ void Game::Init()
 		{
 			CreateBoundingBoxes(shapes[i]->GetMesh()->GetBVH(), i, 0);
 		}
-	}
+	}*/
+
+	//cameraTransformation(zLocalRotate, 30, camera_mode::up_view);
+	
 
 	//playTune("Sounds/Jump.wav");
 
@@ -487,7 +493,7 @@ void Game::CreateBoundingBoxes(BVH* bvh, int parent, int level)
 		CreateBoundingBoxes(bvh->GetRight(), parent, level + 1);
 }
 
-void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, const int shaderIndx)
+void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 Camera, glm::mat4 &Normal, const int shaderIndx)
 {
 	int prev_shape = pickedShape;
 	if (!once)
@@ -499,6 +505,7 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 	s->Bind();
 	s->SetUniformMat4f("MV", MV, shaderIndx);
 	s->SetUniformMat4f("Projection", Projection, shaderIndx);
+	s->SetUniformMat4f("Camera", Camera, shaderIndx);
 	s->SetUniformMat4f("Normal", Normal, shaderIndx);
 	s->SetUniform4f("lightDirection", 0.0f, -1.0f, -1.0f, 0.0f);
 
@@ -509,8 +516,8 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
-	if (!(GetCameraMode() == camera_mode::free_view && snake->GetPlay() == false))
-		CheckCollisionDetection(snake->GetHeadIndex());
+	//if (!(GetCameraMode() == camera_mode::free_view && snake->GetPlay() == false))
+		//CheckCollisionDetection(snake->GetHeadIndex());
 }
 
 void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], int linksNum, const int shaderIndx)

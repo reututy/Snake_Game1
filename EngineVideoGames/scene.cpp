@@ -182,6 +182,7 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 	glm::mat4 Projection = cameras[cameraIndx]->GetViewProjection(); //Added
 	glm::mat4 MV = Normal; //Added
 	glm::mat4 MV1; //Added
+	glm::mat4 Camera = cameras[cameraIndx]->makeTrans(); //Added
 
 	glm::dualquat DQ; //Added
 	glm::vec4 dqRot[5]; //Added
@@ -214,12 +215,25 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 			pickedShape = i;
 			for (int j = i; chainParents[j] > -1; j = chainParents[j])
 			{
-				Normal1 =  shapes[chainParents[j]]->makeTrans() * Normal1;
+				Normal1 = shapes[chainParents[j]]->makeTrans() * Normal1;
 			}
 
 			Normal1 = Normal * Normal1;
 			MV1 = Normal1;
 			MV1 = MV1 * shapes[i]->makeTransScale(mat4(1));
+
+			if (cameraIndx == camera_mode::free_view)
+			{
+				//Camera = Camera * Normal1;
+			}
+			else if (cameraIndx == camera_mode::up_view)
+			{
+				//Camera = Camera * Normal1;
+			}
+			else if (cameraIndx == camera_mode::player_view)
+			{
+				//Camera = Camera * Normal1;
+			}
 
 			//if (i >= 28 && i <= 32)
 			//{
@@ -270,7 +284,7 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 			
 			if (shaderIndx == 1)
 			{
-				Update(MV1, Projection, Normal1, shapes[i]->GetShader());
+				Update(MV1, Projection, Camera, Normal1, shapes[i]->GetShader());
 				shapes[i]->Draw(shaders, textures, false);
 
 			}
@@ -524,6 +538,91 @@ void Scene::shapeTransformation(int type,float amt)
 				for (; chainParents[i] > 0; i = chainParents[i]);
 					shapes[i]->translateInSystem(*this, vec3(0, 0, amt), 0, false);
 			}
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void Scene::cameraTransformation(int type, float amt, int index)
+{
+	vec3 newAxis;
+	if (glm::abs(amt) > 1e-5)
+	{
+		switch (type)
+		{
+		case xLocalTranslate:
+			cameras[index]->myTranslate(vec3(amt, 0, 0), 1);
+			break;
+		case yLocalTranslate:
+			cameras[index]->myTranslate(vec3(0, amt, 0), 1);
+			break;
+		case zLocalTranslate:
+			cameras[index]->myTranslate(vec3(0, 0, amt), 1);
+			break;
+		case xGlobalTranslate:
+			cameras[index]->myTranslate(vec3(amt, 0, 0), 0);
+			break;
+		case yGlobalTranslate:
+			cameras[index]->myTranslate(vec3(0, amt, 0), 0);
+			break;
+		case zGlobalTranslate:
+			cameras[index]->myTranslate(vec3(0, 0, amt), 0);
+			break;
+		case xLocalRotate:
+			cameras[index]->myRotate(amt, vec3(1, 0, 0), xAxis1);
+			break;
+		case yLocalRotate:
+			cameras[index]->myRotate(amt, vec3(0, 1, 0), -1);
+			break;
+		case zLocalRotate:
+			cameras[index]->myRotate(amt, vec3(0, 0, 1), zAxis1);
+			break;
+		case xGlobalRotate:
+			/*
+			if (pickedShape == -1)
+				globalSystemRot(amt, vec3(1, 0, 0), xAxis1);
+			else
+			{
+				if (direction == -1 && pickedShape + 2 < shapes.size())
+				{
+					OpositeDirectionRot(glm::vec3(1, 0, 0), amt);
+				}
+				else
+					shapes[pickedShape]->globalSystemRot(amt, vec3(1, 0, 0), xAxis1);
+			}*/
+			break;
+		case yGlobalRotate:
+			/*
+			if (pickedShape == -1)
+				globalSystemRot(amt, vec3(0, 1, 0), -1);
+			else
+			{
+				shapes[pickedShape]->globalSystemRot(amt, vec3(0, 1, 0), -1);
+				if (direction == -1)
+				{
+					OpositeDirectionRot(glm::vec3(0, 1, 0), amt);
+				}
+				else
+					shapes[pickedShape]->globalSystemRot(amt, vec3(1, 0, 0), xAxis1);
+			}*/
+			break;
+		case zGlobalRotate:
+			/*
+			if (pickedShape == -1)
+				globalSystemRot(amt, vec3(0, 0, 1), zAxis12);
+			else
+			{
+
+
+				if (direction == -1 && pickedShape + 2 < shapes.size())
+				{
+					OpositeDirectionRot(glm::vec3(0, 0, 1), amt);
+				}
+				else
+					shapes[pickedShape]->globalSystemRot(amt, vec3(0, 0, 1), zAxis12);
+			}*/
 			break;
 		default:
 			break;

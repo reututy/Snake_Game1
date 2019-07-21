@@ -14,12 +14,12 @@ int main(int argc, char *argv[])
 	Viewport vp1(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
 	//Game *scn = new Game(glm::vec3(1.0f, 0.0f, 0.0f), CAM_ANGLE, zNear, zFar, vp1);
-	Game *scn = new Game(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1); //free view camera
+	Game *scn = new Game(glm::vec3(0.0f, 0.0f, 1.0f), 60.0f, zNear, zFar, vp1); //free view camera
 	//Game *scn = new Game(glm::vec3(800.0f, 0.0f, 0.0f), CAM_ANGLE, zNear, zFar, vp1); //free view camera
+	scn->AddCamera(glm::vec3(0.0f, 30.0f, 0.5f), 90.0f, zNear, zFar, vp1);	//up view camera
 	scn->AddCamera(glm::vec3(4.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1);	//snake view camera
-	scn->AddCamera(glm::vec3(0.0f, 4.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1);	//up view camera
 
-	//scn->GetCamera(0)->SetProjection(zNear, zFar, vp2);
+	scn->globalSystemRot(-90, glm::vec3(0, 1, 0), -1);
 
 	Display display(DISPLAY_WIDTH, DISPLAY_HEIGHT, "OpenGL");
 

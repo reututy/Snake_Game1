@@ -46,7 +46,6 @@ void MovableGLM::copyTranslations(MovableGLM *mGLM)
 	//TODO: update rotation 
 }
 
-
 mat4 MovableGLM::makeTrans(mat4 &prevTransformations) const
 {
 	return prevTransformations * makeTrans();
@@ -54,14 +53,13 @@ mat4 MovableGLM::makeTrans(mat4 &prevTransformations) const
 
 mat4 MovableGLM::GetRot() const
 {
-	return  rotateMat * makeRot()  ;
+	return  rotateMat * makeRot();
 }
 
 mat4 MovableGLM::makeTrans() const
 {
-	return  translateMat[0] * rotateMat * makeRot() * translateMat[1] ;
+	return  translateMat[0] * rotateMat * makeRot() * translateMat[1];
 }
-
 
 void MovableGLM::myRotate(float ang, glm::vec3 &vec, int indx)
 {
@@ -83,7 +81,7 @@ void MovableGLM::myRotate(float ang, glm::vec3 &vec, int indx)
 
 void MovableGLM::myTranslate(vec3 &vec, int indx)
 {
-	translateMat[indx] = translate(translateMat[indx], scaleFactor * vec ) ;
+	translateMat[indx] = translate(translateMat[indx], scaleFactor * vec );
 	//printMat(translateMat[indx]);
 }
 
@@ -110,7 +108,7 @@ void MovableGLM::globalSystemRot(float ang, vec3 &vec, int indx)
 //	rotateMat[indx] = rotate(mat4(1),ang,tmp)*rotateMat[indx];
 }
 
-void MovableGLM::translateInSystem(const MovableGLM  &system,vec3 &vec, int indx, bool toScale)
+void MovableGLM::translateInSystem(const MovableGLM &system,vec3 &vec, int indx, bool toScale)
 {
 	vec3 tmp;
 	if (toScale)

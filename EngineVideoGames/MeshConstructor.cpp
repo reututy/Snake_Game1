@@ -103,10 +103,8 @@ void MeshConstructor::InitLine(IndexedModel &model){
 void MeshConstructor::InitMesh(IndexedModel &model)
 {
 	positions.clear();
-	//for (int i = 0; i < model.positions.size(); i++)
-		//positions.emplace_back(model.positions.at(i));
 	positions = model.positions;
-	if (kind != Kind::Default && kind != Kind::Bubble)
+	if (kind != Kind::Default && kind != Kind::Bubble && kind != Kind::Obstacle) //TODO: without Obstacle
 		CreateTree(model.positions);
 
 	int verticesNum = model.positions.size();

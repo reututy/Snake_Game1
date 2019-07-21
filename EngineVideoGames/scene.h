@@ -58,7 +58,7 @@ public:
 
 	//virtual void Update( glm::mat4 MVP ,glm::mat4 *jointTransforms,const int length,const int  shaderIndx);//
 
-	virtual void Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, const int shaderIndx) = 0;
+	virtual void Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 Camera, glm::mat4 &Normal, const int shaderIndx) = 0;
 	virtual void Update2D(glm::mat4& mat, int time, const int shaderIndx);
 	/* Reut's addings:*/
 	virtual void SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::vec4 dqRot[5], glm::vec4 dqTrans[5], const int shaderIndx, int index) = 0;
@@ -75,6 +75,7 @@ public:
 	glm::mat4 GetShapeTransformation() const;
 	
 	void shapeTransformation(int type,float amt);
+	void cameraTransformation(int type, float amt, int index); //Added
 	void shapeRotation(glm::vec3 v, float ang,int indx);
 	//void inline setPicked(int pickID){pickedShape = pickID;}
 	float picking(int x,int y);
