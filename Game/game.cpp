@@ -3,8 +3,8 @@
 //#include <SDL.h>
 
 #define CONTROL_POINT_SCALE 0.1
-#define WATER_PLANE_SCALE 800
-#define SPEED 0.1
+#define WATER_PLANE_SCALE 180
+#define SPEED 0.01
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 #define CYCLE 25
@@ -414,9 +414,10 @@ void Game::Init()
 	//Create the snake:
 	snake = new Player((Scene*) this, GetSizeOfShapes() + 1, 3);
 
-	//plane2D = new Shape(Plane, TRIANGLES);
-	//plane2D->SetShader(4);
+	plane2D = new Shape(Plane, TRIANGLES, MeshConstructor::Kind::Default);
+	plane2D->SetShader(4);
 	
+
 	/*
 	for (int i = 0; i < shapes.size(); i++)
 	{
@@ -439,15 +440,14 @@ void Game::Init()
 
 	/* An example: */
 	/*
-	plane2D = new Shape(Plane,TRIANGLES);
+	plane2D = new Shape(Plane,TRIANGLES, MeshConstructor::Kind::Default);
 	plane2D->SetShader(2);
 	
-	addShape(Axis,-1,LINES);
+	addShape(Axis,-1,LINES, nullptr ,MeshConstructor::Kind::Default);
 	shapes[0]->Hide();
-	addShapeFromFile("../res/objs/monkey3.obj",-1,TRIANGLES);
+	addShapeFromFile("../res/objs/monkey3.obj",-1,TRIANGLES, MeshConstructor::Kind::Default, 0);
 	
-	addShape(Cube,-1,TRIANGLES);
-	
+	addShape(Cube,-1,TRIANGLES, nullptr, MeshConstructor::Kind::Default);
 	
 	//translate all scene away from camera
 	myTranslate(glm::vec3(0,0,-5),0);
