@@ -40,7 +40,6 @@ public:
 		LineCopy,
 		MeshCopy,
 	};
-	enum camera_mode { free_view, up_view, player_view };
 	
 	Scene();
 	Scene(glm::vec3 position,float angle,float near, float far,Viewport &vp);
@@ -115,11 +114,9 @@ public:
 	int GetSizeOfShapes();
 	void SetPickedShape(int value);
 	int GetNumOfShapes();
-	int GetCameraMode();
 	bool GetView();
 	Camera* GetCamera(int index);
 
-	void SetCameraMode(int mode);
 	void SetView();
 	void SetNumOfShape();
 	void SetNumOfShapes(int value);
@@ -151,7 +148,6 @@ protected:
 	bool isActive;
 	void ScaleAllDirections(int factor);
 	int num_of_shapes; //Reut's addings
-	int camera_mode; //Reut's addings
 	bool view = true; //Reut's addings
 };
 

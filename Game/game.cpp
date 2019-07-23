@@ -414,10 +414,6 @@ void Game::Init()
 	//Create the snake:
 	snake = new Player((Scene*) this, GetSizeOfShapes() + 1, 3);
 
-	plane2D = new Shape(Plane, TRIANGLES, MeshConstructor::Kind::Default);
-	plane2D->SetShader(4);
-	
-
 	/*
 	for (int i = 0; i < shapes.size(); i++)
 	{
@@ -437,31 +433,6 @@ void Game::Init()
 	//Activate();
 
 	pickedShape = -1;
-
-	/* An example: */
-	/*
-	plane2D = new Shape(Plane,TRIANGLES, MeshConstructor::Kind::Default);
-	plane2D->SetShader(2);
-	
-	addShape(Axis,-1,LINES, nullptr ,MeshConstructor::Kind::Default);
-	shapes[0]->Hide();
-	addShapeFromFile("../res/objs/monkey3.obj",-1,TRIANGLES, MeshConstructor::Kind::Default, 0);
-	
-	addShape(Cube,-1,TRIANGLES, nullptr, MeshConstructor::Kind::Default);
-	
-	//translate all scene away from camera
-	myTranslate(glm::vec3(0,0,-5),0);
-
-	pickedShape = 1;
-	shapeTransformation(xGlobalTranslate,2);
-	//ScaleAllDirections(2);
-	SetShapeTex(1,0);
-	SetShapeTex(2,1);
-	
-	ReadPixel();
-	pickedShape = -1;
-	//Activate();
-	*/
 }
 
 void Game::CreateBoundingBoxes(BVH* bvh, int parent, int level)
@@ -516,7 +487,7 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
-	//if (!(GetCameraMode() == camera_mode::free_view && snake->GetPlay() == false))
+	//if (snake->GetPlay() == false)
 		//CheckCollisionDetection(snake->GetHeadIndex());
 }
 

@@ -89,7 +89,6 @@ Scene::Scene()
 	xold = 0;
 	yold = 0;
 	isActive = false;
-	camera_mode = free_view;
 }
 
 Scene::Scene(vec3 position,float angle,float near, float far,Viewport &vp)
@@ -105,7 +104,6 @@ Scene::Scene(vec3 position,float angle,float near, float far,Viewport &vp)
 	xold = 0;
 	yold = 0;
 	isActive = false;
-	camera_mode = free_view;
 }
 
 void Scene::addShapeFromFile(const std::string& fileName,int parent,unsigned int mode, const int kind, float scale)
@@ -222,18 +220,7 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 			MV1 = Normal1;
 			MV1 = MV1 * shapes[i]->makeTransScale(mat4(1));
 
-			if (cameraIndx == camera_mode::free_view)
-			{
-				//Camera = Camera * Normal1;
-			}
-			else if (cameraIndx == camera_mode::up_view)
-			{
-				//Camera = Camera * Normal1;
-			}
-			else if (cameraIndx == camera_mode::player_view)
-			{
-				//Camera = Camera * Normal1;
-			}
+			//Camera = Camera * Normal1;
 
 			//if (i >= 28 && i <= 32)
 			//{
@@ -874,11 +861,6 @@ int Scene::GetNumOfShapes()
 	return num_of_shapes;
 }
 
-int Scene::GetCameraMode()
-{
-	return camera_mode;
-}
-
 bool Scene::GetView()
 {
 	return view;
@@ -887,11 +869,6 @@ bool Scene::GetView()
 Camera* Scene::GetCamera(int index)
 {
 	return cameras[index];
-}
-
-void Scene::SetCameraMode(int mode)
-{
-	camera_mode = mode;
 }
 
 void Scene::SetView()
