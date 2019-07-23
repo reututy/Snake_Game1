@@ -299,7 +299,7 @@ void Game::addObstacles()
 	shapeTransformation(zScale, 2);
 	//shapeTransformation(xGlobalTranslate, -13);
 	//shapeTransformation(yGlobalTranslate, -10 / 2);
-	shapeTransformation(zGlobalTranslate, 5);
+	shapeTransformation(zGlobalTranslate, 12);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
 	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //30 Add copy cube = Obstacle 1

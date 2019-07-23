@@ -15,12 +15,21 @@ int main(int argc, char *argv[])
 	
 	Game *scn = new Game(glm::vec3(0.0f, 0.0f, 1.0f), 60.0f, zNear, zFar, vp1); //free view camera
 	scn->AddCamera(glm::vec3(0.0f, 30.0f, 0.5f), 90.0f, zNear, zFar, vp2);	//up view camera
-	scn->AddCamera(glm::vec3(0.0f, -0.5f, 1.0f), CAM_ANGLE, zNear, zFar, vp3);	//snake view camera
+	scn->AddCamera(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp3);	//snake view camera
 
 	scn->globalSystemRot(-90, glm::vec3(0, 1, 0), -1);
 	scn->shapeTransformation(scn->zCameraTranslate, 80.0f);
 
-	//scn->GetCamera(0)->myRotate(90, glm::vec3(0, 1, 0), -1);
+	scn->GetCamera(0)->myTranslate(glm::vec3(0, 0, 2), -1);
+	scn->GetCamera(0)->myTranslate(glm::vec3(0, -2, 0), -1);
+	//scn->GetCamera(0)->myRotate(3, glm::vec3(0, 1, 0), -1);
+
+	scn->GetCamera(1)->myTranslate(glm::vec3(0, 0, 3), -1);
+
+	scn->GetCamera(2)->myTranslate(glm::vec3(15, 0, 0), -1);
+	scn->GetCamera(2)->myTranslate(glm::vec3(0, 0, 5), -1);
+	scn->GetCamera(2)->myRotate(90, glm::vec3(0, 1, 0), -1);
+	
 
 	Display display(DISPLAY_WIDTH, DISPLAY_HEIGHT, "OpenGL");
 
