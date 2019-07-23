@@ -3,24 +3,24 @@
 
 int main(int argc, char *argv[])
 {
-	const int DISPLAY_WIDTH = 1200;
-	const int DISPLAY_HEIGHT = 800;
+	const int DISPLAY_WIDTH = 1340;
+	const int DISPLAY_HEIGHT = 690;
 	const float zFar = 10000.0f;
 	const float zNear = 1.0f;
 	const float CAM_ANGLE = 60.0f;
 	const float relation = (float)DISPLAY_WIDTH / (float)DISPLAY_HEIGHT;
-	//Viewport vp1(400, 0, DISPLAY_WIDTH - 400, DISPLAY_HEIGHT - 0);
-	Viewport vp1(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
-	Viewport vp2(0, 400, 400, DISPLAY_HEIGHT - 266);
-	Viewport vp3(0, 0, 400, 266);
+	Viewport vp1(401, 0, DISPLAY_WIDTH - 401, DISPLAY_HEIGHT);
+	Viewport vp2(0, 265, 400, DISPLAY_HEIGHT - 265);
+	Viewport vp3(0, 0, 400, 264);
 	
 	Game *scn = new Game(glm::vec3(0.0f, 0.0f, 1.0f), 60.0f, zNear, zFar, vp1); //free view camera
 	scn->AddCamera(glm::vec3(0.0f, 30.0f, 0.5f), 90.0f, zNear, zFar, vp2);	//up view camera
 	scn->AddCamera(glm::vec3(0.0f, -0.5f, 1.0f), CAM_ANGLE, zNear, zFar, vp3);	//snake view camera
 
 	scn->globalSystemRot(-90, glm::vec3(0, 1, 0), -1);
-	//scn->SetPickedShape(-1);
 	scn->shapeTransformation(scn->zCameraTranslate, 80.0f);
+
+	//scn->GetCamera(0)->myRotate(90, glm::vec3(0, 1, 0), -1);
 
 	Display display(DISPLAY_WIDTH, DISPLAY_HEIGHT, "OpenGL");
 
@@ -65,11 +65,8 @@ int main(int argc, char *argv[])
 
 	while (!display.closeWindow())
 	{
-		//for (int i = 0; i < 2; i++)
-		scn->Draw(1, scn->GetCameraMode(), BACK, true, false);
-		scn->Draw(1, scn->GetCameraMode(), COLOR, true, false);
-
-		//scn->Draw2D(4, 1, BACK, false, false);
+		for (int i = 0; i < 3; i++)
+			scn->Draw(1, i, BACK, i<1, false);
 		scn->Motion();
 		display.SwapBuffers();
 		display.PollEvents();
