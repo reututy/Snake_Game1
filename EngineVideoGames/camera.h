@@ -21,6 +21,7 @@ public:
 	glm::vec3 GetPos(); //Added
 
 	void SetPos(glm::vec3 position); //Added
+	void SetView(const Viewport &view); //Added
 
 	inline glm::mat4 GetViewProjection() const
 	{

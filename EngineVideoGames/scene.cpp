@@ -879,6 +879,11 @@ int Scene::GetCameraMode()
 	return camera_mode;
 }
 
+bool Scene::GetView()
+{
+	return view;
+}
+
 Camera* Scene::GetCamera(int index)
 {
 	return cameras[index];
@@ -887,6 +892,14 @@ Camera* Scene::GetCamera(int index)
 void Scene::SetCameraMode(int mode)
 {
 	camera_mode = mode;
+}
+
+void Scene::SetView()
+{
+	if (view == true)
+		view = false;
+	else
+		view = true;
 }
 
 void Scene::SetNumOfShapes(int value)

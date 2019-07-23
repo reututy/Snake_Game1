@@ -70,6 +70,11 @@ void Camera::SetPos(glm::vec3 position)
 	pos = position;
 }
 
+void Camera::SetView(const Viewport &view)
+{
+	vp = view;
+}
+
 
 /* Reut's adding: */
 //void Camera::SetPlayer(Shape* player)

@@ -116,9 +116,11 @@ public:
 	void SetPickedShape(int value);
 	int GetNumOfShapes();
 	int GetCameraMode();
+	bool GetView();
 	Camera* GetCamera(int index);
 
 	void SetCameraMode(int mode);
+	void SetView();
 	void SetNumOfShape();
 	void SetNumOfShapes(int value);
 	void CheckCollisionDetection(int num_of_shape);
@@ -150,5 +152,6 @@ protected:
 	void ScaleAllDirections(int factor);
 	int num_of_shapes; //Reut's addings
 	int camera_mode; //Reut's addings
+	bool view = true; //Reut's addings
 };
 
