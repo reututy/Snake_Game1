@@ -4,6 +4,7 @@
 #include <iostream>
 #include <glm/gtc/quaternion.hpp>
 #include <SDL.h>
+#include <glm/gtc/matrix_inverse.hpp>
 
 using namespace std;
 using namespace glm;
@@ -195,6 +196,9 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 	else
 		glViewport(0,0,cameras[cameraIndx]->GetWidth(),cameras[cameraIndx]->GetHeight());
 
+	if (cameraIndx == 0)
+		Camera = shapes[chainParents[33]]->makeTrans() * Camera;
+
 	glm::mat4 MVP = Projection * Normal;
 	int p = pickedShape;
 	if(toClear)
@@ -219,8 +223,6 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 			Normal1 = Normal * Normal1;
 			MV1 = Normal1;
 			MV1 = MV1 * shapes[i]->makeTransScale(mat4(1));
-
-			//Camera = Camera * Normal1;
 
 			//if (i >= 28 && i <= 32)
 			//{

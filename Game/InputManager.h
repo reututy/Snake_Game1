@@ -51,8 +51,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			case GLFW_KEY_RIGHT:
 				if (scn->GetPlayer()->GetPlay() == false) //camera moves
 				{
-					scn->GetCamera(0)->myRotate(5, glm::vec3(0, 1, 0), -1);
-					scn->GetCamera(2)->myRotate(5, glm::vec3(0, 1, 0), -1);
+					scn->GetCamera(0)->myRotate(-5, glm::vec3(0, 1, 0), -1);
+					scn->GetCamera(2)->myRotate(-5, glm::vec3(0, 1, 0), -1);
 				}
 				else //player moves
 				{
@@ -63,8 +63,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			case GLFW_KEY_LEFT:
 				if (scn->GetPlayer()->GetPlay() == false) //camera moves
 				{
-					scn->GetCamera(0)->myRotate(-5, glm::vec3(0, 1, 0), -1);
-					scn->GetCamera(2)->myRotate(-5, glm::vec3(0, 1, 0), -1);
+					scn->GetCamera(0)->myRotate(5, glm::vec3(0, 1, 0), -1);
+					scn->GetCamera(2)->myRotate(5, glm::vec3(0, 1, 0), -1);
 				}
 				else //player moves
 				{
@@ -75,8 +75,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			case GLFW_KEY_UP:
 				if (scn->GetPlayer()->GetPlay() == false) //camera moves
 				{
-					scn->GetCamera(0)->myRotate(-5, glm::vec3(1, 0, 0), -1);
-					scn->GetCamera(2)->myRotate(-5, glm::vec3(0, 0, 1), -1);
+					scn->GetCamera(0)->myRotate(5, glm::vec3(1, 0, 0), -1);
+					scn->GetCamera(2)->myRotate(5, glm::vec3(1, 0, 0), -1);
 				}
 					//scn->translateInSystem(*scn->GetShape(20), glm::vec3(0,0,1), 20, 0);
 				else //player moves
@@ -88,8 +88,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			case GLFW_KEY_DOWN:
 				if (scn->GetPlayer()->GetPlay() == false) //camera moves
 				{
-					scn->GetCamera(0)->myRotate(5, glm::vec3(1, 0, 0), -1);
-					scn->GetCamera(2)->myRotate(5, glm::vec3(0, 0, 1), -1);
+					scn->GetCamera(0)->myRotate(-5, glm::vec3(1, 0, 0), -1);
+					scn->GetCamera(2)->myRotate(-5, glm::vec3(1, 0, 0), -1);
 				}
 				else //player moves
 				{
