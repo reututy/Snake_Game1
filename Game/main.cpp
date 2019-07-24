@@ -37,11 +37,9 @@ int main(int argc, char *argv[])
 	scn->Init();
 
 	scn->addShader("../res/shaders/pickingShader");  //0
-	//scn->addShader("../res/shaders/newPickingShader");
-	//scn->addShader("../res/shaders/pickingShaderOld");
 	scn->addShader("../res/shaders/basicShader"); //1
-	//scn->addShader("../res/shaders/basicShaderOld");
-	scn->addShader("../res/shaders/skinningShader"); //2
+	scn->addShader("../res/shaders/ShaderLBS"); //2
+	//scn->addShader("../res/shaders/skinningShader"); //2
 	//scn->addShader("../res/shaders/LBSShader"); //2
 	scn->addShader("../res/shaders/basicTrans1"); //3 - LBS
 	//scn->addShader("../res/shaders/basicShadertex");

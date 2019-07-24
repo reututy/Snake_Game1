@@ -62,7 +62,7 @@ public:
 	/* Reut's addings:*/
 	virtual void SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::vec4 dqRot[5], glm::vec4 dqTrans[5], const int shaderIndx, int index) = 0;
 	virtual void LBSUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], glm::ivec3 jointIndices, const int shaderIndx, int index) = 0;
-	virtual void UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], int linksNum, const int shaderIndx) = 0;
+	virtual void UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 Camera, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], int linksNum, int index, const int shaderIndx) = 0;
 
 	virtual void WhenTranslate(){};
 	virtual void WhenRotate(){};

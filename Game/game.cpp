@@ -482,8 +482,8 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 
 	if (shaderIndx == 0) //picking shader
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
-	else if (shaderIndx == 2) //skinning shader
-		s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f);
+	//else if (shaderIndx == 2) //skinning shader
+		//s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f);
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
@@ -491,7 +491,8 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 		//CheckCollisionDetection(snake->GetHeadIndex());
 }
 
-void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], int linksNum, const int shaderIndx)
+void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 Camera, 
+	const glm::mat4 &Normal, glm::mat4 jointTransforms[5], int linksNum, int index, const int shaderIndx)
 {
 	int prev_shape = pickedShape;
 	if (!once)
@@ -503,22 +504,20 @@ void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm
 	s->Bind();
 	s->SetUniformMat4f("MV", MV, shaderIndx);
 	s->SetUniformMat4f("Projection", Projection, shaderIndx);
+	s->SetUniformMat4f("Camera", Camera, shaderIndx);
 	s->SetUniformMat4f("Normal", Normal, shaderIndx);
 	s->SetUniformMat4fv("jointTransforms", jointTransforms, 5);
 	s->SetUniform1i("linksNum", linksNum);
-	s->SetUniform4f("lightDirection", 0.0f, 0.0f, 0.0f, 0.0f);
+	s->SetUniform1i("index", index);
+	s->SetUniform4f("lightDirection", 0.0f, -1.0f, -1.0f, 0.0f);
 
 	if (shaderIndx == 0) //picking shader
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
-	else if (shaderIndx == 2) //skinning shader
-		s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f); //original
-		//s->SetUniform4f("lightColor", 0.48f, 0.4f, 0.93f, 1.0f);
-	else if (shaderIndx == 5) //blue shader
-		s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f);
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
-	CheckCollisionDetection(snake->GetHeadIndex());
+	//if (snake->GetPlay() == false)
+		//CheckCollisionDetection(snake->GetHeadIndex());
 }
 
 void Game::WhenRotate()

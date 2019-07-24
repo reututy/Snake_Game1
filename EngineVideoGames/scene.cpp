@@ -189,7 +189,7 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 
 	glm::mat4 jointTransforms[5]; //Added
 	glm::ivec3 jointIndices; //Added
-	int j = 0; //Added
+	int k = 0; //Added
 
 	if(buffer == BACK)
 		glViewport(cameras[cameraIndx]->GetLeft(),cameras[cameraIndx]->GetBottom(),cameras[cameraIndx]->GetWidth(),cameras[cameraIndx]->GetHeight());
@@ -224,12 +224,13 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 			MV1 = Normal1;
 			MV1 = MV1 * shapes[i]->makeTransScale(mat4(1));
 
-			//if (i >= 28 && i <= 32)
-			//{
-				//jointTransforms[j] = MV1;
-			//}
+			if (i >= 32 && i <= 36)
+			{
+				jointTransforms[k++] = MV1;
+			}
 
-			if (i == 28)
+			/*
+			if (i == 33)
 			{
 				jointTransforms[0] = MV1;
 				jointIndices = glm::vec3(0,0,1);
@@ -237,7 +238,7 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 				dqRot[0] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[0] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}
-			else if (i == 29)
+			else if (i == 34)
 			{
 				jointTransforms[1] = MV1;
 				jointIndices = glm::vec3(0, 1, 2);
@@ -245,7 +246,7 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 				dqRot[1] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[1] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}
-			else if (i == 30)
+			else if (i == 35)
 			{
 				jointTransforms[2] = MV1;
 				jointIndices = glm::vec3(1, 2, 3);
@@ -253,7 +254,7 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 				dqRot[2] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[2] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}
-			else if (i == 31)
+			else if (i == 36)
 			{
 				jointTransforms[3] = MV1;
 				jointIndices = glm::vec3(2, 3, 4);
@@ -261,7 +262,7 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 				dqRot[3] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[3] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}
-			else if (i == 32)
+			else if (i == 37)
 			{
 				jointTransforms[4] = MV1;
 				jointIndices = glm::vec3(3, 4, 4);
@@ -269,24 +270,20 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 				dqRot[4] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[4] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}
+			*/
 			
-			
-			if (shaderIndx == 1)
+			if (shaderIndx > 0)
 			{
-				Update(MV1, Projection, Camera, Normal1, shapes[i]->GetShader());
+				//Update(MV1, Projection, Camera, Normal1, shapes[i]->GetShader());
+				UpdateLBS(MV1, Projection, Camera, Normal1, jointTransforms, 5, i - 32, shapes[i]->GetShader());
 				shapes[i]->Draw(shaders, textures, false);
 
 			}
-			else if (shaderIndx == 2)
-			{
-				UpdateLBS(MV1, Projection, Normal1, jointTransforms, 5, shapes[i]->GetShader());
-				//SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, shapes[i]->GetShader(), i);
-				//LBSUpdate(MV1, Projection, Normal1, jointTransforms, jointIndices, shapes[i]->GetShader(), i);
-				shapes[i]->Draw(shaders, textures, false);
-			}
 			else //picking
 			{
-				UpdateLBS(MV1, Projection, Normal1, jointTransforms, 5, shapes[i]->GetShader());
+				UpdateLBS(MV1, Projection, Camera, Normal1, jointTransforms, 5, i - 32, shapes[i]->GetShader());
+				//Update(MV1, Projection, Camera, Normal1, shapes[i]->GetShader());
+				//UpdateLBS(MV1, Projection, Normal1, jointTransforms, 5, i, shapes[i]->GetShader());
 				//SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, 0, 0);
 				//LBSUpdate(MV1, Projection, Normal1, jointTransforms, jointIndices, 0, 0);
 				shapes[i]->Draw(shaders, textures, true);
