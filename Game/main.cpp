@@ -19,18 +19,16 @@ int main(int argc, char *argv[])
 
 	scn->shapeTransformation(scn->zCameraTranslate, 80.0f);
 
+	//Camera 0:
 	scn->GetCamera(0)->myTranslate(glm::vec3(2, 0, 0), 0); //x
 	scn->GetCamera(0)->myTranslate(glm::vec3(0, -2, 0), 0); //y
 	scn->GetCamera(0)->myTranslate(glm::vec3(0, 0, 4), 0); //z
 	scn->GetCamera(0)->myRotate(-180, glm::vec3(0, 0, 1), -1); //inverse the camera
 	scn->GetCamera(0)->myRotate(-90, glm::vec3(0, 1, 0), -1); //rotate in 90 degrees
-	
-	//scn->GetCamera(1)->myTranslate(glm::vec3(0, 0, 3), -1);
-	//scn->GetCamera(1)->myRotate(-90, glm::vec3(0, 1, 0), -1);
 
-	scn->GetCamera(2)->myTranslate(glm::vec3(15, 0, 0), -1);
-	scn->GetCamera(2)->myTranslate(glm::vec3(0, 0, 5), -1);
-	scn->GetCamera(2)->myRotate(90, glm::vec3(0, 1, 0), -1);
+	//Camera 1:
+	scn->GetCamera(1)->myTranslate(glm::vec3(4, 0, 0), -1);
+	scn->GetCamera(1)->myRotate(90, glm::vec3(0, 1, 0), -1);
 
 	Display display(DISPLAY_WIDTH, DISPLAY_HEIGHT, "OpenGL");
 

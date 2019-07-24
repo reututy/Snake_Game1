@@ -261,9 +261,9 @@ void Game::addObstacles()
 	shapeTransformation(xScale, 2);
 	shapeTransformation(yScale, 2);
 	shapeTransformation(zScale, 2);
-	shapeTransformation(xGlobalTranslate, 13);
+	shapeTransformation(xGlobalTranslate, 10);
 	//shapeTransformation(yGlobalTranslate, -10 / 2);
-	shapeTransformation(zGlobalTranslate, 5);
+	shapeTransformation(zGlobalTranslate, 8);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
 	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //27 Add copy cube = Obstacle 1
@@ -273,7 +273,7 @@ void Game::addObstacles()
 	shapeTransformation(xScale, 2);
 	shapeTransformation(yScale, 2);
 	shapeTransformation(zScale, 5);
-	shapeTransformation(xGlobalTranslate, 5);
+	shapeTransformation(xGlobalTranslate, 10);
 	shapeTransformation(yGlobalTranslate, -2);
 	//shapeTransformation(zGlobalTranslate, 5);
 	SetShapeShader(pickedShape, BASIC_SHADER);
@@ -287,7 +287,7 @@ void Game::addObstacles()
 	shapeTransformation(zScale, 2);
 	//shapeTransformation(xGlobalTranslate, -8);
 	shapeTransformation(yGlobalTranslate, -5);
-	shapeTransformation(zGlobalTranslate, -5);
+	shapeTransformation(zGlobalTranslate, -8);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
 	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //29 Add copy cube = Obstacle 1
@@ -299,7 +299,7 @@ void Game::addObstacles()
 	shapeTransformation(zScale, 2);
 	//shapeTransformation(xGlobalTranslate, -13);
 	//shapeTransformation(yGlobalTranslate, -10 / 2);
-	shapeTransformation(zGlobalTranslate, 12);
+	shapeTransformation(zGlobalTranslate, 10);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
 	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //30 Add copy cube = Obstacle 1
@@ -311,7 +311,7 @@ void Game::addObstacles()
 	shapeTransformation(zScale, 5);
 	shapeTransformation(xGlobalTranslate, -10);
 	shapeTransformation(yGlobalTranslate, -2);
-	shapeTransformation(zGlobalTranslate, -5);
+	shapeTransformation(zGlobalTranslate, -3);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
 	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //31 Add copy cube = Obstacle 1
