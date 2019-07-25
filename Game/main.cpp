@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
 	//Rewords and Obstacles textures:
 	scn->AddTexture("../res/textures/rock.png", false); //6
 	scn->AddTexture("../res/textures/gold_shine.png", false); //7
+	scn->AddTexture("../res/textures/bubble_blue.png", false); //8
 	
 	display.setScene(scn);
 

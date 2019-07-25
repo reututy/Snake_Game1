@@ -229,11 +229,11 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 
 	for (unsigned int i=0; i<shapes.size(); i++)
 	{
-		if(shapes[i]->Is2Render())
+		if (shapes[i]->Is2Render())
 		{
 			mat4 Normal1 = mat4(1);
 			pickedShape = i;
-			for (int j = i; chainParents[j] > -1; j = chainParents[j])
+			for (int j = i; chainParents[j] > - 1; j = chainParents[j])
 			{
 				Normal1 = shapes[chainParents[j]]->makeTrans() * Normal1;
 			}
@@ -273,7 +273,6 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 				dqRot[4] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[4] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}*/
-			
 			
 			if (shaderIndx > 0)
 			{

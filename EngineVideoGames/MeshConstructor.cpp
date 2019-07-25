@@ -38,9 +38,9 @@ MeshConstructor::MeshConstructor(const int type, const int kind)
 MeshConstructor::MeshConstructor(const std::string& fileName, const int kind, float scale)
 {
 	this->kind = kind;
-	//if (kind == Reward)
-		//InitMesh(OBJModel(fileName, scale).ToIndexedModel());
-	//else
+	if (kind == Reward)
+		InitMesh(OBJModel(fileName, scale).ToIndexedModel());
+	else
 		InitMesh(OBJModel(fileName).ToIndexedModel());
 }
 
