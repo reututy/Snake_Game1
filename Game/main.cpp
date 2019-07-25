@@ -36,15 +36,11 @@ int main(int argc, char *argv[])
 
 	scn->Init();
 
+	//Shaders:
 	scn->addShader("../res/shaders/pickingShader");  //0
 	scn->addShader("../res/shaders/basicShader"); //1
 	scn->addShader("../res/shaders/ShaderLBS"); //2
-	//scn->addShader("../res/shaders/skinningShader"); //2
-	//scn->addShader("../res/shaders/LBSShader"); //2
-	scn->addShader("../res/shaders/basicTrans1"); //3 - LBS
-	//scn->addShader("../res/shaders/basicShadertex");
-	scn->addShader("../res/shaders/basicShader2D"); //4
-	scn->addShader("../res/shaders/blueShader"); //5
+	scn->addShader("../res/shaders/skinningShader"); //3
 
 	//snake textures:
 	scn->AddTexture("../res/textures/snake1.png", false); //0

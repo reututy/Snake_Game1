@@ -23,7 +23,20 @@ uniform int index;
 
 void main()
 {	
-	if(index < 0 || index > links_num - 1)
+	//if( index >= 32 && index <= 36)
+	//{
+		mat4 result = weights[1] * jointTransforms[index - 32];
+		if(index > 32)
+			result += weights[0] * jointTransforms[index - 1 - 32];
+		if(index < links_num - 1 + 32)
+			result += weights[2] * jointTransforms[index + 1 - 32];
+		
+		gl_Position = Projection * inverse(Camera) * MV * result * vec4(position, 1.0); //you must have gl_Position
+	//}
+	//else gl_Position = Projection * inverse(Camera) * MV * vec4(position, 1.0); //you must have gl_Position
+	
+/*
+	if(index < 0 || index >= links_num - 1)
 		gl_Position = Projection * inverse(Camera) * MV * vec4(position, 1.0); //you must have gl_Position
 	else
 	{
@@ -33,8 +46,8 @@ void main()
 		if(index < links_num - 1)
 			result += weights[2] * jointTransforms[index + 1];
 		
-		gl_Position = Projection * inverse(Camera) * MV * result * vec4(position, 1.0); //you must have gl_Position
-	}
+		gl_Position = Projection * inverse(Camera) * result * MV * vec4(position, 1.0); //you must have gl_Position
+	}*/
 	texCoord0 = texCoords;
 	color0 = color;
 	normal0 = (Normal * vec4(normal, 0.0)).xyz;

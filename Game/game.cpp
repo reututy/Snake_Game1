@@ -4,7 +4,7 @@
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 180
-#define SPEED 0.01
+#define SPEED 0.05
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 #define CYCLE 25
@@ -410,7 +410,6 @@ void Game::Init()
 	addRewards();
 	AddBubbles();
 	
-
 	//Create the snake:
 	snake = new Player((Scene*) this, GetSizeOfShapes() + 1, 3);
 
@@ -425,12 +424,7 @@ void Game::Init()
 		}
 	}*/
 
-	//cameraTransformation(zLocalRotate, 30, camera_mode::up_view);
-	
-
 	//playTune("Sounds/Jump.wav");
-
-	//Activate();
 
 	pickedShape = -1;
 }
@@ -482,16 +476,14 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 
 	if (shaderIndx == 0) //picking shader
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
-	//else if (shaderIndx == 2) //skinning shader
-		//s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f);
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
-	//if (snake->GetPlay() == false)
+	//if (snake->GetPlay() == true)
 		//CheckCollisionDetection(snake->GetHeadIndex());
 }
 
-void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 Camera, 
+void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Camera, 
 	const glm::mat4 &Normal, glm::mat4 jointTransforms[5], int linksNum, int index, const int shaderIndx)
 {
 	int prev_shape = pickedShape;
@@ -555,14 +547,12 @@ void Game::Motion()
 
 					shapeTransformation(zLocalRotate, -ANGLE);
 					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(-1, 0, 0)));
-					glm::vec3 tip_pos_before = GetTipPositionInSystem(pickedShape);
-					glm::vec3 tip_pos_before1 = GetTipPositionInSystem(pickedShape+1);
+					glm::vec3 tip_pos_before = snake->GetHeadPos();
 					pickedShape++;
 					shapeTransformation(zLocalRotate, ANGLE);
-					glm::vec3 tip_pos_after = GetTipPositionInSystem(pickedShape - 1);
+					glm::vec3 tip_pos_after = snake->GetHeadPos();
 					glm::vec3 tip_pos_diff = glm::vec3(tip_pos_before.x - tip_pos_after.x, tip_pos_before.y - tip_pos_after.y, tip_pos_before.z - tip_pos_after.z);
 					//std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
-					//std::cout << "tip_pos_before1: " << tip_pos_before1.x << " " << tip_pos_before1.y << " " << tip_pos_before1.z << std::endl;
 					//std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
 					//std::cout << "tip_pos_diff: " << tip_pos_diff.x << " " << tip_pos_diff.y << " " << tip_pos_diff.z << std::endl;
 					//shapeTransformation(xLocalTranslate, tip_pos_diff.x);
@@ -776,7 +766,7 @@ void Game::MoveControlCubes()
 	pickedShape = old_picked_shape;
 }
 
-void Game::SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::vec4 dqRot[5], glm::vec4 dqTrans[5], const int shaderIndx, int index)
+void Game::SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, const glm::mat4 &Camera, glm::vec4 dqRot[5], glm::vec4 dqTrans[5], const int shaderIndx, int index)
 {
 	int prev_shape = pickedShape;
 	if (!once)
@@ -789,20 +779,14 @@ void Game::SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, cons
 	s->SetUniformMat4f("MV", MV, shaderIndx);
 	s->SetUniformMat4f("Projection", Projection, shaderIndx);
 	s->SetUniformMat4f("Normal", Normal, shaderIndx);
+	s->SetUniformMat4f("Camera", Camera, shaderIndx);
 	s->SetUniform4vArr5("dqRot", dqRot, shaderIndx);
 	s->SetUniform4vArr5("dqTrans", dqTrans, shaderIndx);
 	s->SetUniform1i("index", index);
 	s->SetUniform4f("lightDirection", 0.0f, 0.0f, -1.0f, 0.0f);
-	/*
-	if (shaderIndx == 0)
-		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
-	else
-		s->SetUniform4f("lightColor", 0.1f, 0.8f, 0.7f, 1.0f);
-	*/
+
 	if (shaderIndx == 0) //picking shader
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
-	//else if (shaderIndx == 2) //skinning shader
-		//s->SetUniform4f("lightColor", 0.1f, 0.7f, 0.9f, 1.0f);
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 		
@@ -872,9 +856,4 @@ int Game::GetNumOfRightBox()
 int Game::GetNumOfLeftBox()
 {
 	return num_of_left_cube;
-}
-
-Player* Game::GetPlayer()
-{
-	return snake;
 }

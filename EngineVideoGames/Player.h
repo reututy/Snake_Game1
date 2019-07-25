@@ -2,6 +2,8 @@
 #include <vector>
 #include "scene.h"
 
+class Scene;
+
 class Player
 {
 	private:

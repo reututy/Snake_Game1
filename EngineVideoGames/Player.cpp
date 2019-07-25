@@ -3,6 +3,7 @@
 
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
+#define SKINING_SHADER 3
 
 int R_cycle = 1;
 int L_cycle = 1;
@@ -67,7 +68,7 @@ void Player::CreatePlayer()
 			scn->SetShapeTex(i, 0);
 		}
 		//Set snake shader - works with LBSUpdate:
-		scn->SetShapeShader(i, LBS_SHADER);
+		scn->SetShapeShader(i, BASIC_SHADER);
 	}
 	//scn->SetPickedShape(head_index); //to add camera->maketrans of the camera
 	//scn->shapeTransformation(Scene::xGlobalTranslate, 20);
@@ -110,7 +111,7 @@ int Player::GetNumOfLinks()
 
 glm::vec3 Player::GetHeadPos()
 {
-	return glm::vec3(0,0,0); //TODO
+	return glm::vec3(scn->GetShape(head_index)->makeTransScale()[3]); 
 }
 
 bool Player::GetMoveRight()

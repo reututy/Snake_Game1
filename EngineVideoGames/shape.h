@@ -16,7 +16,7 @@ private:
 	unsigned int mode;
 	bool toRender;
 	int num_of_shape;
-	bool found; //for rewards
+	bool found = false; //for rewards
 
 public:
 	Shape(const Shape& shape,unsigned int mode, const int kind);

@@ -14,6 +14,7 @@ out vec3 position0;
 uniform mat4 MV;
 uniform mat4 Projection;
 uniform mat4 Normal;
+uniform mat4 Camera;
 uniform vec4 dqRot[5];
 uniform vec4 dqTrans[5];
 uniform int index;
@@ -25,7 +26,7 @@ void main()
 	vec4 b_rot = vec4(0);
 	vec4 b_trans = vec4(0);
 	
-	if(index == 28)
+	if(index == 32)
 	{
 		b_rot += dqRot[0] * weights[0]; 
 		b_trans += dqTrans[0] * weights[0]; 
@@ -34,13 +35,13 @@ void main()
 		b_rot += dqRot[1] * weights[2]; 
 		b_trans += dqTrans[1] * weights[2]; 
 	}
-	else if(index == 29)
+	else if(index == 33)
 		x=0;
-	else if(index == 30)
+	else if(index == 34)
 		x=1;
-	else if(index == 31)
+	else if(index == 35)
 		x=2;
-	else if(index == 32)
+	else if(index == 36)
 	{
 		b_rot += dqRot[3] * weights[0]; 
 		b_trans += dqTrans[3] * weights[0]; 
@@ -98,7 +99,7 @@ void main()
 	//color0 = weights;
 	//position0 = vec3(M * vec4(position, 1.0));
 	
-	if(index >= 28 && index <= 32)
+	if(index >= 32 && index <= 36)
 	{	
 		normal0 = (M * vec4(normal, 0.0)).xyz;	
 		gl_Position = Projection * M * vec4(position, 1.0); //you must have gl_Position

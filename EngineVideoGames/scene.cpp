@@ -188,7 +188,6 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 	glm::vec4 dqTrans[5]; //Added
 
 	glm::mat4 jointTransforms[5]; //Added
-	glm::ivec3 jointIndices; //Added
 	int k = 0; //Added
 
 	if(buffer == BACK)
@@ -197,7 +196,7 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 		glViewport(0,0,cameras[cameraIndx]->GetWidth(),cameras[cameraIndx]->GetHeight());
 
 	if (cameraIndx == 0)
-		Camera = shapes[chainParents[33]]->makeTrans() * Camera;
+		Camera = shapes[chainParents[snake->GetHeadIndex()+1]]->makeTrans() * Camera;
 
 	glm::mat4 MVP = Projection * Normal;
 	int p = pickedShape;
@@ -207,6 +206,25 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 			Clear(1,1,1,1);
 		else
 			Clear(0,0,0,0);
+	}
+
+	for (int i = snake->GetHeadIndex(); i <= snake->GetHeadIndex() + snake->GetNumOfLinks() + 1; i++, k++)
+	{
+		mat4 Normal1 = mat4(1);
+		pickedShape = i;
+		for (int j = i; chainParents[j] > -1; j = chainParents[j])
+		{
+			Normal1 = shapes[chainParents[j]]->makeTrans() * Normal1;
+		}
+
+		Normal1 = Normal * Normal1;
+		MV1 = Normal1;
+		MV1 = MV1 * shapes[i]->makeTransScale(mat4(1));
+		jointTransforms[k] = MV1;
+
+		DQ = getQuaternion(MV1);
+		dqRot[k] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
+		dqTrans[k] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 	}
 
 	for (unsigned int i=0; i<shapes.size(); i++)
@@ -224,68 +242,52 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 			MV1 = Normal1;
 			MV1 = MV1 * shapes[i]->makeTransScale(mat4(1));
 
-			if (i >= 32 && i <= 36)
-			{
-				jointTransforms[k++] = MV1;
-			}
-
 			/*
-			if (i == 33)
+			if (i == 32)
 			{
-				jointTransforms[0] = MV1;
-				jointIndices = glm::vec3(0,0,1);
 				DQ = getQuaternion(MV1);
 				dqRot[0] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[0] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}
-			else if (i == 34)
+			else if (i == 33)
 			{
-				jointTransforms[1] = MV1;
-				jointIndices = glm::vec3(0, 1, 2);
 				DQ = getQuaternion(MV1);
 				dqRot[1] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[1] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}
-			else if (i == 35)
+			else if (i == 34)
 			{
-				jointTransforms[2] = MV1;
-				jointIndices = glm::vec3(1, 2, 3);
 				DQ = getQuaternion(MV1);
 				dqRot[2] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[2] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}
-			else if (i == 36)
+			else if (i == 35)
 			{
-				jointTransforms[3] = MV1;
-				jointIndices = glm::vec3(2, 3, 4);
 				DQ = getQuaternion(MV1);
 				dqRot[3] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[3] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
 			}
-			else if (i == 37)
+			else if (i == 36)
 			{
-				jointTransforms[4] = MV1;
-				jointIndices = glm::vec3(3, 4, 4);
 				DQ = getQuaternion(MV1);
 				dqRot[4] = glm::vec4(DQ.real.w, DQ.real.x, DQ.real.y, DQ.real.z);
 				dqTrans[4] = glm::vec4(DQ.dual.w, DQ.dual.x, DQ.dual.y, DQ.dual.z);
-			}
-			*/
+			}*/
+			
 			
 			if (shaderIndx > 0)
 			{
-				//Update(MV1, Projection, Camera, Normal1, shapes[i]->GetShader());
-				UpdateLBS(MV1, Projection, Camera, Normal1, jointTransforms, 5, i - 32, shapes[i]->GetShader());
+				Update(MV1, Projection, Camera, Normal1, shapes[i]->GetShader());
+				//UpdateLBS(MV1, Projection, Camera, Normal1, jointTransforms, 5, i, shapes[i]->GetShader());
+				//SkinningUpdate(MV1, Projection, Normal1, Camera, dqRot, dqTrans, shapes[i]->GetShader(), i);
 				shapes[i]->Draw(shaders, textures, false);
 
 			}
 			else //picking
 			{
-				UpdateLBS(MV1, Projection, Camera, Normal1, jointTransforms, 5, i - 32, shapes[i]->GetShader());
-				//Update(MV1, Projection, Camera, Normal1, shapes[i]->GetShader());
-				//UpdateLBS(MV1, Projection, Normal1, jointTransforms, 5, i, shapes[i]->GetShader());
-				//SkinningUpdate(MV1, Projection, Normal1, dqRot, dqTrans, 0, 0);
-				//LBSUpdate(MV1, Projection, Normal1, jointTransforms, jointIndices, 0, 0);
+				Update(MV1, Projection, Camera, Normal1, shapes[i]->GetShader());
+				//UpdateLBS(MV1, Projection, Camera, Normal1, jointTransforms, 5, i, shapes[i]->GetShader());
+				//SkinningUpdate(MV1, Projection, Normal1, Camera, dqRot, dqTrans, shapes[i]->GetShader(), i);
 				shapes[i]->Draw(shaders, textures, true);
 			}
 		}
@@ -870,6 +872,11 @@ Camera* Scene::GetCamera(int index)
 	return cameras[index];
 }
 
+Player* Scene::GetPlayer()
+{
+	return snake;
+}
+
 void Scene::SetView()
 {
 	if (view == true)
@@ -893,14 +900,62 @@ void Scene::SetNumOfShape()
 //Checks collision for each pair of shapes in scene and if collide, draw the appropriate bounding boxes.
 void Scene::CheckCollisionDetection(int num_of_shape)
 {
+	
+	Shape* shape1 = shapes[num_of_shape]; //the snake
+	//glm::vec3 center_of_snake = shape1->GetMesh()->GetBVH()->GetBox()->GetCenter();
+	glm::vec3 center_of_snake = glm::vec3(shape1->makeTransScale()[3]);
+	glm::vec3 center_of_shape;
+
+	BVH* snake_curr = shape1->GetMesh()->GetBVH();
+	BVH* shape_curr;
+
+	glm::mat4 snake_trans = glm::translate(glm::mat4(1), glm::vec3(shape1->getTraslate()));
+	glm::mat4 shape_trans;
+	glm::mat4 snake_rot = shape1->GetRot();
+	glm::mat4 shape_rot;
+
+	float diff;
+	for (int i = 0; i < shapes.size(); i++)
+	{
+		Shape* shape2 = shapes[i];
+		if ((shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Reward ||
+			shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Obstacle) && shape1->GetNumOfShape() != shape2->GetNumOfShape())
+		{
+			shape_curr = shape2->GetMesh()->GetBVH();
+			shape_trans = glm::translate(glm::mat4(1), glm::vec3(shape2->getTraslate()));
+			shape_rot = shape2->GetRot();
+			snake_curr->GetBox()->UpdateDynamicVectors(snake_trans, snake_rot);
+			shape_curr->GetBox()->UpdateDynamicVectors(shape_trans, shape_rot);
+
+			center_of_shape = shape2->GetMesh()->GetBVH()->GetBox()->GetCenter();
+			diff = glm::sqrt((center_of_shape.x - center_of_snake.x)*(center_of_shape.x - center_of_snake.x) + 
+							(center_of_shape.y - center_of_snake.y)*(center_of_shape.y - center_of_snake.y) + 
+							(center_of_shape.z - center_of_snake.z)*(center_of_shape.z - center_of_snake.z));
+			std::cout << "center_of_snake: " << center_of_snake.x << " " << center_of_snake.y << " " << center_of_snake.z << endl;
+			std::cout << "center_of_shape: " << center_of_shape.x << " " << center_of_shape.y << " " << center_of_shape.z << endl;
+			std::cout << "FixedSize: " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().x << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().y << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().z << endl;
+			std::cout << "Size: " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().x << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().y << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().z << endl;
+			if(diff < 20)
+			{
+				if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Reward && shape2->Getfound() == false)
+				{
+					shape2->Hide();
+					shape1->Setfound(true);
+					std::cout << "Boom" << std::endl;
+					//playTune("Sounds/eat.wav");
+				}
+			}
+		}
+	}
+
+	/*
 	int box_to_draw_index;
-	bool cannot_move = false;
 	Shape* shape1 = shapes[num_of_shape]; //the snake
 	for (int i = 0; i < shapes.size(); i++)
 	{
 		Shape* shape2 = shapes[i];
-		if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Reward ||
-			shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Obstacle)
+		if ((shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Reward ||
+			shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Obstacle) && shape1->GetNumOfShape() != shape2->GetNumOfShape())
 		{
 			box_to_draw_index = shape1->CollisionDetection(shape2);
 			if (box_to_draw_index > -1)
@@ -921,4 +976,5 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 			}
 		}
 	}
+	*/
 }

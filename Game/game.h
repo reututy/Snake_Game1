@@ -1,13 +1,10 @@
 #pragma once
 #include "scene.h"
 #include "bezier1D.h"
-#include "Player.h"
+
 
 class Game : public Scene
 {
-
-	Player* snake;
-
 	Bezier1D *head;
 	Bezier1D *body1;
 	Bezier1D *tail;
@@ -39,13 +36,13 @@ public:
 
 	//	void Update( glm::mat4 MVP ,glm::mat4 *jointTransforms,const int length,const int  shaderIndx);
 	void Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 Camera, glm::mat4 &Normal, const int shaderIndx);
-	void UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 Camera, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], int linksNum, int index, const int shaderIndx);
+	void UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Camera, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], int linksNum, int index, const int shaderIndx);
 	void WhenRotate();
 	void WhenTranslate();
 	void Motion();
 
 	/* Reut's addings:*/
-	void SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::vec4 dqRot[5], glm::vec4 dqTrans[5], const int shaderIndx, int index);
+	void SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, const glm::mat4 &Camera, glm::vec4 dqRot[5], glm::vec4 dqTrans[5], const int shaderIndx, int index);
 	void LBSUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], glm::ivec3 jointIndices, const int shaderIndx, int index);
 	//void playTune(char* str);
 
@@ -61,7 +58,5 @@ public:
 	int GetNumOfDownBox();
 	int GetNumOfRightBox();
 	int GetNumOfLeftBox();
-
-	Player* GetPlayer();
 };
 
