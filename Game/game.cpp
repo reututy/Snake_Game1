@@ -1,5 +1,7 @@
 #include "game.h"
 #include <iostream>
+//#include <Windows.h>
+//#include <conio.h>
 //#include <SDL.h>
 
 #define CONTROL_POINT_SCALE 0.1
@@ -8,6 +10,7 @@
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 #define CYCLE 25
+#define BUBBLE_CYCLE 1
 #define ANGLE 10.0f
 #define BALL_SCALE 0.05
 #define BUBBLE_SCALE 0.02
@@ -16,6 +19,8 @@
 
 bool once = false;
 int cycle = 0;
+int bubble_cycle = 0;
+double start_time;
 
 static void printMat(const glm::mat4 mat)
 {
@@ -518,6 +523,7 @@ void Game::Init()
 	//playTune("Sounds/Jump.wav");
 
 	pickedShape = -1;
+	//start_time = 
 }
 
 void Game::CreateBoundingBoxes(BVH* bvh, int parent, int level)
@@ -801,6 +807,15 @@ void Game::Motion()
 		shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
 		shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 		cycle++;
+	}
+
+	//Bublle truble:
+	bubble_cycle++;
+	if (bubble_cycle == BUBBLE_CYCLE)
+	{
+		pickedShape = 39;
+		shapeTransformation(yGlobalTranslate, 0.05*90);
+		bubble_cycle = 0;
 	}
 }
 
