@@ -1,6 +1,5 @@
 #include "game.h"
 #include <iostream>
-//#include <SDL.h>
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 180
@@ -18,7 +17,8 @@
 bool once = false;
 int cycle = 0;
 int bubble_cycle = 0;
-bool bubble_flag = true;
+bool bubble_up = true;
+bool bubble_sound = true;
 int bubble_kind = 0;
 
 static void printMat(const glm::mat4 mat)
@@ -88,20 +88,6 @@ void Game::addShape(int type, int parent, unsigned int mode, Bezier1D* curve, in
 			shapes.push_back(new Shape(curve, 30, 30, true, mode, kind));
 	}
 }
-
-/*
-void my_audio_callback(void *userdata, Uint8 *stream, int len)
-{
-	if (audio_len == 0)
-		return;
-
-	len = (len > audio_len ? audio_len : len);
-	//SDL_memcpy (stream, audio_pos, len); 					// simply copy from one buffer into the other
-	SDL_MixAudio(stream, audio_pos, len, SDL_MIX_MAXVOLUME);// mix from one buffer into another
-
-	audio_pos += len;
-	audio_len -= len;
-}*/
 
 void Game::addBasicShapes()
 {
@@ -512,6 +498,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -795);
 	shapeTransformation(xGlobalTranslate, -X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
 	SetNumOfShape();
@@ -524,6 +511,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -850);
 	shapeTransformation(xGlobalTranslate, -50-X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
 	SetNumOfShape();
@@ -536,6 +524,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -792);
 	shapeTransformation(xGlobalTranslate, -100-X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
 	SetNumOfShape();
@@ -548,6 +537,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -950);
 	shapeTransformation(xGlobalTranslate, -60-X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
 	SetNumOfShape();
@@ -560,6 +550,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -980);
 	shapeTransformation(xGlobalTranslate, -110-X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
 	SetNumOfShape();
@@ -572,6 +563,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -960);
 	shapeTransformation(xGlobalTranslate, -30-X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
 	SetNumOfShape();
@@ -584,6 +576,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -1020);
 	shapeTransformation(xGlobalTranslate, -50-X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	//Down right bubbles:
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
@@ -597,6 +590,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -795);
 	shapeTransformation(xGlobalTranslate, X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
 	SetNumOfShape();
@@ -609,6 +603,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -850);
 	shapeTransformation(xGlobalTranslate, -50+X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
 	SetNumOfShape();
@@ -621,6 +616,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -792);
 	shapeTransformation(xGlobalTranslate, -100+X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
 	SetNumOfShape();
@@ -633,6 +629,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -950);
 	shapeTransformation(xGlobalTranslate, -60+X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
 	SetNumOfShape();
@@ -645,6 +642,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -980);
 	shapeTransformation(xGlobalTranslate, -110+X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
 	SetNumOfShape();
@@ -657,6 +655,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -960);
 	shapeTransformation(xGlobalTranslate, -30+X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
 	SetNumOfShape();
@@ -669,6 +668,7 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -1020);
 	shapeTransformation(xGlobalTranslate, -50+X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 }
 
 void Game::Init()
@@ -983,8 +983,13 @@ void Game::Motion()
 	}
 
 	//Bubble truble:
-	if (bubble_flag == true) //bubbles goes up
+	if (bubble_up == true) //bubbles goes up
 	{
+		if (bubble_sound == true)
+		{
+			playTune("Sounds/blop.wav");
+			bubble_sound = false;
+		}
 		if (bubble_kind % 3 == 0)
 		{
 			for (int i = 39; i < 46; i++)
@@ -1012,7 +1017,6 @@ void Game::Motion()
 				shapeTransformation(yGlobalTranslate, 0.2 * 90);
 			}
 		}
-		//playTune("Sounds/blop.wav");
 	}
 	else //bubbles goes down
 	{
@@ -1048,13 +1052,16 @@ void Game::Motion()
 
 	if (bubble_cycle == BUBBLE_CYCLE)
 	{
-		if (bubble_flag == true)
-			bubble_flag = false;
+		if (bubble_up == true)
+			bubble_up = false;
 		else
-			bubble_flag = true;
+			bubble_up = true;
+		bubble_sound = true; 
 		bubble_cycle = 0;
 		bubble_kind++;
 	}
+	if (bubble_kind == 3)
+		bubble_kind = 0;
 	
 }
 
