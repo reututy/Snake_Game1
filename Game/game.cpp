@@ -1,7 +1,5 @@
 #include "game.h"
 #include <iostream>
-//#include <Windows.h>
-//#include <conio.h>
 //#include <SDL.h>
 
 #define CONTROL_POINT_SCALE 0.1
@@ -10,7 +8,7 @@
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 #define CYCLE 25
-#define BUBBLE_CYCLE 1
+#define BUBBLE_CYCLE 800
 #define ANGLE 10.0f
 #define BALL_SCALE 0.05
 #define BUBBLE_SCALE 0.02
@@ -20,7 +18,8 @@
 bool once = false;
 int cycle = 0;
 int bubble_cycle = 0;
-double start_time;
+bool bubble_flag = true;
+int bubble_kind = 0;
 
 static void printMat(const glm::mat4 mat)
 {
@@ -414,6 +413,10 @@ void Game::addRewards()
 
 void Game::AddBubbles()
 {
+	int X = 3000;
+	int Z = 3000;
+
+	//Center bubbles:
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
 	SetNumOfShape();
 	pickedShape = 39;
@@ -422,7 +425,7 @@ void Game::AddBubbles()
 	shapeTransformation(yScale, 0.0085);
 	shapeTransformation(zScale, 0.0085);
 	shapeTransformation(zGlobalTranslate, 100);
-	shapeTransformation(yGlobalTranslate, 5);
+	shapeTransformation(yGlobalTranslate, -795);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 	
 	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
@@ -433,7 +436,7 @@ void Game::AddBubbles()
 	shapeTransformation(yScale, 0.01);
 	shapeTransformation(zScale, 0.01);
 	shapeTransformation(zGlobalTranslate, 120);
-	shapeTransformation(yGlobalTranslate, -50);
+	shapeTransformation(yGlobalTranslate, -850);
 	shapeTransformation(xGlobalTranslate, -50);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 	
@@ -445,7 +448,7 @@ void Game::AddBubbles()
 	shapeTransformation(yScale, 0.0085);
 	shapeTransformation(zScale, 0.0085);
 	shapeTransformation(zGlobalTranslate, 120);
-	shapeTransformation(yGlobalTranslate, 8);
+	shapeTransformation(yGlobalTranslate, -792);
 	shapeTransformation(xGlobalTranslate, -100);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 	
@@ -457,7 +460,7 @@ void Game::AddBubbles()
 	shapeTransformation(yScale, 0.0065);
 	shapeTransformation(zScale, 0.0065);
 	shapeTransformation(zGlobalTranslate, 120);
-	shapeTransformation(yGlobalTranslate, -150);
+	shapeTransformation(yGlobalTranslate, -950);
 	shapeTransformation(xGlobalTranslate, -60);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 	
@@ -469,7 +472,7 @@ void Game::AddBubbles()
 	shapeTransformation(yScale, 0.0085);
 	shapeTransformation(zScale, 0.0085);
 	shapeTransformation(zGlobalTranslate, 130);
-	shapeTransformation(yGlobalTranslate, -180);
+	shapeTransformation(yGlobalTranslate, -980);
 	shapeTransformation(xGlobalTranslate, -110);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
@@ -481,7 +484,7 @@ void Game::AddBubbles()
 	shapeTransformation(yScale, 0.0085);
 	shapeTransformation(zScale, 0.0085);
 	shapeTransformation(zGlobalTranslate, 130);
-	shapeTransformation(yGlobalTranslate, -160);
+	shapeTransformation(yGlobalTranslate, -960);
 	shapeTransformation(xGlobalTranslate, -30);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
@@ -493,8 +496,178 @@ void Game::AddBubbles()
 	shapeTransformation(yScale, 0.0085);
 	shapeTransformation(zScale, 0.0085);
 	shapeTransformation(zGlobalTranslate, 130);
-	shapeTransformation(yGlobalTranslate, -220);
+	shapeTransformation(yGlobalTranslate, -1020);
 	shapeTransformation(xGlobalTranslate, -50);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	//Left bubbles:
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 46;
+	SetShapeTex(pickedShape, BUBBLE_TEX);
+	shapeTransformation(xScale, 0.0085);
+	shapeTransformation(yScale, 0.0085);
+	shapeTransformation(zScale, 0.0085);
+	shapeTransformation(zGlobalTranslate, 100 + Z);
+	shapeTransformation(yGlobalTranslate, -795);
+	shapeTransformation(xGlobalTranslate, -X);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 47;
+	SetShapeTex(pickedShape, BUBBLE_TEX);
+	shapeTransformation(xScale, 0.01);
+	shapeTransformation(yScale, 0.01);
+	shapeTransformation(zScale, 0.01);
+	shapeTransformation(zGlobalTranslate, 120 + Z);
+	shapeTransformation(yGlobalTranslate, -850);
+	shapeTransformation(xGlobalTranslate, -50-X);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 48;
+	SetShapeTex(pickedShape, BUBBLE_TEX);
+	shapeTransformation(xScale, 0.0085);
+	shapeTransformation(yScale, 0.0085);
+	shapeTransformation(zScale, 0.0085);
+	shapeTransformation(zGlobalTranslate, 120 + Z);
+	shapeTransformation(yGlobalTranslate, -792);
+	shapeTransformation(xGlobalTranslate, -100-X);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 49;
+	SetShapeTex(pickedShape, BUBBLE_TEX);
+	shapeTransformation(xScale, 0.0065);
+	shapeTransformation(yScale, 0.0065);
+	shapeTransformation(zScale, 0.0065);
+	shapeTransformation(zGlobalTranslate, 120 + Z);
+	shapeTransformation(yGlobalTranslate, -950);
+	shapeTransformation(xGlobalTranslate, -60-X);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 50;
+	SetShapeTex(pickedShape, BUBBLE_TEX);
+	shapeTransformation(xScale, 0.0085);
+	shapeTransformation(yScale, 0.0085);
+	shapeTransformation(zScale, 0.0085);
+	shapeTransformation(zGlobalTranslate, 130 + Z);
+	shapeTransformation(yGlobalTranslate, -980);
+	shapeTransformation(xGlobalTranslate, -110-X);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 51;
+	SetShapeTex(pickedShape, BUBBLE_TEX);
+	shapeTransformation(xScale, 0.0085);
+	shapeTransformation(yScale, 0.0085);
+	shapeTransformation(zScale, 0.0085);
+	shapeTransformation(zGlobalTranslate, 130 + Z);
+	shapeTransformation(yGlobalTranslate, -960);
+	shapeTransformation(xGlobalTranslate, -30-X);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 52;
+	SetShapeTex(pickedShape, BUBBLE_TEX);
+	shapeTransformation(xScale, 0.0085);
+	shapeTransformation(yScale, 0.0085);
+	shapeTransformation(zScale, 0.0085);
+	shapeTransformation(zGlobalTranslate, 130 + Z);
+	shapeTransformation(yGlobalTranslate, -1020);
+	shapeTransformation(xGlobalTranslate, -50-X);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	//Down right bubbles:
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 53;
+	SetShapeTex(pickedShape, BUBBLE_TEX);
+	shapeTransformation(xScale, 0.0085);
+	shapeTransformation(yScale, 0.0085);
+	shapeTransformation(zScale, 0.0085);
+	shapeTransformation(zGlobalTranslate, 100 - Z);
+	shapeTransformation(yGlobalTranslate, -795);
+	shapeTransformation(xGlobalTranslate, X);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 54;
+	SetShapeTex(pickedShape, BUBBLE_TEX);
+	shapeTransformation(xScale, 0.01);
+	shapeTransformation(yScale, 0.01);
+	shapeTransformation(zScale, 0.01);
+	shapeTransformation(zGlobalTranslate, 120 - Z);
+	shapeTransformation(yGlobalTranslate, -850);
+	shapeTransformation(xGlobalTranslate, -50+X);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 55;
+	SetShapeTex(pickedShape, BUBBLE_TEX);
+	shapeTransformation(xScale, 0.0085);
+	shapeTransformation(yScale, 0.0085);
+	shapeTransformation(zScale, 0.0085);
+	shapeTransformation(zGlobalTranslate, 120 - Z);
+	shapeTransformation(yGlobalTranslate, -792);
+	shapeTransformation(xGlobalTranslate, -100+X);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 56;
+	SetShapeTex(pickedShape, BUBBLE_TEX);
+	shapeTransformation(xScale, 0.0065);
+	shapeTransformation(yScale, 0.0065);
+	shapeTransformation(zScale, 0.0065);
+	shapeTransformation(zGlobalTranslate, 120 - Z);
+	shapeTransformation(yGlobalTranslate, -950);
+	shapeTransformation(xGlobalTranslate, -60+X);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 57;
+	SetShapeTex(pickedShape, BUBBLE_TEX);
+	shapeTransformation(xScale, 0.0085);
+	shapeTransformation(yScale, 0.0085);
+	shapeTransformation(zScale, 0.0085);
+	shapeTransformation(zGlobalTranslate, 130 - Z);
+	shapeTransformation(yGlobalTranslate, -980);
+	shapeTransformation(xGlobalTranslate, -110+X);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 58;
+	SetShapeTex(pickedShape, BUBBLE_TEX);
+	shapeTransformation(xScale, 0.0085);
+	shapeTransformation(yScale, 0.0085);
+	shapeTransformation(zScale, 0.0085);
+	shapeTransformation(zGlobalTranslate, 130 - Z);
+	shapeTransformation(yGlobalTranslate, -960);
+	shapeTransformation(xGlobalTranslate, -30+X);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+
+	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble, BUBBLE_SCALE);	//bubble ball
+	SetNumOfShape();
+	pickedShape = 59;
+	SetShapeTex(pickedShape, BUBBLE_TEX);
+	shapeTransformation(xScale, 0.0085);
+	shapeTransformation(yScale, 0.0085);
+	shapeTransformation(zScale, 0.0085);
+	shapeTransformation(zGlobalTranslate, 130 - Z);
+	shapeTransformation(yGlobalTranslate, -1020);
+	shapeTransformation(xGlobalTranslate, -50+X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 }
 
@@ -809,14 +982,80 @@ void Game::Motion()
 		cycle++;
 	}
 
-	//Bublle truble:
+	//Bubble truble:
+	if (bubble_flag == true) //bubbles goes up
+	{
+		if (bubble_kind % 3 == 0)
+		{
+			for (int i = 39; i < 46; i++)
+			{
+				pickedShape = i;
+				shapes[i]->Unhide();
+				shapeTransformation(yGlobalTranslate, 0.2 * 90);
+			}
+		}
+		else if (bubble_kind % 3 == 1)
+		{
+			for (int i = 46; i < 53; i++)
+			{
+				pickedShape = i;
+				shapes[i]->Unhide();
+				shapeTransformation(yGlobalTranslate, 0.2 * 90);
+			}
+		}
+		else if (bubble_kind % 3 == 2)
+		{
+			for (int i = 52; i < 60; i++)
+			{
+				pickedShape = i;
+				shapes[i]->Unhide();
+				shapeTransformation(yGlobalTranslate, 0.2 * 90);
+			}
+		}
+		//playTune("Sounds/blop.wav");
+	}
+	else //bubbles goes down
+	{
+		if (bubble_kind % 3 == 0)
+		{
+			for (int i = 39; i < 46; i++)
+			{
+				pickedShape = i;
+				shapes[i]->Hide();
+				shapeTransformation(yGlobalTranslate, 0.2 * -90);
+			}
+		}
+		else if (bubble_kind % 3 == 1)
+		{
+			for (int i = 46; i < 53; i++)
+			{
+				pickedShape = i;
+				shapes[i]->Hide();
+				shapeTransformation(yGlobalTranslate, 0.2 * -90);
+			}
+		}
+		else if (bubble_kind % 3 == 1)
+		{
+			for (int i = 52; i < 60; i++)
+			{
+				pickedShape = i;
+				shapes[i]->Hide();
+				shapeTransformation(yGlobalTranslate, 0.2 * -90);
+			}
+		}
+	}
 	bubble_cycle++;
+
 	if (bubble_cycle == BUBBLE_CYCLE)
 	{
-		pickedShape = 39;
-		shapeTransformation(yGlobalTranslate, 0.05*90);
+		if (bubble_flag == true)
+			bubble_flag = false;
+		else
+			bubble_flag = true;
 		bubble_cycle = 0;
+		bubble_kind++;
 	}
+	
 }
 
 int Game::CreateCurveControlPoints(int counter, Bezier1D *curve)
