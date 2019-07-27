@@ -12,6 +12,8 @@ using namespace glm;
 static Uint8 *audio_pos; // global pointer to the audio buffer to be played
 static Uint32 audio_len; // remaining length of the sample we have to play
 
+int star_count = 0;
+
 void my_audio_callback(void *userdata, Uint8 *stream, int len);
 
 static void printMat(const mat4 mat)
@@ -886,16 +888,6 @@ bool Scene::GetQuitView()
 	return quit_view;
 }
 
-bool Scene::GetOverView()
-{
-	return over_view;
-}
-
-bool Scene::GetWinView()
-{
-	return win_view;
-}
-
 Camera* Scene::GetCamera(int index)
 {
 	return cameras[index];
@@ -946,22 +938,6 @@ void Scene::SetQuitView()
 		quit_view = true;
 }
 
-void Scene::SetOverView()
-{
-	if (over_view == true)
-		over_view = false;
-	else
-		over_view = true;
-}
-
-void Scene::SetWinView()
-{
-	if (win_view == true)
-		win_view = false;
-	else
-		win_view = true;
-}
-
 void Scene::SetNumOfShapes(int value)
 {
 	num_of_shapes = value;
@@ -977,7 +953,6 @@ void Scene::SetNumOfShape()
 //Checks collision for each pair of shapes in scene and if collide, draw the appropriate bounding boxes.
 void Scene::CheckCollisionDetection(int num_of_shape)
 {
-	
 	Shape* shape1 = shapes[num_of_shape]; //the snake
 	glm::vec3 center_of_snake = glm::vec3(shape1->makeTransScale()[3]);
 	glm::vec3 center_of_shape;
@@ -1003,6 +978,7 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 				{
 					shape2->Hide();
 					shape2->Setfound(true);
+					star_count++;
 					playTune("Sounds/eat.wav");
 				}
 			}
@@ -1012,8 +988,10 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 				{
 					shape2->Setfound(true);
 					playTune("Sounds/loose.wav");
-					std::cout << "GAME OVER" << std::endl;
+					//std::cout << "GAME OVER" << std::endl;
 					Deactivate();
+					SetShapeTex(40, 15);
+					SetMainView();
 				}
 			}
 		}

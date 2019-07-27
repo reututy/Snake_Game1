@@ -19,10 +19,8 @@ int main(int argc, char *argv[])
 	Game *scn = new Game(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1); //free view camera - 0
 	scn->AddCamera(glm::vec3(0.0f, 30.0f, 0.5f), 90.0f, zNear, zFar, vp2);	//up view camera - 1
 	scn->AddCamera(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp3);	//snake view camera - 2
-	
+	//scn->AddCamera(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp4);	//Menu camera - 3
 	scn->AddCamera(glm::vec3(-800.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp4);	//Menu camera - 3
-	scn->AddCamera(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp5);	//Game Over camera - 4
-	scn->AddCamera(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp6);	//Win camera - 5
 
 	scn->shapeTransformation(scn->zCameraTranslate, 80.0f);
 
@@ -39,7 +37,13 @@ int main(int argc, char *argv[])
 
 	//Camera 3:
 	scn->GetCamera(3)->myTranslate(glm::vec3(-600, 0, 0), -1);
-
+	/*
+	scn->GetCamera(3)->myTranslate(glm::vec3(2, 0, 0), 0); //x
+	scn->GetCamera(3)->myTranslate(glm::vec3(0, -2, 0), 0); //y
+	scn->GetCamera(3)->myTranslate(glm::vec3(0, 0, 4), 0); //z
+	scn->GetCamera(3)->myRotate(-180, glm::vec3(0, 0, 1), -1); //inverse the camera
+	scn->GetCamera(3)->myRotate(-90, glm::vec3(0, 1, 0), -1); //rotate in 90 degrees
+	*/
 	Display display(DISPLAY_WIDTH, DISPLAY_HEIGHT, "OpenGL");
 
 	init(display);
@@ -71,7 +75,10 @@ int main(int argc, char *argv[])
 	scn->AddTexture("../res/textures/AboutMenu.png", false); //12
 	scn->AddTexture("../res/textures/AboutMenuBack.png", false); //13
 	scn->AddTexture("../res/textures/MainMenu3.png", false); //14
-	
+	scn->AddTexture("../res/textures/GameOver.png", false); //15
+	scn->AddTexture("../res/textures/WinStar1.png", false); //16
+	scn->AddTexture("../res/textures/WinStar2.png", false); //16
+	scn->AddTexture("../res/textures/WinStar3.png", false); //16
 	
 	display.setScene(scn);
 
@@ -83,19 +90,6 @@ int main(int argc, char *argv[])
 		{
 			for (int i = 0; i < 3; i++)
 				scn->Draw(1, i, BACK, i < 1, false);
-		}
-		scn->Motion();
-		display.SwapBuffers();
-		display.PollEvents();
-		//if (scn->GetMenuView() == true)
-		//{
-			//scn->Draw(1, 3, BACK, true, false);
-			///scn->GetCamera(3)->SetView(vp4);
-		//}
-		//else
-		//{
-			//for (int i = 0; i < 3; i++)
-				//scn->Draw(1, i, BACK, i < 1, false);
 			if (scn->GetView() == true)
 			{
 				scn->GetCamera(0)->SetView(vp1);
@@ -106,7 +100,10 @@ int main(int argc, char *argv[])
 				scn->GetCamera(0)->SetView(vp2);
 				scn->GetCamera(1)->SetView(vp1);
 			}
-		//}
+		}
+		scn->Motion();
+		display.SwapBuffers();
+		display.PollEvents();
 	}
 	delete scn;
 	return 0;

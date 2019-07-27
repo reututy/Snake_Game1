@@ -697,6 +697,8 @@ void Game::addMenus()
 	shapeTransformation(xScale, 0.1);
 	shapeTransformation(yScale, 500);
 	shapeTransformation(zScale, 500);
+	//shapeTransformation(yGlobalRotate, 180);
+	//shapeTransformation(xGlobalRotate, 180);
 	shapeTransformation(xGlobalRotate, 180);
 	SetShapeTex(pickedShape, 9);
 	SetShapeShader(pickedShape, BASIC_SHADER);
@@ -775,11 +777,12 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 	s->SetUniformMat4f("Projection", Projection, shaderIndx);
 	s->SetUniformMat4f("Camera", Camera, shaderIndx);
 	s->SetUniformMat4f("Normal", Normal, shaderIndx);
-	s->SetUniform4f("lightDirection", 0.0f, -1.0f, -1.0f, 0.0f);
+	s->SetUniform4f("lightDirection", -1.0f, -1.0f, -1.0f, 0.0f);
 
 	if (shaderIndx == 0) //picking shader
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
 	else //other shader
+		//s->SetUniform4f("lightColor", 0.6f, 0.8f, 0.7f, 1.0f);
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
 	if (snake->GetPlay() == true)

@@ -140,7 +140,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 					scn->GetPlayer()->SetPlay(false);
 				break;
 			case GLFW_KEY_V: //Change Viewport
-				scn->SetView();
+				if (scn->GetMainView() == false)
+					scn->SetView();
 				break;
 			case GLFW_KEY_1: //Play Button
 				if (twice == 1 && scn->GetMenuView() == true)
