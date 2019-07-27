@@ -675,6 +675,11 @@ void Game::addBubbles()
 
 void Game::addWinDoor()
 {
+
+}
+
+void Game::addMenus()
+{
 	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //39 Add copy cube = door
 	SetNumOfShape();
 	pickedShape = 39;
@@ -685,11 +690,6 @@ void Game::addWinDoor()
 	shapeTransformation(xGlobalRotate, 180);
 	SetShapeTex(pickedShape, 9);
 	SetShapeShader(pickedShape, BASIC_SHADER);
-}
-
-void Game::addMenus()
-{
-
 }
 
 void Game::Init()

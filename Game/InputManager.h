@@ -139,6 +139,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			case GLFW_KEY_V: //Change Viewport
 				scn->SetView();
 				break;
+			case GLFW_KEY_1: //Play Button
+				scn->SetMenuView();
+				break;
 		default:
 			break;
 		}

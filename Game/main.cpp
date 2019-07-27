@@ -73,9 +73,13 @@ int main(int argc, char *argv[])
 
 	while (!display.closeWindow())
 	{
-		scn->Draw(1, 3, BACK, true, false);
-		//for (int i = 0; i < 3; i++)
-			//scn->Draw(1, i, BACK, i<1, false);
+		if (scn->GetMenuView() == true)
+			scn->Draw(1, 3, BACK, true, false);
+		else
+		{
+			for (int i = 0; i < 3; i++)
+				scn->Draw(1, i, BACK, i < 1, false);
+		}
 		scn->Motion();
 		display.SwapBuffers();
 		display.PollEvents();
