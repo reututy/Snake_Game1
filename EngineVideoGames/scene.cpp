@@ -866,9 +866,24 @@ bool Scene::GetView()
 	return view;
 }
 
+bool Scene::GetMainView()
+{
+	return main_view;
+}
+
 bool Scene::GetMenuView()
 {
 	return menu_view;
+}
+
+bool Scene::GetAboutView()
+{
+	return about_view;
+}
+
+bool Scene::GetQuitView()
+{
+	return quit_view;
 }
 
 bool Scene::GetOverView()
@@ -899,12 +914,36 @@ void Scene::SetView()
 		view = true;
 }
 
+void Scene::SetMainView()
+{
+	if (main_view == true)
+		main_view = false;
+	else
+		main_view = true;
+}
+
 void Scene::SetMenuView()
 {
 	if (menu_view == true)
 		menu_view = false;
 	else
 		menu_view = true;
+}
+
+void Scene::SetAboutView()
+{
+	if (about_view == true)
+		about_view = false;
+	else
+		about_view = true;
+}
+
+void Scene::SetQuitView()
+{
+	if (quit_view == true)
+		quit_view = false;
+	else
+		quit_view = true;
 }
 
 void Scene::SetOverView()

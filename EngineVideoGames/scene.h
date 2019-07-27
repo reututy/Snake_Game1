@@ -118,14 +118,20 @@ public:
 	void SetPickedShape(int value);
 	int GetNumOfShapes();
 	bool GetView();
+	bool GetMainView();
 	bool GetMenuView();
+	bool GetAboutView();
+	bool GetQuitView();
 	bool GetOverView();
 	bool GetWinView();
 	Camera* GetCamera(int index);
 	Player* GetPlayer();
 
 	void SetView();
+	void SetMainView();
 	void SetMenuView();
+	void SetAboutView();
+	void SetQuitView();
 	void SetOverView();
 	void SetWinView();
 	void SetNumOfShape();
@@ -159,7 +165,10 @@ protected:
 	void ScaleAllDirections(int factor);
 	int num_of_shapes; //Reut's addings
 	bool view = true; //Reut's addings
+	bool main_view = true; //Reut's addings
 	bool menu_view = true; //Reut's addings
+	bool about_view = false; //Reut's addings
+	bool quit_view = false; //Reut's addings
 	bool over_view = false; //Reut's addings
 	bool win_view = false; //Reut's addings
 	Player* snake; //Reut's addings

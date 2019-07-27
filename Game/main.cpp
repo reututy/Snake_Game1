@@ -39,8 +39,6 @@ int main(int argc, char *argv[])
 
 	//Camera 3:
 	scn->GetCamera(3)->myTranslate(glm::vec3(-600, 0, 0), -1);
-	//scn->GetCamera(3)->myRotate(90, glm::vec3(0, 0, 1), -1);
-	//scn->GetCamera(3)->myRotate(90, glm::vec3(0, 1, 0), -1);
 
 	Display display(DISPLAY_WIDTH, DISPLAY_HEIGHT, "OpenGL");
 
@@ -69,12 +67,17 @@ int main(int argc, char *argv[])
 
 	scn->AddTexture("../res/textures/MainMenu0.png", false); //9
 	scn->AddTexture("../res/textures/MainMenu1.png", false); //10
+	scn->AddTexture("../res/textures/MainMenu2.png", false); //11
+	scn->AddTexture("../res/textures/AboutMenu.png", false); //12
+	scn->AddTexture("../res/textures/AboutMenuBack.png", false); //13
+	scn->AddTexture("../res/textures/MainMenu3.png", false); //14
+	
 	
 	display.setScene(scn);
 
 	while (!display.closeWindow())
 	{
-		if (scn->GetMenuView() == true)
+		if (scn->GetMainView() == true)
 			scn->Draw(1, 3, BACK, true, false);
 		else
 		{

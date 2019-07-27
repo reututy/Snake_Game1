@@ -145,14 +145,57 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			case GLFW_KEY_1: //Play Button
 				if (twice == 1 && scn->GetMenuView() == true)
 				{
-					scn->SetPickedShape(40);
 					scn->SetShapeTex(40, 10);
 					//std::this_thread::sleep_for(std::chrono::milliseconds(500));
 					//std::cout << "Let's Play!";
 					//scn->SetShapeTex(40, 9);
 				}
 				else if (twice == 2 && scn->GetMenuView() == true)
+				{
+					scn->SetMainView();
 					scn->SetMenuView();
+					twice = 1;
+				}
+				twice++;
+				break;
+			case GLFW_KEY_2: //About Button
+				if (twice == 1 && scn->GetAboutView() == false)
+				{
+					scn->SetShapeTex(40, 11);
+				}
+				else if (twice == 2 && scn->GetAboutView() == false)
+				{
+					scn->SetShapeTex(40, 12);
+					scn->SetAboutView();
+					twice = 0;
+				}
+				twice++;
+				break;
+			case GLFW_KEY_3: //Quit Button
+				if (twice == 1 && scn->GetQuitView() == false)
+				{
+					scn->SetShapeTex(40, 14);
+				}
+				else if (twice == 2 && scn->GetQuitView() == false)
+				{
+					scn->SetShapeTex(40, 9);
+					scn->SetQuitView();
+					twice = 0;
+					exit(0);
+				}
+				twice++;
+				break;
+			case GLFW_KEY_4: //Back Button
+				if (twice == 1 && scn->GetAboutView() == true)
+				{
+					scn->SetShapeTex(40, 13);
+				}
+				else if (twice == 2 && scn->GetAboutView() == true)
+				{
+					scn->SetShapeTex(40, 9);
+					scn->SetAboutView();
+					twice = 0;
+				}
 				twice++;
 				break;
 		default:
