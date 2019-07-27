@@ -2,10 +2,13 @@
 #include "display.h"
 #include "game.h"
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 #define NO_OF_MODES 8
 int curr_mode = Scene::modes::QUADS;
 char modes_names[8][20] = { "POINTS", "LINES", "LINE_LOOP", "LINE_STRIP", "TRIANGLES", "TRIANGLE_STRIP", "TRIANGLE_FAN", "QUADS" };
+int twice = 1;
 
 void mouse_callback(GLFWwindow* window,int button, int action, int mods)
 {	
@@ -140,7 +143,17 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				scn->SetView();
 				break;
 			case GLFW_KEY_1: //Play Button
-				scn->SetMenuView();
+				if (twice == 1 && scn->GetMenuView() == true)
+				{
+					scn->SetPickedShape(40);
+					scn->SetShapeTex(40, 10);
+					//std::this_thread::sleep_for(std::chrono::milliseconds(500));
+					//std::cout << "Let's Play!";
+					//scn->SetShapeTex(40, 9);
+				}
+				else if (twice == 2 && scn->GetMenuView() == true)
+					scn->SetMenuView();
+				twice++;
 				break;
 		default:
 			break;

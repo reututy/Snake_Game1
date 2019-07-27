@@ -68,6 +68,7 @@ int main(int argc, char *argv[])
 	scn->AddTexture("../res/textures/bubble_blue.png", false); //8
 
 	scn->AddTexture("../res/textures/MainMenu0.png", false); //9
+	scn->AddTexture("../res/textures/MainMenu1.png", false); //10
 	
 	display.setScene(scn);
 
