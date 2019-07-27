@@ -77,8 +77,10 @@ int main(int argc, char *argv[])
 	scn->AddTexture("../res/textures/MainMenu3.png", false); //14
 	scn->AddTexture("../res/textures/GameOver.png", false); //15
 	scn->AddTexture("../res/textures/WinStar1.png", false); //16
-	scn->AddTexture("../res/textures/WinStar2.png", false); //16
-	scn->AddTexture("../res/textures/WinStar3.png", false); //16
+	scn->AddTexture("../res/textures/WinStar2.png", false); //17
+	scn->AddTexture("../res/textures/WinStar3.png", false); //18
+	scn->AddTexture("../res/textures/black.png", false); //19
+	scn->AddTexture("../res/textures/door.png", false); //20
 	
 	display.setScene(scn);
 

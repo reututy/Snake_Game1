@@ -3,7 +3,7 @@
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 180
-#define SPEED 0.2
+#define SPEED 0.5
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 #define CYCLE 2
@@ -675,17 +675,18 @@ void Game::addBubbles()
 
 void Game::addWinDoor()
 {
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //39 Add copy cube = door
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::WallWin); //39 Add copy cube = door
 	SetNumOfShape();
 	pickedShape = 39;
-	shapeTransformation(xGlobalTranslate, -700);
+	shapeTransformation(xGlobalTranslate, -179);
+	shapeTransformation(yGlobalTranslate, -41);
+	shapeTransformation(zGlobalTranslate, 1);
 	shapeTransformation(xScale, 0.1);
-	shapeTransformation(yScale, 500);
-	shapeTransformation(zScale, 500);
-	shapeTransformation(xGlobalRotate, 180);
-	SetShapeTex(pickedShape, 9);
+	shapeTransformation(yScale, 26.76);
+	shapeTransformation(zScale, 13.8);
+	shapeTransformation(yGlobalRotate, 180);
+	SetShapeTex(pickedShape, 20);
 	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->Hide();
 }
 
 void Game::addMenus()

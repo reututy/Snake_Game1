@@ -962,7 +962,9 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 	{
 		Shape* shape2 = shapes[i];
 		if ((shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Reward ||
-			shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Obstacle) && shape1->GetNumOfShape() != shape2->GetNumOfShape())
+			shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Obstacle || 
+			shape2->GetMesh()->GetKind() == MeshConstructor::Kind::WallWin) 
+			&& shape1->GetNumOfShape() != shape2->GetNumOfShape())
 		{
 			center_of_shape = glm::vec3(shape2->makeTransScale()[3]);
 			diff = glm::sqrt((center_of_shape.x - center_of_snake.x)*(center_of_shape.x - center_of_snake.x) + 
@@ -981,6 +983,22 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 					star_count++;
 					playTune("Sounds/eat.wav");
 				}
+				//if (diff < 0.5)
+				//{
+				/*
+					if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::WallWin)
+					{
+						playTune("Sounds/win.wav");
+						Deactivate();
+						if (star_count <= 3)
+							SetShapeTex(40, 16);
+						else if (star_count > 3 && star_count <= 6)
+							SetShapeTex(40, 17);
+						else if (star_count == 7)
+							SetShapeTex(40, 18);
+						SetMainView();
+					}*/
+				//}
 			}
 			else if (diff < 5)
 			{
@@ -988,9 +1006,20 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 				{
 					shape2->Setfound(true);
 					playTune("Sounds/loose.wav");
-					//std::cout << "GAME OVER" << std::endl;
 					Deactivate();
 					SetShapeTex(40, 15);
+					SetMainView();
+				}
+				if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::WallWin)
+				{
+					playTune("Sounds/win.wav");
+					Deactivate();
+					if (star_count <= 3)
+						SetShapeTex(40, 16);
+					else if (star_count > 3 && star_count <= 6)
+						SetShapeTex(40, 17);
+					else if (star_count == 7)
+						SetShapeTex(40, 18);
 					SetMainView();
 				}
 			}

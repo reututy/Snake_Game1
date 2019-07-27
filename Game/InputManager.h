@@ -143,6 +143,23 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				if (scn->GetMainView() == false)
 					scn->SetView();
 				break;
+			case GLFW_KEY_0: //Return to main menu Button
+				/*
+				if (twice == 1 && scn->GetMenuView() == true)
+				{
+					scn->SetShapeTex(40, 10);
+					//std::this_thread::sleep_for(std::chrono::milliseconds(500));
+					//std::cout << "Let's Play!";
+					//scn->SetShapeTex(40, 9);
+				}
+				else if (twice == 2 && scn->GetMenuView() == true)
+				{
+					scn->SetMainView();
+					scn->SetMenuView();
+					twice = 1;
+				}
+				twice++;*/
+				break;
 			case GLFW_KEY_1: //Play Button
 				if (twice == 1 && scn->GetMenuView() == true)
 				{
