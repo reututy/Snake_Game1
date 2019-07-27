@@ -118,10 +118,16 @@ public:
 	void SetPickedShape(int value);
 	int GetNumOfShapes();
 	bool GetView();
+	bool GetMenuView();
+	bool GetOverView();
+	bool GetWinView();
 	Camera* GetCamera(int index);
 	Player* GetPlayer();
 
 	void SetView();
+	void SetMenuView();
+	void SetOverView();
+	void SetWinView();
 	void SetNumOfShape();
 	void SetNumOfShapes(int value);
 	void CheckCollisionDetection(int num_of_shape);
@@ -153,6 +159,9 @@ protected:
 	void ScaleAllDirections(int factor);
 	int num_of_shapes; //Reut's addings
 	bool view = true; //Reut's addings
+	bool menu_view = true; //Reut's addings
+	bool over_view = false; //Reut's addings
+	bool win_view = false; //Reut's addings
 	Player* snake; //Reut's addings
 };
 

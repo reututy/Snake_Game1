@@ -866,6 +866,21 @@ bool Scene::GetView()
 	return view;
 }
 
+bool Scene::GetMenuView()
+{
+	return menu_view;
+}
+
+bool Scene::GetOverView()
+{
+	return over_view;
+}
+
+bool Scene::GetWinView()
+{
+	return win_view;
+}
+
 Camera* Scene::GetCamera(int index)
 {
 	return cameras[index];
@@ -882,6 +897,30 @@ void Scene::SetView()
 		view = false;
 	else
 		view = true;
+}
+
+void Scene::SetMenuView()
+{
+	if (menu_view == true)
+		menu_view = false;
+	else
+		menu_view = true;
+}
+
+void Scene::SetOverView()
+{
+	if (over_view == true)
+		over_view = false;
+	else
+		over_view = true;
+}
+
+void Scene::SetWinView()
+{
+	if (win_view == true)
+		win_view = false;
+	else
+		win_view = true;
 }
 
 void Scene::SetNumOfShapes(int value)
@@ -919,14 +958,23 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 			//std::cout << "center_of_shape: " << center_of_shape.x << " " << center_of_shape.y << " " << center_of_shape.z << endl;
 			//std::cout << "FixedSize: " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().x << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().y << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().z << endl;
 			//std::cout << "Size: " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().x << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().y << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().z << endl;
-			if(diff < 2)
+			if (diff < 2)
 			{
 				if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Reward && shape2->Getfound() == false)
 				{
 					shape2->Hide();
-					shape1->Setfound(true);
-					std::cout << "Boom" << std::endl;
-					//playTune("Sounds/eat.wav");
+					shape2->Setfound(true);
+					playTune("Sounds/eat.wav");
+				}
+			}
+			else if (diff < 5)
+			{
+				if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Obstacle && shape2->Getfound() == false)
+				{
+					shape2->Setfound(true);
+					playTune("Sounds/loose.wav");
+					std::cout << "GAME OVER" << std::endl;
+					Deactivate();
 				}
 			}
 		}

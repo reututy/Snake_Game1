@@ -3,10 +3,10 @@
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 180
-#define SPEED 0.05
+#define SPEED 0.2
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
-#define CYCLE 25
+#define CYCLE 2
 #define BUBBLE_CYCLE 100
 #define ANGLE 10.0f
 #define BALL_SCALE 0.05
@@ -348,7 +348,7 @@ void Game::addRewards()
 	pickedShape = 33;
 	SetShapeTex(pickedShape, REWARD_TEX);
 	shapeTransformation(xGlobalTranslate, -15);
-	shapeTransformation(yGlobalTranslate, -15);
+	//shapeTransformation(yGlobalTranslate, -15);
 	shapeTransformation(zGlobalTranslate, 13);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
@@ -364,7 +364,7 @@ void Game::addRewards()
 	SetNumOfShape();
 	pickedShape = 35;
 	SetShapeTex(pickedShape, REWARD_TEX);
-	shapeTransformation(yGlobalTranslate, -10);
+	//shapeTransformation(yGlobalTranslate, -10);
 	shapeTransformation(zGlobalTranslate, -22);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
@@ -373,7 +373,7 @@ void Game::addRewards()
 	pickedShape = 36;
 	SetShapeTex(pickedShape, REWARD_TEX);
 	shapeTransformation(xGlobalTranslate, -20);
-	shapeTransformation(yGlobalTranslate, -4);
+	//shapeTransformation(yGlobalTranslate, -4);
 	shapeTransformation(zGlobalTranslate, -22);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
@@ -390,13 +390,13 @@ void Game::addRewards()
 	pickedShape = 38;
 	SetShapeTex(pickedShape, REWARD_TEX);
 	shapeTransformation(xGlobalTranslate, 20);
-	shapeTransformation(yGlobalTranslate, -4);
+	//shapeTransformation(yGlobalTranslate, -4);
 	shapeTransformation(zGlobalTranslate, -8);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 	
 }
 
-void Game::AddBubbles()
+void Game::addBubbles()
 {
 	/*
 	int X = 3000;
@@ -673,13 +673,34 @@ void Game::AddBubbles()
 	*/
 }
 
+void Game::addWinDoor()
+{
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //39 Add copy cube = door
+	SetNumOfShape();
+	pickedShape = 39;
+	shapeTransformation(xGlobalTranslate, -700);
+	shapeTransformation(xScale, 0.1);
+	shapeTransformation(yScale, 500);
+	shapeTransformation(zScale, 500);
+	shapeTransformation(xGlobalRotate, 180);
+	SetShapeTex(pickedShape, 9);
+	SetShapeShader(pickedShape, BASIC_SHADER);
+}
+
+void Game::addMenus()
+{
+
+}
+
 void Game::Init()
 {
 	addBasicShapes();
 	addBoundryBoxes();
 	addObstacles();
 	addRewards();
-	AddBubbles();
+	addBubbles();
+	addWinDoor();
+	addMenus();
 	
 	//Create the snake:
 	snake = new Player((Scene*) this, GetSizeOfShapes() + 1, 3);
