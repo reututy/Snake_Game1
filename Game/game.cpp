@@ -334,7 +334,6 @@ void Game::addRewards()
 	//shapeTransformation(zGlobalTranslate, -1);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 	*/
-
 	
 	addShape(Octahedron, -1, TRIANGLES, nullptr, MeshConstructor::Kind::Reward); //32 Add an Octahedron for copy = Reward 1
 	SetNumOfShape();
@@ -399,6 +398,7 @@ void Game::addRewards()
 
 void Game::AddBubbles()
 {
+	/*
 	int X = 3000;
 	int Z = 3000;
 
@@ -485,8 +485,9 @@ void Game::AddBubbles()
 	shapeTransformation(yGlobalTranslate, -1020);
 	shapeTransformation(xGlobalTranslate, -50);
 	SetShapeShader(pickedShape, BASIC_SHADER);
-
+	*/
 	//Left bubbles:
+	/*
 	addShapeCopy(39, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
 	SetNumOfShape();
 	pickedShape = 46;
@@ -669,6 +670,7 @@ void Game::AddBubbles()
 	shapeTransformation(xGlobalTranslate, -50 + X);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 	shapes[pickedShape]->Hide();
+	*/
 }
 
 void Game::Init()
@@ -749,8 +751,8 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
-	//if (snake->GetPlay() == true)
-		//CheckCollisionDetection(snake->GetHeadIndex());
+	if (snake->GetPlay() == true)
+		CheckCollisionDetection(snake->GetHeadIndex());
 }
 
 void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Camera, 
@@ -778,8 +780,8 @@ void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
-	//if (snake->GetPlay() == false)
-		//CheckCollisionDetection(snake->GetHeadIndex());
+	if (snake->GetPlay() == false)
+		CheckCollisionDetection(snake->GetHeadIndex());
 }
 
 void Game::WhenRotate()
@@ -983,7 +985,7 @@ void Game::Motion()
 	}
 
 	//Bubble truble:
-	
+	/*
 	if (bubble_up == true) //bubbles goes up
 	{
 		if (bubble_sound == true)
@@ -1063,7 +1065,7 @@ void Game::Motion()
 	}
 	if (bubble_kind == 3)
 		bubble_kind = 0;
-	
+	*/
 }
 
 int Game::CreateCurveControlPoints(int counter, Bezier1D *curve)

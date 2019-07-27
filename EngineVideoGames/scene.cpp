@@ -901,17 +901,8 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 {
 	
 	Shape* shape1 = shapes[num_of_shape]; //the snake
-	//glm::vec3 center_of_snake = shape1->GetMesh()->GetBVH()->GetBox()->GetCenter();
 	glm::vec3 center_of_snake = glm::vec3(shape1->makeTransScale()[3]);
 	glm::vec3 center_of_shape;
-
-	BVH* snake_curr = shape1->GetMesh()->GetBVH();
-	BVH* shape_curr;
-
-	glm::mat4 snake_trans = glm::translate(glm::mat4(1), glm::vec3(shape1->getTraslate()));
-	glm::mat4 shape_trans;
-	glm::mat4 snake_rot = shape1->GetRot();
-	glm::mat4 shape_rot;
 
 	float diff;
 	for (int i = 0; i < shapes.size(); i++)
@@ -920,21 +911,15 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 		if ((shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Reward ||
 			shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Obstacle) && shape1->GetNumOfShape() != shape2->GetNumOfShape())
 		{
-			shape_curr = shape2->GetMesh()->GetBVH();
-			shape_trans = glm::translate(glm::mat4(1), glm::vec3(shape2->getTraslate()));
-			shape_rot = shape2->GetRot();
-			snake_curr->GetBox()->UpdateDynamicVectors(snake_trans, snake_rot);
-			shape_curr->GetBox()->UpdateDynamicVectors(shape_trans, shape_rot);
-
-			center_of_shape = shape2->GetMesh()->GetBVH()->GetBox()->GetCenter();
+			center_of_shape = glm::vec3(shape2->makeTransScale()[3]);
 			diff = glm::sqrt((center_of_shape.x - center_of_snake.x)*(center_of_shape.x - center_of_snake.x) + 
 							(center_of_shape.y - center_of_snake.y)*(center_of_shape.y - center_of_snake.y) + 
 							(center_of_shape.z - center_of_snake.z)*(center_of_shape.z - center_of_snake.z));
-			std::cout << "center_of_snake: " << center_of_snake.x << " " << center_of_snake.y << " " << center_of_snake.z << endl;
-			std::cout << "center_of_shape: " << center_of_shape.x << " " << center_of_shape.y << " " << center_of_shape.z << endl;
-			std::cout << "FixedSize: " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().x << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().y << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().z << endl;
-			std::cout << "Size: " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().x << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().y << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().z << endl;
-			if(diff < 20)
+			//std::cout << "center_of_snake: " << center_of_snake.x << " " << center_of_snake.y << " " << center_of_snake.z << endl;
+			//std::cout << "center_of_shape: " << center_of_shape.x << " " << center_of_shape.y << " " << center_of_shape.z << endl;
+			//std::cout << "FixedSize: " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().x << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().y << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().z << endl;
+			//std::cout << "Size: " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().x << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().y << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().z << endl;
+			if(diff < 2)
 			{
 				if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Reward && shape2->Getfound() == false)
 				{
