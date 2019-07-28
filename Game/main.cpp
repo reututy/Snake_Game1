@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	scn->AddCamera(glm::vec3(0.0f, 30.0f, 0.5f), 90.0f, zNear, zFar, vp2);	//up view camera - 1
 	scn->AddCamera(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp3);	//snake view camera - 2
 	//scn->AddCamera(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp4);	//Menu camera - 3
-	scn->AddCamera(glm::vec3(-800.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp4);	//Menu camera - 3
+	scn->AddCamera(glm::vec3(-950.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp4);	//Menu camera - 3
 
 	scn->shapeTransformation(scn->zCameraTranslate, 80.0f);
 
@@ -81,6 +81,8 @@ int main(int argc, char *argv[])
 	scn->AddTexture("../res/textures/WinStar3.png", false); //18
 	scn->AddTexture("../res/textures/black.png", false); //19
 	scn->AddTexture("../res/textures/door.png", false); //20
+	scn->AddTexture("../res/textures/HowToPlay0.png", false); //21
+	scn->AddTexture("../res/textures/HowToPlay1.png", false); //22
 	
 	display.setScene(scn);
 

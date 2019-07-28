@@ -3,7 +3,7 @@
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 180
-#define SPEED 0.3
+#define SPEED 0.1
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 #define CYCLE 2
@@ -93,7 +93,7 @@ void Game::addBasicShapes()
 {
 	addShape(Axis, -1, LINES, nullptr, MeshConstructor::Kind::Default); //0 Add Axis
 	SetNumOfShape();
-	//HideShape(0);
+	HideShape(0);
 	addShape(BezierLine, -1, LINE_STRIP, head, MeshConstructor::Kind::Default); //1 Add curve
 	SetNumOfShape();
 	//Translate all scene away from camera
@@ -157,7 +157,7 @@ void Game::addBasicShapes()
 void Game::addBoundryBoxes()
 {
 	//Added boundry Boxes of the game: 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //20 Add copy cube = front
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Wall); //20 Add copy cube = front
 	SetNumOfShape();
 	pickedShape = 20;
 	shapeTransformation(xScale, 0.1);
@@ -167,7 +167,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(xGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
 	num_of_front_cube = 20;
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //21 Add copy cube = back
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Wall); //21 Add copy cube = back
 	SetNumOfShape();
 	pickedShape = 21;
 	shapeTransformation(xScale, 0.1);
@@ -177,7 +177,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(xGlobalRotate, 180);
 	num_of_back_cube = 21;
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //22 Add copy cube = up
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Wall); //22 Add copy cube = up
 	SetNumOfShape();
 	pickedShape = 22;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
@@ -186,7 +186,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(yGlobalTranslate, WATER_PLANE_SCALE / 0.1);
 	num_of_up_cube = 22;
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //23 Add copy cube = down
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Wall); //23 Add copy cube = down
 	SetNumOfShape();
 	pickedShape = 23;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
@@ -195,7 +195,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(yGlobalTranslate, -WATER_PLANE_SCALE / 0.1);
 	num_of_down_cube = 23;
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //24 Add copy cube = right
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Wall); //24 Add copy cube = right
 	SetNumOfShape();
 	pickedShape = 24;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
@@ -206,7 +206,7 @@ void Game::addBoundryBoxes()
 	shapeTransformation(zGlobalRotate, 180);
 	num_of_right_cube = 24;
 
-	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Obstacle); //25 Add copy cube = right
+	addShapeCopy(2, -1, TRIANGLES, MeshConstructor::Kind::Wall); //25 Add copy cube = right
 	SetNumOfShape();
 	pickedShape = 25;
 	shapeTransformation(xScale, WATER_PLANE_SCALE);
@@ -778,7 +778,7 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 	s->SetUniformMat4f("Projection", Projection, shaderIndx);
 	s->SetUniformMat4f("Camera", Camera, shaderIndx);
 	s->SetUniformMat4f("Normal", Normal, shaderIndx);
-	s->SetUniform4f("lightDirection", -1.0f, -1.0f, -1.0f, 0.0f);
+	s->SetUniform4f("lightDirection", 0.0f, -1.0f, -1.0f, 0.0f);
 
 	if (shaderIndx == 0) //picking shader
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);

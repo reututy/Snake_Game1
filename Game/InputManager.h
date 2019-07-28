@@ -9,6 +9,7 @@
 int curr_mode = Scene::modes::QUADS;
 char modes_names[8][20] = { "POINTS", "LINES", "LINE_LOOP", "LINE_STRIP", "TRIANGLES", "TRIANGLE_STRIP", "TRIANGLE_FAN", "QUADS" };
 int twice = 1;
+int play = 1;
 
 void mouse_callback(GLFWwindow* window,int button, int action, int mods)
 {	
@@ -144,37 +145,40 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 					scn->SetView();
 				break;
 			case GLFW_KEY_0: //Return to main menu Button
-				/*
-				if (twice == 1 && scn->GetMenuView() == true)
+				if (scn->GetFinishView() == true)
 				{
-					scn->SetShapeTex(40, 10);
-					//std::this_thread::sleep_for(std::chrono::milliseconds(500));
-					//std::cout << "Let's Play!";
-					//scn->SetShapeTex(40, 9);
+					twice = 0;
+					play = 0;
+					scn->SetFinishView();
+					if (scn->GetMainView() == false)
+						scn->SetMainView();
+					if (scn->GetAboutView() == true)
+						scn->SetAboutView();
 				}
-				else if (twice == 2 && scn->GetMenuView() == true)
-				{
-					scn->SetMainView();
-					scn->SetMenuView();
-					twice = 1;
-				}
-				twice++;*/
 				break;
 			case GLFW_KEY_1: //Play Button
-				if (twice == 1 && scn->GetMenuView() == true)
+				if (play == 1 && scn->GetMenuView() == true)
 				{
 					scn->SetShapeTex(40, 10);
 					//std::this_thread::sleep_for(std::chrono::milliseconds(500));
 					//std::cout << "Let's Play!";
 					//scn->SetShapeTex(40, 9);
 				}
-				else if (twice == 2 && scn->GetMenuView() == true)
+				else if (play == 2 && scn->GetMenuView() == true)
+				{
+					scn->SetShapeTex(40, 21);
+				}
+				else if (play == 3 && scn->GetMenuView() == true)
+				{
+					scn->SetShapeTex(40, 22);
+				}
+				else if (play == 4 && scn->GetMenuView() == true)
 				{
 					scn->SetMainView();
 					scn->SetMenuView();
-					twice = 1;
+					play = 0;
 				}
-				twice++;
+				play++;
 				break;
 			case GLFW_KEY_2: //About Button
 				if (twice == 1 && scn->GetAboutView() == false)

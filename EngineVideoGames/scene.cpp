@@ -888,6 +888,11 @@ bool Scene::GetQuitView()
 	return quit_view;
 }
 
+bool Scene::GetFinishView()
+{
+	return finish_view;
+}
+
 Camera* Scene::GetCamera(int index)
 {
 	return cameras[index];
@@ -938,6 +943,14 @@ void Scene::SetQuitView()
 		quit_view = true;
 }
 
+void Scene::SetFinishView()
+{
+	if (finish_view == true)
+		finish_view = false;
+	else
+		finish_view = true;
+}
+
 void Scene::SetNumOfShapes(int value)
 {
 	num_of_shapes = value;
@@ -963,7 +976,8 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 		Shape* shape2 = shapes[i];
 		if ((shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Reward ||
 			shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Obstacle || 
-			shape2->GetMesh()->GetKind() == MeshConstructor::Kind::WallWin) 
+			shape2->GetMesh()->GetKind() == MeshConstructor::Kind::WallWin ||
+			shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Wall)
 			&& shape1->GetNumOfShape() != shape2->GetNumOfShape())
 		{
 			center_of_shape = glm::vec3(shape2->makeTransScale()[3]);
@@ -972,17 +986,27 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 							(center_of_shape.z - center_of_snake.z)*(center_of_shape.z - center_of_snake.z));
 			//std::cout << "center_of_snake: " << center_of_snake.x << " " << center_of_snake.y << " " << center_of_snake.z << endl;
 			//std::cout << "center_of_shape: " << center_of_shape.x << " " << center_of_shape.y << " " << center_of_shape.z << endl;
-			if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::WallWin && diff < 15 && shape2->Getfound() == false)
+			if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::WallWin && diff < 40 && shape2->Getfound() == false)
 			{
 				shape2->Setfound(true);
 				playTune("Sounds/win.wav");
 				Deactivate();
+				SetFinishView();
 				if (star_count <= 3)
 					SetShapeTex(40, 16);
 				else if (star_count > 3 && star_count <= 6)
 					SetShapeTex(40, 17);
 				else if (star_count == 7)
 					SetShapeTex(40, 18);
+				SetMainView();
+			}
+			else if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Wall && diff < 40 && shape2->Getfound() == false)
+			{
+				shape2->Setfound(true);
+				playTune("Sounds/loose.wav");
+				Deactivate();
+				SetShapeTex(40, 15);
+				SetFinishView();
 				SetMainView();
 			}
 			if (diff < 2)
@@ -1003,6 +1027,7 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 					playTune("Sounds/loose.wav");
 					Deactivate();
 					SetShapeTex(40, 15);
+					SetFinishView();
 					SetMainView();
 				}
 			}

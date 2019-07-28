@@ -122,6 +122,7 @@ public:
 	bool GetMenuView();
 	bool GetAboutView();
 	bool GetQuitView();
+	bool GetFinishView();
 	Camera* GetCamera(int index);
 	Player* GetPlayer();
 
@@ -130,6 +131,7 @@ public:
 	void SetMenuView();
 	void SetAboutView();
 	void SetQuitView();
+	void SetFinishView();
 	void SetNumOfShape();
 	void SetNumOfShapes(int value);
 	void CheckCollisionDetection(int num_of_shape);
@@ -165,6 +167,7 @@ protected:
 	bool menu_view = true; //Reut's addings
 	bool about_view = false; //Reut's addings
 	bool quit_view = false; //Reut's addings
+	bool finish_view = false; //Reut's addings
 	Player* snake; //Reut's addings
 };
 

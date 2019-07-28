@@ -29,7 +29,7 @@ class MeshConstructor
 	static const unsigned int VEC2_ATTRIB_NUM = 1;
 	
 public:
-	enum Kind { Default, Snake, Reward, Obstacle, WallWin, Bubble };
+	enum Kind { Default, Snake, Reward, Obstacle, Wall, WallWin, Bubble };
 	enum SimpleShapes
 	{
 		Axis,
