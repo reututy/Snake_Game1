@@ -972,8 +972,19 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 							(center_of_shape.z - center_of_snake.z)*(center_of_shape.z - center_of_snake.z));
 			//std::cout << "center_of_snake: " << center_of_snake.x << " " << center_of_snake.y << " " << center_of_snake.z << endl;
 			//std::cout << "center_of_shape: " << center_of_shape.x << " " << center_of_shape.y << " " << center_of_shape.z << endl;
-			//std::cout << "FixedSize: " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().x << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().y << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetFixedSize().z << endl;
-			//std::cout << "Size: " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().x << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().y << " " << shape2->GetMesh()->GetBVH()->GetBox()->GetSize().z << endl;
+			if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::WallWin && diff < 15 && shape2->Getfound() == false)
+			{
+				shape2->Setfound(true);
+				playTune("Sounds/win.wav");
+				Deactivate();
+				if (star_count <= 3)
+					SetShapeTex(40, 16);
+				else if (star_count > 3 && star_count <= 6)
+					SetShapeTex(40, 17);
+				else if (star_count == 7)
+					SetShapeTex(40, 18);
+				SetMainView();
+			}
 			if (diff < 2)
 			{
 				if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::Reward && shape2->Getfound() == false)
@@ -983,22 +994,6 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 					star_count++;
 					playTune("Sounds/eat.wav");
 				}
-				//if (diff < 0.5)
-				//{
-				/*
-					if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::WallWin)
-					{
-						playTune("Sounds/win.wav");
-						Deactivate();
-						if (star_count <= 3)
-							SetShapeTex(40, 16);
-						else if (star_count > 3 && star_count <= 6)
-							SetShapeTex(40, 17);
-						else if (star_count == 7)
-							SetShapeTex(40, 18);
-						SetMainView();
-					}*/
-				//}
 			}
 			else if (diff < 5)
 			{
@@ -1008,18 +1003,6 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 					playTune("Sounds/loose.wav");
 					Deactivate();
 					SetShapeTex(40, 15);
-					SetMainView();
-				}
-				if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::WallWin)
-				{
-					playTune("Sounds/win.wav");
-					Deactivate();
-					if (star_count <= 3)
-						SetShapeTex(40, 16);
-					else if (star_count > 3 && star_count <= 6)
-						SetShapeTex(40, 17);
-					else if (star_count == 7)
-						SetShapeTex(40, 18);
 					SetMainView();
 				}
 			}
