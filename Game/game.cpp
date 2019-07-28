@@ -3,7 +3,7 @@
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 180
-#define SPEED 0.5
+#define SPEED 0.3
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 #define CYCLE 2

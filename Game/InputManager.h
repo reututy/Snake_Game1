@@ -199,7 +199,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 					scn->SetShapeTex(40, 9);
 					scn->SetQuitView();
 					twice = 0;
-					exit(0);
+					glfwSetWindowShouldClose(window, GLFW_TRUE);
+					//exit(0);
 				}
 				twice++;
 				break;
