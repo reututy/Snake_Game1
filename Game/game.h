@@ -31,9 +31,9 @@ public:
 	void addBoundryBoxes(); 
 	void addObstacles(); 
 	void addRewards();
-	void addBubbles();
 	void addWinDoor();
 	void addMenus();
+	void addBubbles();
 	void CreateBoundingBoxes(BVH* bvh, int parent, int level);
 
 	//	void Update( glm::mat4 MVP ,glm::mat4 *jointTransforms,const int length,const int  shaderIndx);

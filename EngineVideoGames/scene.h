@@ -123,6 +123,7 @@ public:
 	bool GetAboutView();
 	bool GetQuitView();
 	bool GetFinishView();
+	bool GetPlayAgain();
 	Camera* GetCamera(int index);
 	Player* GetPlayer();
 
@@ -132,6 +133,7 @@ public:
 	void SetAboutView();
 	void SetQuitView();
 	void SetFinishView();
+	void SetPlayAgain();
 	void SetNumOfShape();
 	void SetNumOfShapes(int value);
 	void CheckCollisionDetection(int num_of_shape);
@@ -168,6 +170,7 @@ protected:
 	bool about_view = false; //Reut's addings
 	bool quit_view = false; //Reut's addings
 	bool finish_view = false; //Reut's addings
+	bool play_again = false; //Reut's addings
 	Player* snake; //Reut's addings
 };
 

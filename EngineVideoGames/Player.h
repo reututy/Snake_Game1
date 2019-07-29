@@ -10,8 +10,6 @@ class Player
 		Scene* scn;
 		int head_index;
 		int num_of_links;
-		bool is_alive;
-		glm::vec3 velocity; //TODO: delete?
 		glm::vec3 direction;
 		bool play;
 
@@ -19,7 +17,6 @@ class Player
 		bool move_left;
 		bool move_up;
 		bool move_down;
-		int curr_num_of_shape; //TODO: delete?
 
 	public:
 		enum Direction { forwords, backwords, up, down, right, left };

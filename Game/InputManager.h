@@ -148,21 +148,41 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				if (scn->GetFinishView() == true)
 				{
 					twice = 0;
-					play = 0;
+					play = 1;
 					scn->SetFinishView();
+					scn->SetPlayAgain();
+					scn->SetShapeTex(40, 9);
 					if (scn->GetMainView() == false)
 						scn->SetMainView();
+					if (scn->GetMenuView() == false)
+						scn->SetMenuView();
 					if (scn->GetAboutView() == true)
 						scn->SetAboutView();
 				}
 				break;
 			case GLFW_KEY_1: //Play Button
+				if (scn->GetPlayAgain() == true)
+				{
+					for (int i = scn->GetPlayer()->GetHeadIndex(); i < scn->GetPlayer()->GetHeadIndex() + scn->GetPlayer()->GetNumOfLinks() + 2; i++)
+					{
+						scn->GetShape(scn->GetPlayer()->GetHeadIndex())->zeroTrans();
+						scn->GetShape(scn->GetPlayer()->GetHeadIndex())->zeroRot(true);
+					}
+					for (int i = 0; i < scn->GetSizeOfShapes(); i++)
+					{
+						scn->GetShape(i)->Setfound(false);
+						if (scn->GetShape(i)->GetMesh()->GetKind() == MeshConstructor::Kind::Reward)
+							scn->GetShape(i)->Unhide();
+					}
+				}
 				if (play == 1 && scn->GetMenuView() == true)
 				{
 					scn->SetShapeTex(40, 10);
 					//std::this_thread::sleep_for(std::chrono::milliseconds(500));
 					//std::cout << "Let's Play!";
 					//scn->SetShapeTex(40, 9);
+					if (scn->GetPlayAgain() == true)
+						scn->SetPlayAgain();
 				}
 				else if (play == 2 && scn->GetMenuView() == true)
 				{
@@ -232,6 +252,7 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 	Game *scn = (Game*)glfwGetWindowUserPointer(window);
 
 	scn->updatePosition((float)xpos,(float)ypos);
+	/*
 	if(glfwGetMouseButton(window,GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
 		scn->mouseProccessing(GLFW_MOUSE_BUTTON_RIGHT);
@@ -240,7 +261,7 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 	{
 		scn->mouseProccessing(GLFW_MOUSE_BUTTON_LEFT);
 	}
-
+	*/
 }
 
 void window_size_callback(GLFWwindow* window, int width, int height)
@@ -252,6 +273,6 @@ void window_size_callback(GLFWwindow* window, int width, int height)
 void init(Display &display)
 {
 	display.addKeyCallBack(key_callback);
-	display.addMouseCallBacks(mouse_callback,scroll_callback,cursor_position_callback);
+	//display.addMouseCallBacks(mouse_callback,scroll_callback,cursor_position_callback);
 	display.addResizeCallBack(window_size_callback);
 }

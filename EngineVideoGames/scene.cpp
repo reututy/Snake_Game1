@@ -893,6 +893,11 @@ bool Scene::GetFinishView()
 	return finish_view;
 }
 
+bool Scene::GetPlayAgain()
+{
+	return play_again;
+}
+
 Camera* Scene::GetCamera(int index)
 {
 	return cameras[index];
@@ -949,6 +954,14 @@ void Scene::SetFinishView()
 		finish_view = false;
 	else
 		finish_view = true;
+}
+
+void Scene::SetPlayAgain()
+{
+	if (play_again == true)
+		play_again = false;
+	else
+		play_again = true;
 }
 
 void Scene::SetNumOfShapes(int value)

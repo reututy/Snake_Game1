@@ -13,8 +13,6 @@ Player::Player(Scene* Scn, int Head_index, int Num_of_links)
 	scn = Scn;
 	head_index = Head_index;
 	num_of_links = Num_of_links;
-	is_alive = true;
-	velocity = glm::vec3(-1, 0, 0);
 	CreatePlayer();
 
 	move_right = false;
@@ -23,7 +21,6 @@ Player::Player(Scene* Scn, int Head_index, int Num_of_links)
 	move_down = false;
 	play = false;
 	direction = glm::vec3(-1, 0, 0);
-	curr_num_of_shape = head_index;
 }
 
 Player::~Player() {}
