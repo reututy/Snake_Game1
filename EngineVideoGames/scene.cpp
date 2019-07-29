@@ -984,8 +984,6 @@ void Scene::CheckCollisionDetection(int num_of_shape)
 			diff = glm::sqrt((center_of_shape.x - center_of_snake.x)*(center_of_shape.x - center_of_snake.x) + 
 							(center_of_shape.y - center_of_snake.y)*(center_of_shape.y - center_of_snake.y) + 
 							(center_of_shape.z - center_of_snake.z)*(center_of_shape.z - center_of_snake.z));
-			//std::cout << "center_of_snake: " << center_of_snake.x << " " << center_of_snake.y << " " << center_of_snake.z << endl;
-			//std::cout << "center_of_shape: " << center_of_shape.x << " " << center_of_shape.y << " " << center_of_shape.z << endl;
 			if (shape2->GetMesh()->GetKind() == MeshConstructor::Kind::WallWin && diff < 40 && shape2->Getfound() == false)
 			{
 				shape2->Setfound(true);

@@ -854,17 +854,18 @@ void Game::Motion()
 
 					shapeTransformation(zLocalRotate, -ANGLE);
 					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(-1, 0, 0)));
-					glm::vec3 tip_pos_before = snake->GetHeadPos();
+					glm::vec3 tip_pos_before = glm::vec3(shapes[snake->GetHeadIndex()+1]->makeTransScale()[3]);
 					pickedShape++;
 					shapeTransformation(zLocalRotate, ANGLE);
-					glm::vec3 tip_pos_after = snake->GetHeadPos();
-					glm::vec3 tip_pos_diff = glm::vec3(tip_pos_before.x - tip_pos_after.x, tip_pos_before.y - tip_pos_after.y, tip_pos_before.z - tip_pos_after.z);
-					//std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
-					//std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
-					//std::cout << "tip_pos_diff: " << tip_pos_diff.x << " " << tip_pos_diff.y << " " << tip_pos_diff.z << std::endl;
-					//shapeTransformation(xLocalTranslate, tip_pos_diff.x);
-					shapeTransformation(yLocalTranslate, tip_pos_diff.y);
-					//shapeTransformation(zLocalTranslate, tip_pos_diff.z);
+					glm::vec3 tip_pos_after = glm::vec3(shapes[snake->GetHeadIndex()+1]->makeTransScale()[3]);
+					float diff = glm::sqrt((tip_pos_after.x - tip_pos_before.x)*(tip_pos_after.x - tip_pos_before.x) +
+						(tip_pos_after.y - tip_pos_before.y)*(tip_pos_after.y - tip_pos_before.y) +
+						(tip_pos_after.z - tip_pos_before.z)*(tip_pos_after.z - tip_pos_before.z));
+
+					std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
+					std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
+					std::cout << "diff: " << diff << std::endl;
+					shapeTransformation(yLocalTranslate, -diff);
 					cycle = 0;
 					//playTune("Sounds/swim.wav");
 				}
