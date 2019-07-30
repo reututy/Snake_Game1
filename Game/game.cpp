@@ -430,7 +430,7 @@ void Game::addMenus()
 
 void Game::addBubbles()
 {
-
+	/*
 	int X = 3000;
 	int Z = 3000;
 
@@ -517,6 +517,7 @@ void Game::addBubbles()
 	shapeTransformation(yGlobalTranslate, -1020);
 	shapeTransformation(xGlobalTranslate, -50);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	*/
 
 	//Left bubbles:
 	/*
@@ -783,8 +784,7 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 		//s->SetUniform4f("lightColor", 0.6f, 0.8f, 0.7f, 1.0f);
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
-	if (snake->GetPlay() == true)
-		CheckCollisionDetection(snake->GetHeadIndex());
+	CheckCollisionDetection(snake->GetHeadIndex());
 }
 
 void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Camera, 
@@ -812,8 +812,7 @@ void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
-	if (snake->GetPlay() == false)
-		CheckCollisionDetection(snake->GetHeadIndex());
+	CheckCollisionDetection(snake->GetHeadIndex());
 }
 
 void Game::WhenRotate()
@@ -839,6 +838,7 @@ void Game::Motion()
 {
 	if (isActive)
 	{
+		/*
 		if (snake->GetMoveUp())
 		{
 			if (pickedShape != snake->GetTailIndex())
@@ -851,10 +851,69 @@ void Game::Motion()
 
 					shapeTransformation(zLocalRotate, -ANGLE);
 					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(-1, 0, 0)));
-					glm::vec3 tip_pos_before = glm::vec3(shapes[snake->GetHeadIndex()+1]->makeTransScale()[3]);
+					glm::vec3 tip_pos_before = glm::vec3(shapes[snake->GetHeadIndex() + 1]->makeTransScale()[3]);
 					pickedShape++;
 					shapeTransformation(zLocalRotate, ANGLE);
-					glm::vec3 tip_pos_after = glm::vec3(shapes[snake->GetHeadIndex()+1]->makeTransScale()[3]);
+					glm::vec3 tip_pos_after = glm::vec3(shapes[snake->GetHeadIndex() + 1]->makeTransScale()[3]);
+					float diff = glm::sqrt((tip_pos_after.x - tip_pos_before.x)*(tip_pos_after.x - tip_pos_before.x) +
+						(tip_pos_after.y - tip_pos_before.y)*(tip_pos_after.y - tip_pos_before.y) +
+						(tip_pos_after.z - tip_pos_before.z)*(tip_pos_after.z - tip_pos_before.z));
+
+					std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
+					std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
+					std::cout << "diff: " << diff << std::endl;
+					shapeTransformation(yLocalTranslate, -diff);
+					cycle = 0;
+					//playTune("Sounds/swim.wav");
+				}
+				else if (cycle == CYCLE) //not tail and not head
+				{
+					shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
+
+					shapeTransformation(zLocalRotate, -ANGLE);
+					glm::vec3 tip_pos_before = GetTipPositionInSystem(pickedShape);
+					pickedShape++;
+					shapeTransformation(zLocalRotate, ANGLE);
+					glm::vec3 tip_pos_after = GetTipPositionInSystem(pickedShape - 1);
+					glm::vec3 tip_pos_diff = glm::vec3(tip_pos_before.x - tip_pos_after.x, tip_pos_before.y - tip_pos_after.y, tip_pos_before.z - tip_pos_after.z);
+					shapeTransformation(zLocalTranslate, tip_pos_diff.y);
+					//std::cout << "NOT HEAD: " << std::endl;
+					//std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
+					//std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
+					//std::cout << "tip_pos_diff: " << tip_pos_diff.x << " " << tip_pos_diff.y << " " << tip_pos_diff.z << std::endl;
+					cycle = 0;
+				}
+			}
+			else if (cycle == CYCLE) //if tail
+			{
+				shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+				shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+				shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
+
+				shapeTransformation(zLocalRotate, -ANGLE);
+				snake->SetMoveUp(false);
+			}
+		}
+		*/
+
+		if (snake->GetMoveUp())
+		{
+			if (pickedShape != snake->GetTailIndex())
+			{
+				if (pickedShape == snake->GetHeadIndex())
+				{
+					shapeTransformation(xLocalTranslate, SPEED*snake->GetDirection().x);
+					shapeTransformation(yLocalTranslate, SPEED*snake->GetDirection().y);
+					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
+
+					shapeTransformation(zLocalRotate, -ANGLE);
+					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(-1, 0, 0)));
+					glm::vec3 tip_pos_before = glm::vec3(shapes[snake->GetHeadIndex() + 1]->makeTransScale()[3]);
+					pickedShape++;
+					shapeTransformation(zLocalRotate, ANGLE);
+					glm::vec3 tip_pos_after = glm::vec3(shapes[snake->GetHeadIndex() + 1]->makeTransScale()[3]);
 					float diff = glm::sqrt((tip_pos_after.x - tip_pos_before.x)*(tip_pos_after.x - tip_pos_before.x) +
 						(tip_pos_after.y - tip_pos_before.y)*(tip_pos_after.y - tip_pos_before.y) +
 						(tip_pos_after.z - tip_pos_before.z)*(tip_pos_after.z - tip_pos_before.z));
@@ -1018,6 +1077,7 @@ void Game::Motion()
 	}
 
 	//Bubble truble:
+	/*
 	if (GetMainView() == false)
 	{
 		if (bubble_up == true) //bubbles goes up
@@ -1036,25 +1096,6 @@ void Game::Motion()
 					shapeTransformation(yGlobalTranslate, 0.2 * 90);
 				}
 			}
-			/*
-			else if (bubble_kind % 3 == 1)
-			{
-				for (int i = 48; i < 55; i++)
-				{
-					pickedShape = i;
-					shapes[i]->Unhide();
-					shapeTransformation(yGlobalTranslate, 0.2 * 90);
-				}
-			}
-			else if (bubble_kind % 3 == 2)
-			{
-				for (int i = 55; i < 62; i++)
-				{
-					pickedShape = i;
-					shapes[i]->Unhide();
-					shapeTransformation(yGlobalTranslate, 0.2 * 90);
-				}
-			}*/
 		}
 		else //bubbles goes down
 		{
@@ -1067,25 +1108,6 @@ void Game::Motion()
 					shapeTransformation(yGlobalTranslate, 0.2 * -90);
 				}
 			}
-			/*
-			else if (bubble_kind % 3 == 1)
-			{
-				for (int i = 48; i < 55; i++)
-				{
-					pickedShape = i;
-					shapes[i]->Hide();
-					shapeTransformation(yGlobalTranslate, 0.2 * -90);
-				}
-			}
-			else if (bubble_kind % 3 == 2)
-			{
-				for (int i = 55; i < 62; i++)
-				{
-					pickedShape = i;
-					shapes[i]->Hide();
-					shapeTransformation(yGlobalTranslate, 0.2 * -90);
-				}
-			}*/
 		}
 		bubble_cycle++;
 
@@ -1102,6 +1124,8 @@ void Game::Motion()
 		if (bubble_kind == 3)
 			bubble_kind = 0;
 	}
+	*/
+
 }
 
 int Game::CreateCurveControlPoints(int counter, Bezier1D *curve)

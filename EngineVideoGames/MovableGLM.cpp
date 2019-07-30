@@ -79,6 +79,11 @@ void MovableGLM::myRotate(float ang, glm::vec3 &vec, int indx)
 	//}
 }
 
+void MovableGLM::snakeRotate(glm::mat4 mat)
+{
+	rotateMat = mat * rotateMat;
+}
+
 void MovableGLM::myTranslate(vec3 &vec, int indx)
 {
 	translateMat[indx] = translate(translateMat[indx], scaleFactor * vec );

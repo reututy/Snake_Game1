@@ -20,17 +20,15 @@ int main(int argc, char *argv[])
 	Game *scn = new Game(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp1); //free view camera - 0
 	scn->AddCamera(glm::vec3(0.0f, 30.0f, 0.5f), 90.0f, zNear, zFar, vp2);	//up view camera - 1
 	scn->AddCamera(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp3);	//snake view camera - 2
-	//scn->AddCamera(glm::vec3(0.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp4);	//Menu camera - 3
 	scn->AddCamera(glm::vec3(-950.0f, 0.0f, 1.0f), CAM_ANGLE, zNear, zFar, vp4);	//Menu camera - 3
 
 	scn->shapeTransformation(scn->zCameraTranslate, 80.0f);
 
 	//Camera 0:
 	scn->GetCamera(0)->myTranslate(glm::vec3(2, 0, 0), 0); //x
-	scn->GetCamera(0)->myTranslate(glm::vec3(0, -2, 0), 0); //y
-	scn->GetCamera(0)->myTranslate(glm::vec3(0, 0, 4), 0); //z
-	scn->GetCamera(0)->myRotate(-180, glm::vec3(0, 0, 1), -1); //inverse the camera
-	scn->GetCamera(0)->myRotate(-90, glm::vec3(0, 1, 0), -1); //rotate in 90 degrees
+	scn->GetCamera(0)->myTranslate(glm::vec3(0, 2, 0), 0); //y
+	scn->GetCamera(0)->myTranslate(glm::vec3(0, 0, -4), 0); //z
+	scn->GetCamera(0)->myRotate(90, glm::vec3(0, 1, 0), -1); //rotate in 90 degrees
 
 	//Camera 1:
 	scn->GetCamera(1)->myTranslate(glm::vec3(4, 0, 0), -1);
@@ -38,13 +36,7 @@ int main(int argc, char *argv[])
 
 	//Camera 3:
 	scn->GetCamera(3)->myTranslate(glm::vec3(-600, 0, 0), -1);
-	/*
-	scn->GetCamera(3)->myTranslate(glm::vec3(2, 0, 0), 0); //x
-	scn->GetCamera(3)->myTranslate(glm::vec3(0, -2, 0), 0); //y
-	scn->GetCamera(3)->myTranslate(glm::vec3(0, 0, 4), 0); //z
-	scn->GetCamera(3)->myRotate(-180, glm::vec3(0, 0, 1), -1); //inverse the camera
-	scn->GetCamera(3)->myRotate(-90, glm::vec3(0, 1, 0), -1); //rotate in 90 degrees
-	*/
+
 	Display display(DISPLAY_WIDTH, DISPLAY_HEIGHT, "OpenGL");
 
 	init(display);
@@ -70,20 +62,20 @@ int main(int argc, char *argv[])
 	scn->AddTexture("../res/textures/gold_shine.png", false); //7
 	scn->AddTexture("../res/textures/bubble_blue.png", false); //8
 
-	scn->AddTexture("../res/textures/MainMenu0.png", false); //9
-	scn->AddTexture("../res/textures/MainMenu1.png", false); //10
-	scn->AddTexture("../res/textures/MainMenu2.png", false); //11
-	scn->AddTexture("../res/textures/AboutMenu.png", false); //12
-	scn->AddTexture("../res/textures/AboutMenuBack.png", false); //13
-	scn->AddTexture("../res/textures/MainMenu3.png", false); //14
-	scn->AddTexture("../res/textures/GameOver.png", false); //15
-	scn->AddTexture("../res/textures/WinStar1.png", false); //16
-	scn->AddTexture("../res/textures/WinStar2.png", false); //17
-	scn->AddTexture("../res/textures/WinStar3.png", false); //18
+	scn->AddTexture("../res/textures/MainMenu0-min.png", false); //9
+	scn->AddTexture("../res/textures/MainMenu1-min.png", false); //10
+	scn->AddTexture("../res/textures/MainMenu2-min.png", false); //11
+	scn->AddTexture("../res/textures/AboutMenu-min.png", false); //12
+	scn->AddTexture("../res/textures/AboutMenuBack-min.png", false); //13
+	scn->AddTexture("../res/textures/MainMenu3-min.png", false); //14
+	scn->AddTexture("../res/textures/GameOver-min.png", false); //15
+	scn->AddTexture("../res/textures/WinStar1-min.png", false); //16
+	scn->AddTexture("../res/textures/WinStar2-min.png", false); //17
+	scn->AddTexture("../res/textures/WinStar3-min.png", false); //18
 	scn->AddTexture("../res/textures/black.png", false); //19
 	scn->AddTexture("../res/textures/door.png", false); //20
-	scn->AddTexture("../res/textures/HowToPlay0.png", false); //21
-	scn->AddTexture("../res/textures/HowToPlay1.png", false); //22
+	scn->AddTexture("../res/textures/HowToPlay0-min.png", false); //21
+	scn->AddTexture("../res/textures/HowToPlay1-min.png", false); //22
 	
 	display.setScene(scn);
 
