@@ -13,8 +13,8 @@ out vec3 position0;
 
 uniform mat4 MV;
 uniform mat4 Projection;
-uniform mat4 Normal;
 uniform mat4 Camera;
+uniform mat4 Normal;
 uniform vec4 dqRot[5];
 uniform vec4 dqTrans[5];
 uniform int index;
@@ -26,7 +26,7 @@ void main()
 	vec4 b_rot = vec4(0);
 	vec4 b_trans = vec4(0);
 	
-	if(index == 32)
+	if(index == 48)
 	{
 		b_rot += dqRot[0] * weights[0]; 
 		b_trans += dqTrans[0] * weights[0]; 
@@ -35,13 +35,13 @@ void main()
 		b_rot += dqRot[1] * weights[2]; 
 		b_trans += dqTrans[1] * weights[2]; 
 	}
-	else if(index == 33)
+	else if(index == 49)
 		x=0;
-	else if(index == 34)
+	else if(index == 50)
 		x=1;
-	else if(index == 35)
+	else if(index == 51)
 		x=2;
-	else if(index == 36)
+	else if(index == 52)
 	{
 		b_rot += dqRot[3] * weights[0]; 
 		b_trans += dqTrans[3] * weights[0]; 
@@ -93,21 +93,21 @@ void main()
 					
 					t0, t1, t2, 1.0);
 
-	texCoord0 = texCoords;
-	//color0 = vec3(0.0, 0.0, 0.0);
-	color0 = color;
-	//color0 = weights;
-	//position0 = vec3(M * vec4(position, 1.0));
 	
-	if(index >= 32 && index <= 36)
+	texCoord0 = texCoords;
+	color0 = color;
+	position0 = vec3(M * vec4(position, 1.0));
+	normal0 = (M * vec4(normal, 0.0)).xyz;
+	
+	if(index >= 48 && index <= 52)
 	{	
 		normal0 = (M * vec4(normal, 0.0)).xyz;	
-		gl_Position = Projection * M * vec4(position, 1.0); //you must have gl_Position
+		gl_Position = Projection * inverse(Camera) * M * vec4(position, 1.0); //you must have gl_Position
 	}
 	else
 	{
 		normal0 = (Normal * vec4(normal, 0.0)).xyz;
-		gl_Position = Projection * MV * vec4(position, 1.0); //you must have gl_Position
+		gl_Position = Projection * inverse(Camera) * MV * vec4(position, 1.0); //you must have gl_Position
 
 	}
 }

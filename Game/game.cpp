@@ -3,7 +3,7 @@
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 180
-#define SPEED 0.1
+#define SPEED 0.2
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 #define CYCLE 2
@@ -417,7 +417,6 @@ void Game::addMenus()
 
 void Game::addBubbles()
 {
-	/*
 	int X = 3000;
 	int Z = 3000;
 
@@ -432,6 +431,7 @@ void Game::addBubbles()
 	shapeTransformation(zGlobalTranslate, 100);
 	shapeTransformation(yGlobalTranslate, -795);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
 	SetNumOfShape();
@@ -444,6 +444,7 @@ void Game::addBubbles()
 	shapeTransformation(yGlobalTranslate, -850);
 	shapeTransformation(xGlobalTranslate, -50);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
 	SetNumOfShape();
@@ -456,6 +457,7 @@ void Game::addBubbles()
 	shapeTransformation(yGlobalTranslate, -792);
 	shapeTransformation(xGlobalTranslate, -100);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
 	SetNumOfShape();
@@ -468,6 +470,7 @@ void Game::addBubbles()
 	shapeTransformation(yGlobalTranslate, -950);
 	shapeTransformation(xGlobalTranslate, -60);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
 	SetNumOfShape();
@@ -480,6 +483,7 @@ void Game::addBubbles()
 	shapeTransformation(yGlobalTranslate, -980);
 	shapeTransformation(xGlobalTranslate, -110);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
 	SetNumOfShape();
@@ -492,6 +496,7 @@ void Game::addBubbles()
 	shapeTransformation(yGlobalTranslate, -960);
 	shapeTransformation(xGlobalTranslate, -30);
 	SetShapeShader(pickedShape, BASIC_SHADER);
+	shapes[pickedShape]->Hide();
 
 	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
 	SetNumOfShape();
@@ -504,193 +509,7 @@ void Game::addBubbles()
 	shapeTransformation(yGlobalTranslate, -1020);
 	shapeTransformation(xGlobalTranslate, -50);
 	SetShapeShader(pickedShape, BASIC_SHADER);
-	*/
-
-	//Left bubbles:
-	/*
-	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
-	SetNumOfShape();
-	pickedShape = 48;
-	SetShapeTex(pickedShape, BUBBLE_TEX);
-	shapeTransformation(xScale, 0.0085);
-	shapeTransformation(yScale, 0.0085);
-	shapeTransformation(zScale, 0.0085);
-	shapeTransformation(zGlobalTranslate, 100 + Z);
-	shapeTransformation(yGlobalTranslate, -795);
-	shapeTransformation(xGlobalTranslate, -X);
-	SetShapeShader(pickedShape, BASIC_SHADER);
 	shapes[pickedShape]->Hide();
-
-	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
-	SetNumOfShape();
-	pickedShape = 49;
-	SetShapeTex(pickedShape, BUBBLE_TEX);
-	shapeTransformation(xScale, 0.0085);
-	shapeTransformation(yScale, 0.0085);
-	shapeTransformation(zScale, 0.0085);
-	shapeTransformation(zGlobalTranslate, 120 + Z);
-	shapeTransformation(yGlobalTranslate, -850);
-	shapeTransformation(xGlobalTranslate, -50 - X);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->Hide();
-
-	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
-	SetNumOfShape();
-	pickedShape = 50;
-	SetShapeTex(pickedShape, BUBBLE_TEX);
-	shapeTransformation(xScale, 0.0085);
-	shapeTransformation(yScale, 0.0085);
-	shapeTransformation(zScale, 0.0085);
-	shapeTransformation(zGlobalTranslate, 120 + Z);
-	shapeTransformation(yGlobalTranslate, -792);
-	shapeTransformation(xGlobalTranslate, -100 - X);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->Hide();
-
-	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
-	SetNumOfShape();
-	pickedShape = 51;
-	SetShapeTex(pickedShape, BUBBLE_TEX);
-	shapeTransformation(xScale, 0.0085);
-	shapeTransformation(yScale, 0.0085);
-	shapeTransformation(zScale, 0.0085);
-	shapeTransformation(zGlobalTranslate, 120 + Z);
-	shapeTransformation(yGlobalTranslate, -950);
-	shapeTransformation(xGlobalTranslate, -60 - X);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->Hide();
-
-	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
-	SetNumOfShape();
-	pickedShape = 52;
-	SetShapeTex(pickedShape, BUBBLE_TEX);
-	shapeTransformation(xScale, 0.0085);
-	shapeTransformation(yScale, 0.0085);
-	shapeTransformation(zScale, 0.0085);
-	shapeTransformation(zGlobalTranslate, 130 + Z);
-	shapeTransformation(yGlobalTranslate, -980);
-	shapeTransformation(xGlobalTranslate, -110 - X);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->Hide();
-
-	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
-	SetNumOfShape();
-	pickedShape = 53;
-	SetShapeTex(pickedShape, BUBBLE_TEX);
-	shapeTransformation(xScale, 0.0085);
-	shapeTransformation(yScale, 0.0085);
-	shapeTransformation(zScale, 0.0085);
-	shapeTransformation(zGlobalTranslate, 130 + Z);
-	shapeTransformation(yGlobalTranslate, -960);
-	shapeTransformation(xGlobalTranslate, -30 - X);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->Hide();
-
-	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
-	SetNumOfShape();
-	pickedShape = 54;
-	SetShapeTex(pickedShape, BUBBLE_TEX);
-	shapeTransformation(xScale, 0.0085);
-	shapeTransformation(yScale, 0.0085);
-	shapeTransformation(zScale, 0.0085);
-	shapeTransformation(zGlobalTranslate, 130 + Z);
-	shapeTransformation(yGlobalTranslate, -1020);
-	shapeTransformation(xGlobalTranslate, -50 - X);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->Hide();
-
-	//Down right bubbles:
-	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
-	SetNumOfShape();
-	pickedShape = 55;
-	SetShapeTex(pickedShape, BUBBLE_TEX);
-	shapeTransformation(xScale, 0.0085);
-	shapeTransformation(yScale, 0.0085);
-	shapeTransformation(zScale, 0.0085);
-	shapeTransformation(zGlobalTranslate, 100 - Z);
-	shapeTransformation(yGlobalTranslate, -795);
-	shapeTransformation(xGlobalTranslate, X);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->Hide();
-
-	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
-	SetNumOfShape();
-	pickedShape = 56;
-	SetShapeTex(pickedShape, BUBBLE_TEX);
-	shapeTransformation(xScale, 0.0085);
-	shapeTransformation(yScale, 0.0085);
-	shapeTransformation(zScale, 0.0085);
-	shapeTransformation(zGlobalTranslate, 120 - Z);
-	shapeTransformation(yGlobalTranslate, -850);
-	shapeTransformation(xGlobalTranslate, -50 + X);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->Hide();
-
-	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
-	SetNumOfShape();
-	pickedShape = 57;
-	SetShapeTex(pickedShape, BUBBLE_TEX);
-	shapeTransformation(xScale, 0.0085);
-	shapeTransformation(yScale, 0.0085);
-	shapeTransformation(zScale, 0.0085);
-	shapeTransformation(zGlobalTranslate, 120 - Z);
-	shapeTransformation(yGlobalTranslate, -792);
-	shapeTransformation(xGlobalTranslate, -100 + X);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->Hide();
-
-	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
-	SetNumOfShape();
-	pickedShape = 58;
-	SetShapeTex(pickedShape, BUBBLE_TEX);
-	shapeTransformation(xScale, 0.0085);
-	shapeTransformation(yScale, 0.0085);
-	shapeTransformation(zScale, 0.0085);
-	shapeTransformation(zGlobalTranslate, 120 - Z);
-	shapeTransformation(yGlobalTranslate, -950);
-	shapeTransformation(xGlobalTranslate, -60 + X);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->Hide();
-
-	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
-	SetNumOfShape();
-	pickedShape = 59;
-	SetShapeTex(pickedShape, BUBBLE_TEX);
-	shapeTransformation(xScale, 0.0085);
-	shapeTransformation(yScale, 0.0085);
-	shapeTransformation(zScale, 0.0085);
-	shapeTransformation(zGlobalTranslate, 130 - Z);
-	shapeTransformation(yGlobalTranslate, -980);
-	shapeTransformation(xGlobalTranslate, -110 + X);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->Hide();
-
-	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
-	SetNumOfShape();
-	pickedShape = 60;
-	SetShapeTex(pickedShape, BUBBLE_TEX);
-	shapeTransformation(xScale, 0.0085);
-	shapeTransformation(yScale, 0.0085);
-	shapeTransformation(zScale, 0.0085);
-	shapeTransformation(zGlobalTranslate, 130 - Z);
-	shapeTransformation(yGlobalTranslate, -960);
-	shapeTransformation(xGlobalTranslate, -30 + X);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->Hide();
-
-	addShapeCopy(41, -1, TRIANGLE_STRIP, MeshConstructor::Kind::Bubble);
-	SetNumOfShape();
-	pickedShape = 61;
-	SetShapeTex(pickedShape, BUBBLE_TEX);
-	shapeTransformation(xScale, 0.0085);
-	shapeTransformation(yScale, 0.0085);
-	shapeTransformation(zScale, 0.0085);
-	shapeTransformation(zGlobalTranslate, 130 - Z);
-	shapeTransformation(yGlobalTranslate, -1020);
-	shapeTransformation(xGlobalTranslate, -50 + X);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-	shapes[pickedShape]->Hide();
-	*/
 }
 
 void Game::Init()
@@ -769,34 +588,6 @@ void Game::Update(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::m
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
 	else //other shader
 		//s->SetUniform4f("lightColor", 0.6f, 0.8f, 0.7f, 1.0f);
-		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
-	s->Unbind();
-	CheckCollisionDetection(snake->GetHeadIndex());
-}
-
-void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Camera, 
-	const glm::mat4 &Normal, glm::mat4 jointTransforms[5], int linksNum, int index, const int shaderIndx)
-{
-	int prev_shape = pickedShape;
-	if (!once)
-		MoveControlCubes();
-	Shader *s = shaders[shaderIndx];
-	int r = ((pickedShape + 1) & 0x000000FF) >> 0;
-	int g = ((pickedShape + 1) & 0x0000FF00) >> 8;
-	int b = ((pickedShape + 1) & 0x00FF0000) >> 16;
-	s->Bind();
-	s->SetUniformMat4f("MV", MV, shaderIndx);
-	s->SetUniformMat4f("Projection", Projection, shaderIndx);
-	s->SetUniformMat4f("Camera", Camera, shaderIndx);
-	s->SetUniformMat4f("Normal", Normal, shaderIndx);
-	s->SetUniformMat4fv("jointTransforms", jointTransforms, 5);
-	s->SetUniform1i("linksNum", linksNum);
-	s->SetUniform1i("index", index);
-	s->SetUniform4f("lightDirection", 0.0f, -1.0f, -1.0f, 0.0f);
-
-	if (shaderIndx == 0) //picking shader
-		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
-	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
 	s->Unbind();
 	CheckCollisionDetection(snake->GetHeadIndex());
@@ -910,7 +701,7 @@ void Game::Motion()
 					std::cout << "diff: " << diff << std::endl;
 					shapeTransformation(yLocalTranslate, -diff);
 					cycle = 0;
-					//playTune("Sounds/swim.wav");
+					playTune("Sounds/swim.wav");
 				}
 				else if (cycle == CYCLE) //not tail and not head
 				{
@@ -969,7 +760,7 @@ void Game::Motion()
 					std::cout << "diff: " << diff << std::endl;
 					shapeTransformation(yLocalTranslate, diff);
 					cycle = 0;
-
+					playTune("Sounds/swim.wav");
 				}
 				else if (cycle == CYCLE) //not tail and not head
 				{
@@ -1028,6 +819,7 @@ void Game::Motion()
 					std::cout << "diff: " << diff << std::endl;
 					shapeTransformation(xLocalTranslate, -diff);
 					cycle = 0;
+					playTune("Sounds/swim.wav");
 				}
 				else if (cycle == CYCLE) //not tail and not head
 				{
@@ -1086,6 +878,7 @@ void Game::Motion()
 					std::cout << "diff: " << diff << std::endl;
 					shapeTransformation(xLocalTranslate, diff);
 					cycle = 0;
+					playTune("Sounds/swim.wav");
 				}
 				else if (cycle == CYCLE) //not tail and not head
 				{
@@ -1142,7 +935,7 @@ void Game::Motion()
 				{
 					pickedShape = i;
 					shapes[i]->Unhide();
-					shapeTransformation(yGlobalTranslate, 0.2 * 90);
+					shapeTransformation(yGlobalTranslate, 0.3 * 90);
 				}
 			}
 		}
@@ -1154,7 +947,7 @@ void Game::Motion()
 				{
 					pickedShape = i;
 					shapes[i]->Hide();
-					shapeTransformation(yGlobalTranslate, 0.2 * -90);
+					//shapeTransformation(yGlobalTranslate, 0.3 * -90);
 				}
 			}
 		}
@@ -1166,7 +959,7 @@ void Game::Motion()
 				bubble_up = false;
 			else
 				bubble_up = true;
-			bubble_sound = true;
+			//bubble_sound = true;
 			bubble_cycle = 0;
 			bubble_kind++;
 		}
@@ -1174,7 +967,6 @@ void Game::Motion()
 			bubble_kind = 0;
 	}
 	*/
-
 }
 
 int Game::CreateCurveControlPoints(int counter, Bezier1D *curve)
@@ -1230,6 +1022,34 @@ void Game::MoveControlCubes()
 	pickedShape = old_picked_shape;
 }
 
+void Game::UpdateLBS(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Camera,
+	const glm::mat4 &Normal, glm::mat4 jointTransforms[5], int linksNum, int index, const int shaderIndx)
+{
+	int prev_shape = pickedShape;
+	if (!once)
+		MoveControlCubes();
+	Shader *s = shaders[shaderIndx];
+	int r = ((pickedShape + 1) & 0x000000FF) >> 0;
+	int g = ((pickedShape + 1) & 0x0000FF00) >> 8;
+	int b = ((pickedShape + 1) & 0x00FF0000) >> 16;
+	s->Bind();
+	s->SetUniformMat4f("MV", MV, shaderIndx);
+	s->SetUniformMat4f("Projection", Projection, shaderIndx);
+	s->SetUniformMat4f("Camera", Camera, shaderIndx);
+	s->SetUniformMat4f("Normal", Normal, shaderIndx);
+	s->SetUniformMat4fv("jointTransforms", jointTransforms, 5);
+	s->SetUniform1i("linksNum", linksNum);
+	s->SetUniform1i("index", index);
+	s->SetUniform4f("lightDirection", 0.0f, -1.0f, -1.0f, 0.0f);
+
+	if (shaderIndx == 0) //picking shader
+		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
+	else //other shader
+		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
+	s->Unbind();
+	CheckCollisionDetection(snake->GetHeadIndex());
+}
+
 void Game::SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, const glm::mat4 &Camera, glm::vec4 dqRot[5], glm::vec4 dqTrans[5], const int shaderIndx, int index)
 {
 	int prev_shape = pickedShape;
@@ -1242,19 +1062,19 @@ void Game::SkinningUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, cons
 	s->Bind();
 	s->SetUniformMat4f("MV", MV, shaderIndx);
 	s->SetUniformMat4f("Projection", Projection, shaderIndx);
-	s->SetUniformMat4f("Normal", Normal, shaderIndx);
 	s->SetUniformMat4f("Camera", Camera, shaderIndx);
+	s->SetUniformMat4f("Normal", Normal, shaderIndx);
 	s->SetUniform4vArr5("dqRot", dqRot, shaderIndx);
 	s->SetUniform4vArr5("dqTrans", dqTrans, shaderIndx);
 	s->SetUniform1i("index", index);
-	s->SetUniform4f("lightDirection", 0.0f, 0.0f, -1.0f, 0.0f);
+	s->SetUniform4f("lightDirection", 0.0f, -1.0f, -1.0f, 0.0f);
 
 	if (shaderIndx == 0) //picking shader
 		s->SetUniform4f("lightColor", r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
 	else //other shader
 		s->SetUniform4f("lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
-		
 	s->Unbind();
+	CheckCollisionDetection(snake->GetHeadIndex());
 }
 
 void Game::LBSUpdate(const glm::mat4 &MV, const glm::mat4 &Projection, const glm::mat4 &Normal, glm::mat4 jointTransforms[5], glm::ivec3 jointIndices, const int shaderIndx, int index)

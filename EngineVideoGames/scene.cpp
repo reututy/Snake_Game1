@@ -222,9 +222,6 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 		Normal1 = Normal * Normal1;
 		MV1 = Normal1;
 		MV1 = MV1 * shapes[i]->makeTransScale(mat4(1));
-		//MV1[3].x -= 1;
-		//MV1[3].y -= 1;
-		//MV1[3].z -= 1;
 		jointTransforms[k] = MV1;
 
 		DQ = getQuaternion(MV1);
@@ -282,16 +279,16 @@ void Scene::Draw(int shaderIndx,int cameraIndx,int buffer,bool toClear,bool debu
 			if (shaderIndx > 0)
 			{
 				//Update(MV1, Projection, Camera, Normal1, shapes[i]->GetShader());
-				UpdateLBS(MV1, Projection, Camera, Normal1, jointTransforms, 5, i-snake->GetHeadIndex(), shapes[i]->GetShader());
-				//SkinningUpdate(MV1, Projection, Normal1, Camera, dqRot, dqTrans, shapes[i]->GetShader(), i);
+				//UpdateLBS(MV1, Projection, Camera, Normal1, jointTransforms, 5, i-snake->GetHeadIndex(), shapes[i]->GetShader());
+				SkinningUpdate(MV1, Projection, Normal1, Camera, dqRot, dqTrans, shapes[i]->GetShader(), i);
 				shapes[i]->Draw(shaders, textures, false);
 
 			}
 			else //picking
 			{
 				//Update(MV1, Projection, Camera, Normal1, shapes[i]->GetShader());
-				UpdateLBS(MV1, Projection, Camera, Normal1, jointTransforms, 5, i-snake->GetHeadIndex(), shapes[i]->GetShader());
-				//SkinningUpdate(MV1, Projection, Normal1, Camera, dqRot, dqTrans, shapes[i]->GetShader(), i);
+				//UpdateLBS(MV1, Projection, Camera, Normal1, jointTransforms, 5, i-snake->GetHeadIndex(), shapes[i]->GetShader());
+				SkinningUpdate(MV1, Projection, Normal1, Camera, dqRot, dqTrans, shapes[i]->GetShader(), i);
 				shapes[i]->Draw(shaders, textures, true);
 			}
 		}
