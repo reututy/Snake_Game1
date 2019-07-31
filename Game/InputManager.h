@@ -111,21 +111,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				//TODO for loop on the snake body
 				//scn->ChangeShapeMode(scn->GetNumOfHead(), curr_mode);
 				break;
-			case GLFW_KEY_D:
-				scn->SetDirection();
-				break;
-			case GLFW_KEY_U: //moves the shape up
-				scn->shapeTransformation(scn->yGlobalTranslate, 0.1f);
-				break;
-			case GLFW_KEY_J: //moves the shape down
-				scn->shapeTransformation(scn->yGlobalTranslate, -0.1f);
-				break;
-			case GLFW_KEY_K: //moves the shape right
-				scn->shapeTransformation(scn->xGlobalTranslate, 0.1f);
-				break;
-			case GLFW_KEY_H: //moves the shape left
-				scn->shapeTransformation(scn->xGlobalTranslate, -0.1f);
-				break;
 			case GLFW_KEY_S: //Zoom in
 				scn->SetPickedShape(-1);
 				scn->shapeTransformation(scn->zCameraTranslate, 5.0f);

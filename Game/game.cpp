@@ -3,7 +3,7 @@
 
 #define CONTROL_POINT_SCALE 0.1
 #define WATER_PLANE_SCALE 180
-#define SPEED 0.3
+#define SPEED 0.1
 #define BASIC_SHADER 1
 #define LBS_SHADER 2
 #define CYCLE 2
@@ -323,24 +323,11 @@ void Game::addObstacles()
 void Game::addRewards()
 {
 	//Rewards:
-	/* balls:
-	addShapeFromFile("../res/objs/ball.obj", -1, TRIANGLES, MeshConstructor::Kind::Reward, BALL_SCALE); //32
-	SetNumOfShape();
-	pickedShape = 32;
-	SetShapeTex(pickedShape, 7);
-	shapeTransformation(xGlobalTranslate, -30);
-	//shapeTransformation(zGlobalTranslate, -20);
-	//shapeTransformation(xGlobalTranslate, -10);
-	//shapeTransformation(zGlobalTranslate, -1);
-	SetShapeShader(pickedShape, BASIC_SHADER);
-	*/
-	
 	addShape(Octahedron, -1, TRIANGLES, nullptr, MeshConstructor::Kind::Reward); //32 Add an Octahedron for copy = Reward 1
 	SetNumOfShape();
 	pickedShape = 32;
 	SetShapeTex(pickedShape, REWARD_TEX);
 	shapeTransformation(xGlobalTranslate, -5);
-	//shapeTransformation(xGlobalTranslate, 730);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 	
 	addShapeCopy(32, -1, TRIANGLES, MeshConstructor::Kind::Reward); //33 Add copy cube = Obstacle 1
@@ -348,7 +335,7 @@ void Game::addRewards()
 	pickedShape = 33;
 	SetShapeTex(pickedShape, REWARD_TEX);
 	shapeTransformation(xGlobalTranslate, -15);
-	//shapeTransformation(yGlobalTranslate, -15);
+	shapeTransformation(yGlobalTranslate, -15);
 	shapeTransformation(zGlobalTranslate, 13);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
@@ -364,7 +351,7 @@ void Game::addRewards()
 	SetNumOfShape();
 	pickedShape = 35;
 	SetShapeTex(pickedShape, REWARD_TEX);
-	//shapeTransformation(yGlobalTranslate, -10);
+	shapeTransformation(yGlobalTranslate, -10);
 	shapeTransformation(zGlobalTranslate, -22);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
@@ -373,7 +360,7 @@ void Game::addRewards()
 	pickedShape = 36;
 	SetShapeTex(pickedShape, REWARD_TEX);
 	shapeTransformation(xGlobalTranslate, -20);
-	//shapeTransformation(yGlobalTranslate, -4);
+	shapeTransformation(yGlobalTranslate, -4);
 	shapeTransformation(zGlobalTranslate, -22);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 
@@ -390,7 +377,7 @@ void Game::addRewards()
 	pickedShape = 38;
 	SetShapeTex(pickedShape, REWARD_TEX);
 	shapeTransformation(xGlobalTranslate, 20);
-	//shapeTransformation(yGlobalTranslate, -4);
+	shapeTransformation(yGlobalTranslate, -4);
 	shapeTransformation(zGlobalTranslate, -8);
 	SetShapeShader(pickedShape, BASIC_SHADER);
 	
@@ -910,10 +897,10 @@ void Game::Motion()
 
 					shapeTransformation(zLocalRotate, -ANGLE);
 					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(-1, 0, 0)));
-					glm::vec3 tip_pos_before = glm::vec3(shapes[snake->GetHeadIndex() + 1]->makeTransScale()[3]);
+					glm::vec3 tip_pos_before = glm::vec3(shapes[pickedShape]->makeTransScale()[3]);
 					pickedShape++;
 					shapeTransformation(zLocalRotate, ANGLE);
-					glm::vec3 tip_pos_after = glm::vec3(shapes[snake->GetHeadIndex() + 1]->makeTransScale()[3]);
+					glm::vec3 tip_pos_after = glm::vec3(shapes[pickedShape-1]->makeTransScale()[3]);
 					float diff = glm::sqrt((tip_pos_after.x - tip_pos_before.x)*(tip_pos_after.x - tip_pos_before.x) +
 						(tip_pos_after.y - tip_pos_before.y)*(tip_pos_after.y - tip_pos_before.y) +
 						(tip_pos_after.z - tip_pos_before.z)*(tip_pos_after.z - tip_pos_before.z));
@@ -932,16 +919,18 @@ void Game::Motion()
 					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(zLocalRotate, -ANGLE);
-					glm::vec3 tip_pos_before = GetTipPositionInSystem(pickedShape);
+					glm::vec3 tip_pos_before = glm::vec3(shapes[pickedShape]->makeTransScale()[3]);
 					pickedShape++;
 					shapeTransformation(zLocalRotate, ANGLE);
-					glm::vec3 tip_pos_after = GetTipPositionInSystem(pickedShape - 1);
-					glm::vec3 tip_pos_diff = glm::vec3(tip_pos_before.x - tip_pos_after.x, tip_pos_before.y - tip_pos_after.y, tip_pos_before.z - tip_pos_after.z);
-					shapeTransformation(zLocalTranslate, tip_pos_diff.y);
-					//std::cout << "NOT HEAD: " << std::endl;
-					//std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
-					//std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
-					//std::cout << "tip_pos_diff: " << tip_pos_diff.x << " " << tip_pos_diff.y << " " << tip_pos_diff.z << std::endl;
+					glm::vec3 tip_pos_after = glm::vec3(shapes[pickedShape - 1]->makeTransScale()[3]);
+					float diff = glm::sqrt((tip_pos_after.x - tip_pos_before.x)*(tip_pos_after.x - tip_pos_before.x) +
+						(tip_pos_after.y - tip_pos_before.y)*(tip_pos_after.y - tip_pos_before.y) +
+						(tip_pos_after.z - tip_pos_before.z)*(tip_pos_after.z - tip_pos_before.z));
+
+					std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
+					std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
+					std::cout << "diff: " << diff << std::endl;
+					shapeTransformation(yLocalTranslate, -diff);
 					cycle = 0;
 				}
 			}
@@ -967,8 +956,18 @@ void Game::Motion()
 
 					shapeTransformation(zLocalRotate, ANGLE);
 					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(-1, 0, 0)));
+					glm::vec3 tip_pos_before = glm::vec3(shapes[pickedShape]->makeTransScale()[3]);
 					pickedShape++;
 					shapeTransformation(zLocalRotate, -ANGLE);
+					glm::vec3 tip_pos_after = glm::vec3(shapes[pickedShape - 1]->makeTransScale()[3]);
+					float diff = glm::sqrt((tip_pos_after.x - tip_pos_before.x)*(tip_pos_after.x - tip_pos_before.x) +
+						(tip_pos_after.y - tip_pos_before.y)*(tip_pos_after.y - tip_pos_before.y) +
+						(tip_pos_after.z - tip_pos_before.z)*(tip_pos_after.z - tip_pos_before.z));
+
+					std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
+					std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
+					std::cout << "diff: " << diff << std::endl;
+					shapeTransformation(yLocalTranslate, diff);
 					cycle = 0;
 
 				}
@@ -979,8 +978,18 @@ void Game::Motion()
 					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(zLocalRotate, ANGLE);
+					glm::vec3 tip_pos_before = glm::vec3(shapes[pickedShape]->makeTransScale()[3]);
 					pickedShape++;
 					shapeTransformation(zLocalRotate, -ANGLE);
+					glm::vec3 tip_pos_after = glm::vec3(shapes[pickedShape - 1]->makeTransScale()[3]);
+					float diff = glm::sqrt((tip_pos_after.x - tip_pos_before.x)*(tip_pos_after.x - tip_pos_before.x) +
+						(tip_pos_after.y - tip_pos_before.y)*(tip_pos_after.y - tip_pos_before.y) +
+						(tip_pos_after.z - tip_pos_before.z)*(tip_pos_after.z - tip_pos_before.z));
+
+					std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
+					std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
+					std::cout << "diff: " << diff << std::endl;
+					shapeTransformation(yLocalTranslate, diff);
 					cycle = 0;
 				}
 			}
@@ -1006,8 +1015,18 @@ void Game::Motion()
 
 					shapeTransformation(yLocalRotate, -ANGLE);
 					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(-1, 0, 0)));
+					glm::vec3 tip_pos_before = glm::vec3(shapes[pickedShape]->makeTransScale()[3]);
 					pickedShape++;
 					shapeTransformation(yLocalRotate, ANGLE);
+					glm::vec3 tip_pos_after = glm::vec3(shapes[pickedShape - 1]->makeTransScale()[3]);
+					float diff = glm::sqrt((tip_pos_after.x - tip_pos_before.x)*(tip_pos_after.x - tip_pos_before.x) +
+						(tip_pos_after.y - tip_pos_before.y)*(tip_pos_after.y - tip_pos_before.y) +
+						(tip_pos_after.z - tip_pos_before.z)*(tip_pos_after.z - tip_pos_before.z));
+
+					std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
+					std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
+					std::cout << "diff: " << diff << std::endl;
+					shapeTransformation(xLocalTranslate, -diff);
 					cycle = 0;
 				}
 				else if (cycle == CYCLE) //not tail and not head
@@ -1017,8 +1036,18 @@ void Game::Motion()
 					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(yLocalRotate, -ANGLE);
+					glm::vec3 tip_pos_before = glm::vec3(shapes[pickedShape]->makeTransScale()[3]);
 					pickedShape++;
 					shapeTransformation(yLocalRotate, ANGLE);
+					glm::vec3 tip_pos_after = glm::vec3(shapes[pickedShape - 1]->makeTransScale()[3]);
+					float diff = glm::sqrt((tip_pos_after.x - tip_pos_before.x)*(tip_pos_after.x - tip_pos_before.x) +
+						(tip_pos_after.y - tip_pos_before.y)*(tip_pos_after.y - tip_pos_before.y) +
+						(tip_pos_after.z - tip_pos_before.z)*(tip_pos_after.z - tip_pos_before.z));
+
+					std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
+					std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
+					std::cout << "diff: " << diff << std::endl;
+					shapeTransformation(xLocalTranslate, -diff);
 					cycle = 0;
 				}
 			}
@@ -1044,8 +1073,18 @@ void Game::Motion()
 
 					shapeTransformation(yLocalRotate, ANGLE);
 					snake->SetDirection(GetVectorInSystem(pickedShape, glm::vec3(-1, 0, 0)));
+					glm::vec3 tip_pos_before = glm::vec3(shapes[pickedShape]->makeTransScale()[3]);
 					pickedShape++;
 					shapeTransformation(yLocalRotate, -ANGLE);
+					glm::vec3 tip_pos_after = glm::vec3(shapes[pickedShape - 1]->makeTransScale()[3]);
+					float diff = glm::sqrt((tip_pos_after.x - tip_pos_before.x)*(tip_pos_after.x - tip_pos_before.x) +
+						(tip_pos_after.y - tip_pos_before.y)*(tip_pos_after.y - tip_pos_before.y) +
+						(tip_pos_after.z - tip_pos_before.z)*(tip_pos_after.z - tip_pos_before.z));
+
+					std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
+					std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
+					std::cout << "diff: " << diff << std::endl;
+					shapeTransformation(xLocalTranslate, diff);
 					cycle = 0;
 				}
 				else if (cycle == CYCLE) //not tail and not head
@@ -1055,8 +1094,18 @@ void Game::Motion()
 					shapeTransformation(zLocalTranslate, SPEED*snake->GetDirection().z);
 
 					shapeTransformation(yLocalRotate, ANGLE);
+					glm::vec3 tip_pos_before = glm::vec3(shapes[pickedShape]->makeTransScale()[3]);
 					pickedShape++;
 					shapeTransformation(yLocalRotate, -ANGLE);
+					glm::vec3 tip_pos_after = glm::vec3(shapes[pickedShape - 1]->makeTransScale()[3]);
+					float diff = glm::sqrt((tip_pos_after.x - tip_pos_before.x)*(tip_pos_after.x - tip_pos_before.x) +
+						(tip_pos_after.y - tip_pos_before.y)*(tip_pos_after.y - tip_pos_before.y) +
+						(tip_pos_after.z - tip_pos_before.z)*(tip_pos_after.z - tip_pos_before.z));
+
+					std::cout << "tip_pos_before: " << tip_pos_before.x << " " << tip_pos_before.y << " " << tip_pos_before.z << std::endl;
+					std::cout << "tip_pos_after: " << tip_pos_after.x << " " << tip_pos_after.y << " " << tip_pos_after.z << std::endl;
+					std::cout << "diff: " << diff << std::endl;
+					shapeTransformation(xLocalTranslate, diff);
 					cycle = 0;
 				}
 			}

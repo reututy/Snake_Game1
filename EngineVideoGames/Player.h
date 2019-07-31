@@ -23,6 +23,9 @@ class Player
 		Player(Scene* Scn, int Head_index, int Num_of_links);
 		~Player();
 		void CreatePlayer();
+		void AlignSegments(int not_moving_shape, int moving_shape); //Credits: Almog Dubin
+		glm::mat4 GetSegRot(int indx); //Credits: Almog Dubin
+		glm::mat4 GetRotMat(glm::vec3 not_moving_shape_vector, glm::vec3 moving_vector); //Credits: Almog Dubin
 
 		void MoveRight();
 		void MoveLeft();
